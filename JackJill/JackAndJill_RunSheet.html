@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Instructor Run Sheet — Jack & Jill Showcase</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #1a1a1a;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+  h1 { font-size: 24px; text-align: center; margin-bottom: 4px; }
+  .sub { text-align: center; color: #666; margin-bottom: 30px; font-size: 13px; }
+  h2 {
+    font-size: 16px;
+    background: #0d1b2a;
+    color: #ffd60a;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-top: 28px;
+  }
+  h3 { font-size: 14px; margin-top: 16px; color: #e05a9c; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: #f0f0f0; text-align: left; padding: 8px 10px; border: 1px solid #ddd; }
+  td { padding: 8px 10px; border: 1px solid #ddd; vertical-align: top; }
+  .time { font-weight: bold; white-space: nowrap; color: #0d1b2a; }
+  .slide-ref { color: #e05a9c; font-weight: bold; font-size: 12px; }
+  .action { color: #2a7; font-weight: 600; }
+  .warn { color: #c00; font-weight: 600; }
+
+  ul { margin: 4px 0 4px 20px; }
+  li { margin: 3px 0; }
+
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding-left: 24px; position: relative; margin: 6px 0; }
+  .checklist li::before { content: "\2610"; position: absolute; left: 0; font-size: 16px; }
+
+  .tip {
+    background: #f0f8ff;
+    border-left: 4px solid #2196c4;
+    padding: 8px 12px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { margin: 20px; font-size: 12px; }
+    h2 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Instructor Run Sheet</h1>
+<p class="sub">Build It. Code It. Race It. &mdash; Jack & Jill Cluster &mdash; 1 Hour</p>
+
+<!-- ============================== -->
+<h2>Before the Event (Day Before)</h2>
+
+<ul class="checklist">
+  <li>Pre-build all driving bases (wheels, 2 motors in A+B, hub charged)</li>
+  <li>Attach distance sensor to Port D on <strong>one demo robot</strong></li>
+  <li>Load <code>JackAndJill_SensorDemo.py</code> onto the demo robot and test it</li>
+  <li>Test every robot: turn on hub, verify Bluetooth connection to a laptop</li>
+  <li>Open SPIKE app on every laptop, confirm it launches</li>
+  <li>Open the Google Doc worksheet on every laptop (or bookmark it)</li>
+  <li>Print flyers (one per family)</li>
+  <li>Lay 10-foot tape line on the floor with start mark</li>
+  <li>Lay a second tape line at 12 inches and 6 inches from start (for scoring return)</li>
+  <li>Set up 2-3 obstacles (boxes, books) for the sensor demo area</li>
+  <li>Have a timer ready on your phone</li>
+  <li>Slides loaded: open <code>JackAndJill_Showcase_Slides.html</code> on projector laptop</li>
+</ul>
+
+<!-- ============================== -->
+<h2>Minute-by-Minute</h2>
+
+<table>
+  <tr>
+    <th style="width:80px;">Time</th>
+    <th style="width:70px;">Slides</th>
+    <th>What You Do</th>
+    <th>What Kids Do</th>
+  </tr>
+
+  <tr>
+    <td class="time">0:00&ndash;0:03</td>
+    <td><span class="slide-ref">Slide 1</span></td>
+    <td>
+      <span class="action">Demo the sensor robot live.</span> No slides yet &mdash; just hold it up, set it on the ground near some obstacles, and let it go. Let the room react.<br>
+      Then show Slide 1: "That's what we're building toward. But first &mdash; let's start with the basics."
+    </td>
+    <td>Watch. Get hyped.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:03&ndash;0:05</td>
+    <td><span class="slide-ref">Slides 2&ndash;3</span></td>
+    <td>Quick "What is a robot?" bit. Point to the parts on a real robot as you go through Slide 3. Don't belabor this &mdash; keep it to 90 seconds max.</td>
+    <td>Listen.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:05&ndash;0:08</td>
+    <td><span class="slide-ref">Slides 4&ndash;5</span></td>
+    <td>
+      Pair kids up. Assign Driver/Navigator. Walk them through opening the SPIKE app and selecting Word Blocks.<br>
+      <span class="warn">Common issue:</span> Robot not connected. Walk the room and verify green dots.
+    </td>
+    <td>Pair up. Open app. Connect robot. Fill in top of worksheet.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:08&ndash;0:15</td>
+    <td><span class="slide-ref">Slide 6</span></td>
+    <td>
+      <span class="action">Step 1: Make It Move.</span> Walk them through the 3 blocks. Do it on your projector at the same time so they can see you drag each block.<br>
+      When everyone's ready: "3, 2, 1 &mdash; hit Play!"
+    </td>
+    <td>
+      Drag 3 blocks. Click Play. Robot moves!<br>
+      Fill in worksheet: "What happened?" and distance estimate.
+    </td>
+  </tr>
+
+  <tr>
+    <td class="time">0:15&ndash;0:17</td>
+    <td><span class="slide-ref">Slide 7</span></td>
+    <td>Quick explainer &mdash; 60 seconds. "Three blocks. That's all it took."</td>
+    <td>Listen.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:17&ndash;0:22</td>
+    <td><span class="slide-ref">Slide 8</span></td>
+    <td>
+      <span class="action">Step 2: Forward AND Backward.</span> Show them the wait block (Control menu) and how to change forward to backward in the dropdown.<br>
+      <span class="warn">Common issue:</span> Kids add a second "set movement motors" block. They don't need it &mdash; only need it once at the top.
+    </td>
+    <td>Add 2 blocks. Play. Robot goes forward, pauses, comes back. Worksheet answers.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:22&ndash;0:27</td>
+    <td><span class="slide-ref">Slide 9</span></td>
+    <td>
+      <span class="action">Step 3: Backup Beep.</span> Show the Sound menu. Let them experiment with different beep numbers for a minute.<br>
+      <div class="tip">Let this moment breathe. Kids love making weird sounds. The room gets loud and fun &mdash; that's the point. Moms are watching.</div>
+    </td>
+    <td>Add beep block. Experiment with pitch numbers. Fill in beep table on worksheet.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:27&ndash;0:30</td>
+    <td><span class="slide-ref">Slide 10</span></td>
+    <td>
+      <span class="action">Step 4: Light Matrix.</span> Show them the Light menu. Click the pattern grid and draw a face live. "You've got 2 minutes to make your own face."<br>
+      Fast finishers can try Slide 10 face swap (happy forward, sad backward).
+    </td>
+    <td>Draw face patterns. Play. Sketch designs on worksheet grid.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:30&ndash;0:32</td>
+    <td><span class="slide-ref">Slides 11&ndash;12</span></td>
+    <td>
+      <span class="action">SWITCH roles.</span> New driver starts fresh project, builds from memory. Navigator coaches.<br>
+      While they rebuild: show Slide 12 (Python Reveal). Point out the side-by-side. "Same program, different language. This is what professional engineers write."<br>
+      <div class="tip">This is the mom moment. Walk to where parents are and say: "What you're seeing right now is your child's first exposure to the same language taught in college CS programs."</div>
+    </td>
+    <td>Switch. Rebuild. Look at Python comparison.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:32&ndash;0:35</td>
+    <td><span class="slide-ref">Slides 13&ndash;14</span></td>
+    <td>
+      <span class="action">Announce THE RACE.</span> Explain the rules. Show the scoring. Point to the tape line on the floor.<br>
+      "You have 8 minutes to tune your robot. Then 3 official runs."
+    </td>
+    <td>Read race rules on worksheet.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:35&ndash;0:43</td>
+    <td><span class="slide-ref">Slide 14</span></td>
+    <td>
+      <span class="action">Tuning time.</span> Walk the room. Help teams adjust duration and speed. Encourage them to use the test log on the worksheet.<br>
+      <span class="warn">If a team is stuck:</span> Suggest speed=40, duration=6 as a starting point. Let them iterate from there.
+    </td>
+    <td>Test, adjust, test, adjust. Fill in test log.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:43&ndash;0:52</td>
+    <td><span class="slide-ref">Slide 15</span></td>
+    <td>
+      <span class="action">Official race runs.</span> One team at a time on the track. Everyone else watches.<br>
+      Call out scores live. Ham it up. "Ohhh, 8 inches! So close!"<br>
+      Have moms line up along the track to watch.<br>
+      3 runs per team, best score counts. Keep pace moving &mdash; ~1 min per run.
+    </td>
+    <td>Race! Fill in scoring table. Cheer for other teams.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:52&ndash;0:55</td>
+    <td><span class="slide-ref">Slide 16</span></td>
+    <td>
+      <span class="action">Sensor demo.</span> "You just made a robot that follows YOUR instructions. But what if it could think for itself?"<br>
+      Place the demo robot on the ground near obstacles. Run the sensor program. Let it navigate.<br>
+      "That's Session 4 of the full course."
+    </td>
+    <td>Watch. Gasp.</td>
+  </tr>
+
+  <tr>
+    <td class="time">0:55&ndash;1:00</td>
+    <td><span class="slide-ref">Slides 17&ndash;18</span></td>
+    <td>
+      Walk through the 6-session course. End on Slide 18: "You Did That."<br>
+      "If your kid wants to come back &mdash; grab a flyer on your way out."<br>
+      <span class="action">Hand out flyers to every parent.</span><br>
+      Have kids finish the reflection on the worksheet if time.
+    </td>
+    <td>Reflection. Talk to parents.</td>
+  </tr>
+</table>
+
+<!-- ============================== -->
+<h2>Emergency Fixes</h2>
+
+<table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr>
+    <td>Robot won't connect</td>
+    <td>Turn hub off and on. Re-pair via Bluetooth in SPIKE app. Make sure no other laptop is connected to that hub.</td>
+  </tr>
+  <tr>
+    <td>Robot drives in a curve</td>
+    <td>Motors might be in wrong ports. Check: left motor cable goes to Port A, right to Port B. Or swap A+B in the <em>set movement motors</em> dropdown.</td>
+  </tr>
+  <tr>
+    <td>Robot drives backward when it should go forward</td>
+    <td>Motors are reversed. Swap the dropdown from A+B to B+A.</td>
+  </tr>
+  <tr>
+    <td>No sound on beep</td>
+    <td>Volume might be 0. Add a <em>set volume to 100%</em> block from Sound menu at the top of the program.</td>
+  </tr>
+  <tr>
+    <td>"Word Blocks" option not visible</td>
+    <td>Make sure they're on SPIKE 3 (not the old SPIKE Legacy app). Check for app updates.</td>
+  </tr>
+  <tr>
+    <td>Kid finishes way ahead of others</td>
+    <td>Challenge them: "Can you make it play a sound WHILE it drives? Can you make it do a spin at the end?"</td>
+  </tr>
+  <tr>
+    <td>Kid is disengaged / lost</td>
+    <td>Switch them to Navigator role. Give them the worksheet and have them read steps to their partner. Everyone contributes.</td>
+  </tr>
+</table>
+
+<!-- ============================== -->
+<h2>Materials Checklist</h2>
+
+<ul class="checklist">
+  <li>SPIKE Prime kits &mdash; pre-built driving bases, hubs charged</li>
+  <li>1 demo robot with distance sensor on Port D</li>
+  <li>Laptops with SPIKE app installed (one per pair)</li>
+  <li>Google Doc worksheet open on each laptop</li>
+  <li>Projector + your laptop with slides open</li>
+  <li>Masking tape on floor: start line, 10-foot line, 12" return mark, 6" return mark</li>
+  <li>2-3 obstacles for sensor demo (cardboard boxes, books, etc.)</li>
+  <li>Printed flyers (one per family)</li>
+  <li>Phone timer</li>
+  <li>Measuring tape (to verify 10-foot distance and judge returns)</li>
+</ul>
+
+</body>
+</html>

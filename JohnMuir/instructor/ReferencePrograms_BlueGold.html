@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reference Programs — BLUE and GOLD</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.6;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 24px; color: #1a2744; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #6a7a8a; margin-bottom: 24px; }
+  h2 { font-size: 18px; color: #1a2744; margin: 28px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 12px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .callout {
+    border-left: 4px solid #d4930d;
+    background: #fef9ed;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: #6b4a06;
+  }
+  table {
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 15px;
+  }
+  th { background: #f0f2f5; text-align: left; padding: 8px 16px; font-weight: 600; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 8px 16px; border-bottom: 1px solid #eaecf0; }
+  .port-highlight { font-weight: 700; color: #2e6b9e; }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 24px 0; }
+
+  @media print {
+    body { padding: 20px; }
+    pre { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Reference Programs &mdash; BLUE and GOLD</h1>
+<p class="subtitle">SOTC 2026 &mdash; John Muir &mdash; Python Robotics</p>
+
+<div class="callout">
+  <strong>Important:</strong> Type these programs into the LEGO app yourself first. Don't copy-paste until you've tried typing it. You learn by typing.
+</div>
+
+<h2>Program BLUE &mdash; Drive Forward</h2>
+<pre>
+from hub import light_matrix
+import motor_pair
+import runloop
+
+async def main():
+    motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+    light_matrix.write("GO")
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 2000, 0, velocity=50)
+    light_matrix.write("DONE")
+
+runloop.run(main())
+</pre>
+
+<hr>
+
+<h2>Program GOLD &mdash; Beep &amp; Spin</h2>
+<pre>
+from hub import light_matrix, sound
+import motor_pair
+import runloop
+
+async def main():
+    motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+    await sound.beep(800, 500, 100)
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 1500, 100, velocity=30)
+
+runloop.run(main())
+</pre>
+
+<hr>
+
+<h2>Port Reference</h2>
+<p>Look at your robot. Find where the motor cables plug into the hub. Match the letter to the number below.</p>
+
+<table>
+  <tr><th>Port Letter</th><th>Code Number</th></tr>
+  <tr><td class="port-highlight">A</td><td>0</td></tr>
+  <tr><td class="port-highlight">B</td><td>1</td></tr>
+  <tr><td class="port-highlight">C</td><td>2</td></tr>
+  <tr><td class="port-highlight">D</td><td>3</td></tr>
+  <tr><td class="port-highlight">E</td><td>4</td></tr>
+  <tr><td class="port-highlight">F</td><td>5</td></tr>
+</table>
+
+<div class="callout">
+  <strong>If your robot doesn't move:</strong> Your motors are probably not in ports A and B. Check the cables, find the port letters, and change the <code>pair</code> line. For example, if your motors are in ports C and D:<br><br>
+  <code>motor_pair.pair(motor_pair.PAIR_1, 2, 3)</code>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment 6: Showcase Routine Challenge</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.6;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 24px; color: #1a2744; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #6a7a8a; margin-bottom: 24px; }
+  h2 { font-size: 18px; color: #1a2744; margin: 28px 0 8px; }
+  h3 { font-size: 15px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ol, ul { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 12px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .points {
+    display: inline-block;
+    background: #1a7742;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .badge {
+    display: inline-block;
+    background: #1a7742;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; }
+  .callout {
+    border-left: 4px solid;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 24px 0; }
+  .part {
+    background: #f7f8f9;
+    border: 1px solid #e2e6ec;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .part-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .answer-box {
+    background: #fff;
+    border: 2px dashed #d0d6e0;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 10px 0;
+    min-height: 80px;
+    font-size: 14px;
+    color: #8a8a8a;
+  }
+  .answer-box.tall { min-height: 200px; }
+
+  @media print {
+    body { padding: 20px; }
+    pre, .part { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Assignment 6: Showcase Routine Challenge</h1>
+<p class="subtitle">SOTC 2026 &mdash; John Muir &mdash; Python Robotics</p>
+<span class="points">GREEN TABLE &mdash; 100 POINTS</span>
+
+<p>Design a fully autonomous robot routine. Your program runs on its own from start to finish &mdash; no touching the robot once you press play.</p>
+
+<hr>
+
+<h2>Requirements (must include all 6)</h2>
+<ol>
+  <li><strong>At least 4 different movements</strong> &mdash; forward, reverse, turn left, turn right. Vary the speed and distance.</li>
+  <li><strong>At least 2 different sounds</strong> &mdash; different frequencies, durations, or patterns. A single beep doesn't count twice.</li>
+  <li><strong>At least 1 light matrix display</strong> &mdash; show a message or image at some point in the routine.</li>
+  <li><strong>Use a <code>for</code> loop</strong> &mdash; somewhere in your routine, repeat something using <code>for i in range()</code>.</li>
+  <li><strong>Use a custom function</strong> &mdash; write at least one <code>async def my_function():</code> that you call from inside <code>main()</code>. Name it something meaningful (not <code>function1</code>).</li>
+  <li><strong>Start and end in the same spot</strong> &mdash; the robot must return to approximately where it started. This requires planning and calibration.</li>
+</ol>
+
+<hr>
+
+<h2>Scoring</h2>
+<table>
+  <thead>
+    <tr><th>Category</th><th>Points</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>All 4 movement types present</td><td>20</td></tr>
+    <tr><td>Sounds included (2+ distinct)</td><td>10</td></tr>
+    <tr><td>Light matrix display used</td><td>10</td></tr>
+    <tr><td><code>for</code> loop used correctly</td><td>15</td></tr>
+    <tr><td>Custom function defined and called</td><td>15</td></tr>
+    <tr><td>Returns to starting position (within 6 inches)</td><td>20</td></tr>
+    <tr><td>Code quality: readable, commented, no dead code</td><td>10</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>Example Skeleton</h2>
+<p>This is a starting point, not a complete solution. You need to add more movements and figure out the return trip yourself.</p>
+
+<pre>
+from hub import light_matrix, sound
+import motor_pair
+import runloop
+
+async def victory_lap():
+    # Your custom function here
+    await sound.beep(1000, 200, 100)
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 1000, 100, velocity=40)
+
+async def main():
+    motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+
+    # Show a starting message
+    light_matrix.write("GO")
+    await runloop.sleep_ms(500)
+
+    # Movement 1: drive forward
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 2000, 0, velocity=50)
+
+    # Movement 2: turn right
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 800, 100, velocity=30)
+
+    # Beep pattern using a for loop
+    for i in range(3):
+        await sound.beep(600, 150, 100)
+        await runloop.sleep_ms(200)
+
+    # ... add more movements, sounds, and your return trip ...
+
+    # Call your custom function
+    await victory_lap()
+
+    light_matrix.write("DONE")
+
+runloop.run(main())
+</pre>
+
+<div class="callout callout-green">
+  <strong>Stretch goals (no extra points, just bragging rights):</strong>
+  <ul style="margin-top:6px;">
+    <li>Make your routine exactly 30 seconds long</li>
+    <li>Use <code>while True:</code> to loop the whole routine until stopped</li>
+    <li>Synchronize beeps with movement (beep while driving, not before)</li>
+    <li>Create 2+ custom functions that you combine in different orders</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2>What to Submit</h2>
+
+<div class="part">
+  <span class="part-label">Part 1 &mdash; Your Code</span>
+  <p>Paste your complete Python code.</p>
+  <div class="answer-box tall">[Paste your code here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 2 &mdash; Description</span>
+  <p>In 3&ndash;5 sentences: What does your routine do? What was the hardest part?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 3 &mdash; Testing</span>
+  <p>How many test runs did it take to get the return-to-start working? What did you adjust each time?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+</body>
+</html>

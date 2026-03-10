@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4 — The Gauntlet</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 56px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+  h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 28px; font-weight: 600; margin-bottom: 12px; color: #8ecae6; }
+  p, li { font-size: 26px; line-height: 1.5; }
+  ul { margin-left: 30px; }
+  li { margin: 10px 0; }
+
+  .subtitle { font-size: 28px; color: #8ecae6; font-weight: 400; margin-bottom: 30px; }
+  .big-goal { font-size: 38px; color: #ffd60a; font-weight: 700; text-align: center; margin: 40px 0; }
+
+  /* Code blocks */
+  pre {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  .kw { color: #ff6b9d; }
+  .fn { color: #8ecae6; }
+  .str { color: #a8db8f; }
+  .num { color: #ffd60a; }
+  .cm { color: #6a7a8a; }
+
+  /* Table groups */
+  .group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .group-card {
+    border-radius: 12px;
+    padding: 24px;
+    border: 3px solid;
+  }
+  .group-red { background: #2a1015; border-color: #e74c3c; }
+  .group-red h3 { color: #ff6b6b; }
+  .group-yellow { background: #2a2510; border-color: #f1c40f; }
+  .group-yellow h3 { color: #ffd60a; }
+  .group-green { background: #102a15; border-color: #2ecc71; }
+  .group-green h3 { color: #69db7c; }
+
+  .group-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .group-card .names { font-size: 20px; color: #b0bdd0; margin-bottom: 10px; }
+  .group-card .task { font-size: 20px; font-weight: 600; }
+
+  /* Concept cards */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .concept-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .concept-card h3 { font-size: 22px; margin-bottom: 10px; }
+  .concept-card p { font-size: 22px; }
+  .concept-card code {
+    background: #0d1b2a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 18px;
+    color: #ffd60a;
+  }
+
+  /* Scoring rubric */
+  .score-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    margin: 14px 0;
+    font-size: 24px;
+  }
+  .score-pts {
+    font-weight: 800;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px 0 0 10px;
+    padding: 16px;
+  }
+  .score-desc {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    border: 2px solid;
+    border-left: none;
+  }
+  .s4 .score-pts { background: #7b2d8e; color: #fff; }
+  .s4 .score-desc { border-color: #7b2d8e; background: #1f0d24; }
+  .s3 .score-pts { background: #1a7742; color: #fff; }
+  .s3 .score-desc { border-color: #1a7742; background: #0d2e1a; }
+  .s2 .score-pts { background: #2e6b9e; color: #fff; }
+  .s2 .score-desc { border-color: #2e6b9e; background: #0d1f2e; }
+  .s1 .score-pts { background: #b07d10; color: #fff; }
+  .s1 .score-desc { border-color: #b07d10; background: #2a2510; }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin-left: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    padding-left: 50px;
+    position: relative;
+    margin: 16px 0;
+    font-size: 26px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 36px; height: 36px;
+    background: #ffd60a;
+    color: #0d1b2a;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Course map */
+  .course-box {
+    background: #1b2838;
+    border: 3px solid #ffd60a;
+    border-radius: 14px;
+    padding: 30px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .course-box h3 { color: #ffd60a; font-size: 26px; margin-bottom: 16px; }
+  .course-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .course-zone {
+    background: #0d1b2a;
+    border: 2px solid #2a3f5f;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 18px;
+  }
+  .course-zone.start { border-color: #69db7c; color: #69db7c; }
+  .course-zone.obstacle { border-color: #ff6b6b; color: #ff6b6b; }
+  .course-zone.finish { border-color: #ffd60a; color: #ffd60a; }
+
+  /* Question box */
+  .question-box {
+    background: #1b2838;
+    border: 3px solid #ffd60a;
+    border-radius: 12px;
+    padding: 30px 36px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .question-box p {
+    font-size: 30px;
+    color: #ffd60a;
+    font-weight: 600;
+  }
+  .question-box .alt {
+    font-size: 22px;
+    color: #8ecae6;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  /* Fix table */
+  .fix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 22px;
+  }
+  .fix-table th {
+    text-align: left;
+    padding: 14px 20px;
+    background: #1b2838;
+    color: #8ecae6;
+    font-weight: 600;
+  }
+  .fix-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #2a3f5f;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+    color: #4a5568;
+    z-index: 10;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: #ffd60a;
+    transition: width 0.3s;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide active" id="s1">
+  <h1>The Gauntlet</h1>
+  <p class="subtitle">Session 4 &mdash; Autonomous Navigation Challenge</p>
+  <div class="big-goal">Today's Goal: Your robot navigates a course on its own. No touching.</div>
+  <p style="text-align:center; color:#6a7a8a; font-size:20px;">Everything you've learned &mdash; movement, sensors, sound, logic &mdash; comes together now.</p>
+</div>
+
+<!-- SLIDE 2: What You Know -->
+<div class="slide" id="s2">
+  <h2>Your Toolkit So Far</h2>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3 style="color:#69db7c;">Session 1&ndash;2: Movement</h3>
+      <p><code>move_for_time()</code><br><code>move_for_degrees()</code><br>Forward, reverse, turn</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#8ecae6;">Session 3: Sensors</h3>
+      <p><code>distance_sensor.distance()</code><br><code>color_sensor.color()</code><br><code>while True:</code> + <code>break</code></p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#ffd60a;">All Sessions: Output</h3>
+      <p><code>sound.beep()</code><br><code>light_matrix.write()</code><br><code>light_matrix.show_image()</code></p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#ff6b9d;">Today: Decision-Making</h3>
+      <p><code>if / elif / else</code><br>Combine sensors + actions<br>React in real time</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: The Course -->
+<div class="slide" id="s3">
+  <h2>The Course</h2>
+  <div class="course-box">
+    <h3>Course Layout</h3>
+    <div class="course-layout">
+      <div class="course-zone start">START<br><span style="font-size:14px;">Place robot here</span></div>
+      <div class="course-zone obstacle">OBSTACLE 1<br><span style="font-size:14px;">Book or box</span></div>
+      <div class="course-zone" style="border-color:#2a3f5f; color:#6a7a8a;">Open space<br><span style="font-size:14px;">Drive through</span></div>
+      <div class="course-zone" style="border-color:#2a3f5f; color:#6a7a8a;">Open space<br><span style="font-size:14px;">Drive through</span></div>
+      <div class="course-zone obstacle">OBSTACLE 2<br><span style="font-size:14px;">Book or box</span></div>
+      <div class="course-zone" style="border-color:#2a3f5f; color:#6a7a8a;">Open space<br><span style="font-size:14px;">Drive through</span></div>
+      <div class="course-zone" style="border-color:#2a3f5f; color:#6a7a8a;">Open space<br><span style="font-size:14px;">Drive through</span></div>
+      <div class="course-zone obstacle">OBSTACLE 3<br><span style="font-size:14px;">Book or box</span></div>
+      <div class="course-zone finish">FINISH<br><span style="font-size:14px;">Red paper = stop</span></div>
+    </div>
+  </div>
+  <p style="text-align:center; color:#8ecae6; font-size:22px;">Robot starts. Robot navigates. Robot finishes. You don't touch it.</p>
+</div>
+
+<!-- SLIDE 4: The Rules -->
+<div class="slide" id="s4">
+  <h2>The Rules</h2>
+  <ol class="steps">
+    <li>Robot starts at the START zone. You press play. Hands off.</li>
+    <li>Robot must drive forward and detect obstacles using the distance sensor.</li>
+    <li>When it detects an obstacle, it must stop, signal (sound or light), and navigate around it.</li>
+    <li>Robot must reach the FINISH zone.</li>
+    <li>If the robot hits an obstacle, you can restart &mdash; but it costs you points.</li>
+  </ol>
+  <p style="margin-top:24px; color:#ffd60a; text-align:center; font-size:24px;">You get 3 attempts. Best run counts.</p>
+</div>
+
+<!-- SLIDE 5: New Concept - Decision Making -->
+<div class="slide" id="s5">
+  <h2>New Concept: Sensor-Based Decisions</h2>
+  <p style="color:#8ecae6; margin-bottom:10px;">Combine <code style="color:#ffd60a;">if/elif/else</code> with sensor data to make your robot smart.</p>
+  <pre>
+<span class="cm"># Check distance and decide what to do</span>
+dist = distance_sensor.distance(port.F)
+
+<span class="kw">if</span> dist == <span class="num">-1</span>:
+    <span class="cm"># Nothing detected &mdash; keep driving</span>
+    motor_pair.move(motor_pair.PAIR_1, <span class="num">0</span>, velocity=<span class="num">40</span>)
+
+<span class="kw">elif</span> dist &lt; <span class="num">100</span>:
+    <span class="cm"># Very close! Stop and turn</span>
+    motor_pair.stop(motor_pair.PAIR_1)
+    <span class="kw">await</span> sound.beep(<span class="num">1000</span>, <span class="num">200</span>, <span class="num">100</span>)
+    <span class="kw">await</span> motor_pair.move_for_time(
+        motor_pair.PAIR_1, <span class="num">800</span>, <span class="num">100</span>, velocity=<span class="num">30</span>)
+
+<span class="kw">elif</span> dist &lt; <span class="num">250</span>:
+    <span class="cm"># Getting close &mdash; slow down</span>
+    motor_pair.move(motor_pair.PAIR_1, <span class="num">0</span>, velocity=<span class="num">20</span>)
+  </pre>
+</div>
+
+<!-- SLIDE 6: Starter Code -->
+<div class="slide" id="s6">
+  <h2>Gauntlet Starter Code</h2>
+  <pre style="font-size:18px;">
+<span class="kw">from</span> hub <span class="kw">import</span> light_matrix, sound, port
+<span class="kw">import</span> motor_pair, distance_sensor, runloop
+
+motor_pair.pair(motor_pair.PAIR_1, <span class="num">0</span>, <span class="num">1</span>)
+
+<span class="kw">async def</span> <span class="fn">avoid_obstacle</span>():
+    <span class="cm"># Stop, reverse, turn</span>
+    motor_pair.stop(motor_pair.PAIR_1)
+    <span class="kw">await</span> sound.beep(<span class="num">800</span>, <span class="num">300</span>, <span class="num">100</span>)
+    light_matrix.write(<span class="str">"!"</span>)
+    <span class="kw">await</span> motor_pair.move_for_time(motor_pair.PAIR_1, <span class="num">1000</span>, <span class="num">0</span>, velocity=<span class="num">-40</span>)
+    <span class="kw">await</span> motor_pair.move_for_time(motor_pair.PAIR_1, <span class="num">800</span>, <span class="num">100</span>, velocity=<span class="num">30</span>)
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    light_matrix.write(<span class="str">"GO"</span>)
+    <span class="kw">for</span> attempt <span class="kw">in</span> range(<span class="num">20</span>):  <span class="cm"># try up to 20 times</span>
+        motor_pair.move(motor_pair.PAIR_1, <span class="num">0</span>, velocity=<span class="num">40</span>)
+        <span class="kw">while</span> <span class="num">True</span>:
+            dist = distance_sensor.distance(port.F)
+            <span class="kw">if</span> dist != <span class="num">-1</span> <span class="kw">and</span> dist &lt; <span class="num">150</span>:
+                <span class="kw">await</span> <span class="fn">avoid_obstacle</span>()
+                <span class="kw">break</span>
+            <span class="kw">await</span> runloop.sleep_ms(<span class="num">50</span>)
+    motor_pair.stop(motor_pair.PAIR_1)
+    light_matrix.write(<span class="str">"DONE"</span>)
+
+runloop.run(main())
+  </pre>
+</div>
+
+<!-- SLIDE 7: Table Tasks -->
+<div class="slide" id="s7">
+  <h2>Your Mission</h2>
+  <div class="group-grid">
+    <div class="group-card group-red">
+      <h3>RED TABLE</h3>
+      <div class="names">Angelo, Prince, Kazi, Kenneth, Markies, Xavier</div>
+      <div class="task">Start with the Gauntlet starter code. Get it running. Adjust the distance threshold and turn time until your robot avoids at least 1 obstacle.</div>
+    </div>
+    <div class="group-card group-yellow">
+      <h3>YELLOW TABLE</h3>
+      <div class="names">Alex, An, Jeremiah, Hector</div>
+      <div class="task">Get the starter code running. Then customize the avoid_obstacle function &mdash; try reversing more, turning differently, or adding sounds. Aim to clear 2 obstacles.</div>
+    </div>
+    <div class="group-card group-green">
+      <h3>GREEN TABLE</h3>
+      <div class="names">Vincent, Winston + anyone who finishes</div>
+      <div class="task">Build your own navigation from scratch. Add the color sensor &mdash; detect a red finish line to stop. Use if/elif/else for multi-level distance reactions. Aim for full course clear.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Scoring -->
+<div class="slide" id="s8">
+  <h2>How You're Scored</h2>
+  <div class="score-grid s4">
+    <div class="score-pts">4</div>
+    <div class="score-desc">Full course clear. Robot avoids all obstacles, reaches finish, uses sound/light to signal. Clean code.</div>
+  </div>
+  <div class="score-grid s3">
+    <div class="score-pts">3</div>
+    <div class="score-desc">Robot avoids 2+ obstacles and makes progress. Uses sensor correctly. Some signaling.</div>
+  </div>
+  <div class="score-grid s2">
+    <div class="score-pts">2</div>
+    <div class="score-desc">Robot detects and avoids at least 1 obstacle. Code runs without errors.</div>
+  </div>
+  <div class="score-grid s1">
+    <div class="score-pts">1</div>
+    <div class="score-desc">Robot drives and attempts to use the sensor. Code has issues but student can explain the logic.</div>
+  </div>
+  <p style="margin-top:20px; color:#ffd60a; text-align:center; font-size:22px;">Everyone runs the course. A score of 1 means you tried. A 0 means you didn't.</p>
+</div>
+
+<!-- SLIDE 9: Green Table Stretch -->
+<div class="slide" id="s9">
+  <h2>Green Table Stretch: Finish Line Detection</h2>
+  <p style="color:#69db7c; margin-bottom:14px;">Add the color sensor to detect a red piece of paper as the finish line.</p>
+  <pre style="font-size:20px;">
+<span class="kw">import</span> color_sensor
+
+<span class="cm"># Inside your while True loop, add this check:</span>
+color = color_sensor.color(port.E)
+<span class="kw">if</span> color == <span class="num">9</span>:  <span class="cm"># Red detected!</span>
+    motor_pair.stop(motor_pair.PAIR_1)
+    <span class="kw">await</span> sound.beep(<span class="num">440</span>, <span class="num">500</span>, <span class="num">100</span>)
+    <span class="kw">await</span> sound.beep(<span class="num">880</span>, <span class="num">500</span>, <span class="num">100</span>)
+    light_matrix.write(<span class="str">"WIN"</span>)
+    <span class="kw">break</span>  <span class="cm"># exit the whole navigation loop</span>
+  </pre>
+  <p style="margin-top:16px; color:#8ecae6; font-size:22px;">Place a red piece of paper at the finish zone. When the color sensor passes over it, the robot knows it's done.</p>
+</div>
+
+<!-- SLIDE 10: Tips -->
+<div class="slide" id="s10">
+  <h2>Tips for the Course Run</h2>
+  <table class="fix-table">
+    <tr>
+      <th>Situation</th>
+      <th>What to Do</th>
+    </tr>
+    <tr>
+      <td>Robot drives into the obstacle</td>
+      <td>Lower the distance threshold (try <code style="color:#ffd60a;">200</code> instead of <code style="color:#ffd60a;">150</code>) or slow down the robot.</td>
+    </tr>
+    <tr>
+      <td>Robot turns but then drives into the same obstacle</td>
+      <td>Increase the turn time (try <code style="color:#ffd60a;">1200</code>ms instead of <code style="color:#ffd60a;">800</code>ms) or turn at a wider angle.</td>
+    </tr>
+    <tr>
+      <td>Robot keeps turning in circles</td>
+      <td>Alternate turn direction. Or reverse more before turning.</td>
+    </tr>
+    <tr>
+      <td>Robot never detects the obstacle</td>
+      <td>Make sure the obstacle is big and flat (a book, not a pencil). Check sensor port.</td>
+    </tr>
+    <tr>
+      <td>Code runs but nothing happens</td>
+      <td>Check motor port numbers. Check that <code style="color:#ffd60a;">motor_pair.pair()</code> is called before <code style="color:#ffd60a;">main()</code>.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- SLIDE 11: Work Time -->
+<div class="slide" id="s11">
+  <h2>Build &amp; Test <span style="color:#6a7a8a; font-size:24px;">(20 min)</span></h2>
+  <ul>
+    <li><strong>First 10 min:</strong> Get your code running. Test it away from the course. Does it detect and avoid one obstacle?</li>
+    <li><strong>Next 10 min:</strong> Move to the course. Test runs. Adjust your code between attempts.</li>
+  </ul>
+  <div class="question-box" style="margin-top:30px;">
+    <p>Programming is testing. Test, adjust, test, adjust.</p>
+    <p class="alt">The robot doesn't care about your feelings. It does exactly what your code says.</p>
+  </div>
+</div>
+
+<!-- SLIDE 12: Course Runs -->
+<div class="slide" id="s12">
+  <h2>Course Runs <span style="color:#6a7a8a; font-size:24px;">(15 min)</span></h2>
+  <ol class="steps">
+    <li>Coach G calls your name.</li>
+    <li>Place your robot at START.</li>
+    <li>Press play. Hands off.</li>
+    <li>We all watch.</li>
+    <li>Coach G scores your run.</li>
+    <li>You get up to 3 attempts. Best run counts.</li>
+  </ol>
+  <p style="margin-top:24px; color:#8ecae6; text-align:center; font-size:22px;">While you wait, keep improving your code for your next attempt.</p>
+</div>
+
+<!-- SLIDE 13: Submit -->
+<div class="slide" id="s13">
+  <h2>Submit Your Gauntlet Code</h2>
+  <ol class="steps">
+    <li>Open Google Classroom &mdash; class code: <strong style="color:#ffd60a;">w4m3nvl6</strong></li>
+    <li>Find <strong>Assignment 8: "The Gauntlet"</strong></li>
+    <li>Paste your final code</li>
+    <li>Answer the reflection questions</li>
+    <li>Click <strong>Turn In</strong></li>
+  </ol>
+  <p style="color:#6a7a8a; margin-top:24px; font-size:20px;">Submit your best version, even if the robot didn't clear the whole course.</p>
+</div>
+
+<!-- SLIDE 14: Close -->
+<div class="slide" id="s14">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:44px;">You built an autonomous robot.</h1>
+    <p style="font-size:28px; margin-top:20px; color:#8ecae6;">It drives on its own. It senses obstacles. It makes decisions. It navigates a course.</p>
+    <p style="font-size:24px; margin-top:30px; color:#fff;">That's not a toy. That's robotics.</p>
+    <p style="font-size:20px; margin-top:30px; color:#6a7a8a;">Self-driving cars use the same loop: sense, decide, act.</p>
+  </div>
+</div>
+
+<div class="nav">
+  <span id="slideNum">1</span> / <span id="totalSlides">14</span> &nbsp; &larr; &rarr; to navigate
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = current + 1;
+    document.getElementById('totalSlides').textContent = slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  show(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOTC Math Jeopardy — Rules &amp; Game Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --navy: #1B2A4A;
+        --navy-light: #243660;
+        --gold: #D4A843;
+        --gold-light: #E8C76A;
+        --red: #E74C3C;
+        --blue: #3498DB;
+        --green: #2ECC71;
+        --team-gold: #D4A843;
+        --white: #F5F5F5;
+    }
+
+    body {
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        color: #2d3436;
+        background: #f0f0f0;
+        line-height: 1.5;
+    }
+
+    .page {
+        width: 8.5in;
+        min-height: 10.8in;
+        margin: 0.25in auto;
+        padding: 0.5in 0.6in;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+        page-break-after: always;
+        position: relative;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    /* ===== HEADERS ===== */
+    .main-header {
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        color: #fff;
+        padding: 18px 28px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 4px solid var(--gold);
+    }
+
+    .main-header h1 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 28px;
+        color: var(--gold);
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .main-header .subtitle {
+        font-size: 14px;
+        color: var(--gold-light);
+        margin-top: 4px;
+        font-weight: 700;
+    }
+
+    .section-header {
+        font-family: 'Fredoka One', cursive;
+        font-size: 20px;
+        color: var(--navy);
+        margin: 22px 0 10px 0;
+        padding-bottom: 6px;
+        border-bottom: 3px solid var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--gold);
+        color: var(--navy);
+        border-radius: 50%;
+        font-family: 'Fredoka One', cursive;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .sub-header {
+        font-family: 'Fredoka One', cursive;
+        font-size: 15px;
+        color: var(--navy-light);
+        margin: 14px 0 6px 0;
+    }
+
+    /* ===== CALLOUT BOXES ===== */
+    .callout {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 13px;
+    }
+
+    .callout-gold {
+        background: #fef9e7;
+        border-left: 4px solid var(--gold);
+        color: #7d6608;
+    }
+
+    .callout-red {
+        background: #fdf2f2;
+        border-left: 4px solid var(--red);
+        color: #922b21;
+    }
+
+    .callout-blue {
+        background: #eaf2f8;
+        border-left: 4px solid var(--blue);
+        color: #1a5276;
+    }
+
+    .callout-green {
+        background: #eafaf1;
+        border-left: 4px solid var(--green);
+        color: #1e8449;
+    }
+
+    .callout-navy {
+        background: #ebedef;
+        border-left: 4px solid var(--navy);
+        color: var(--navy);
+    }
+
+    .callout strong { font-weight: 800; }
+
+    /* ===== LISTS ===== */
+    .step-list {
+        list-style: none;
+        counter-reset: step;
+        padding: 0;
+        margin: 8px 0;
+    }
+
+    .step-list li {
+        counter-increment: step;
+        padding: 6px 0 6px 36px;
+        position: relative;
+        font-size: 13px;
+        border-bottom: 1px dotted #eee;
+    }
+
+    .step-list li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 24px;
+        height: 24px;
+        background: var(--navy);
+        color: var(--gold);
+        border-radius: 50%;
+        font-family: 'Fredoka One', cursive;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bullet-list {
+        margin: 6px 0 6px 20px;
+        font-size: 13px;
+    }
+
+    .bullet-list li {
+        padding: 3px 0;
+    }
+
+    /* ===== TEAM COLORS ===== */
+    .team-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-family: 'Fredoka One', cursive;
+        font-size: 12px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .badge-red { background: var(--red); }
+    .badge-blue { background: var(--blue); }
+    .badge-gold { background: var(--team-gold); color: var(--navy); }
+    .badge-green { background: var(--green); }
+
+    /* ===== TABLES ===== */
+    .rules-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 13px;
+    }
+
+    .rules-table th {
+        background: var(--navy);
+        color: var(--gold);
+        font-family: 'Fredoka One', cursive;
+        font-size: 12px;
+        padding: 8px 12px;
+        text-align: left;
+        letter-spacing: 0.5px;
+    }
+
+    .rules-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .rules-table tr:nth-child(even) td {
+        background: #fafafa;
+    }
+
+    /* ===== DIAGRAM BOX ===== */
+    .diagram {
+        border: 2px solid var(--navy);
+        border-radius: 10px;
+        padding: 16px;
+        margin: 12px 0;
+        background: #fafbfc;
+    }
+
+    .diagram-title {
+        font-family: 'Fredoka One', cursive;
+        font-size: 14px;
+        color: var(--navy);
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .flow-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 8px 0;
+        flex-wrap: wrap;
+    }
+
+    .flow-box {
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        min-width: 100px;
+    }
+
+    .flow-navy { background: var(--navy); color: var(--gold); }
+    .flow-gold { background: #fef9e7; color: #7d6608; border: 2px solid var(--gold); }
+    .flow-green { background: #eafaf1; color: #1e8449; border: 2px solid var(--green); }
+    .flow-red { background: #fdf2f2; color: #922b21; border: 2px solid var(--red); }
+    .flow-blue { background: #eaf2f8; color: #1a5276; border: 2px solid var(--blue); }
+
+    .flow-arrow {
+        font-size: 18px;
+        color: var(--navy);
+        font-weight: 800;
+    }
+
+    /* ===== WHITEBOARD CARD ===== */
+    .whiteboard-example {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        margin: 12px 0;
+    }
+
+    .wb-card {
+        border: 3px solid #333;
+        border-radius: 10px;
+        padding: 12px 20px;
+        text-align: center;
+        width: 200px;
+        background: #fff;
+    }
+
+    .wb-card .wb-label {
+        font-family: 'Fredoka One', cursive;
+        font-size: 11px;
+        color: #888;
+        margin-bottom: 4px;
+    }
+
+    .wb-card .wb-answer {
+        font-size: 18px;
+        font-weight: 800;
+        color: #333;
+    }
+
+    .wb-card .wb-team {
+        font-family: 'Fredoka One', cursive;
+        font-size: 10px;
+        margin-top: 6px;
+        padding: 2px 8px;
+        border-radius: 8px;
+        display: inline-block;
+        color: #fff;
+    }
+
+    /* ===== ROSTER SHEET ===== */
+    .roster-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 12px 0;
+    }
+
+    .roster-card {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 12px;
+        min-height: 200px;
+    }
+
+    .roster-card-red { border-color: var(--red); }
+    .roster-card-blue { border-color: var(--blue); }
+    .roster-card-gold { border-color: var(--team-gold); }
+    .roster-card-green { border-color: var(--green); }
+
+    .roster-header {
+        font-family: 'Fredoka One', cursive;
+        font-size: 14px;
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 6px;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .roster-section-label {
+        font-size: 11px;
+        font-weight: 800;
+        color: #888;
+        margin: 6px 0 2px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .roster-line {
+        border-bottom: 1.5px solid #ddd;
+        height: 22px;
+        margin: 2px 0;
+    }
+
+    /* ===== FOOTER ===== */
+    .page-footer {
+        position: absolute;
+        bottom: 0.3in;
+        left: 0.6in;
+        right: 0.6in;
+        text-align: center;
+        font-size: 9px;
+        color: #bbb;
+        border-top: 1px solid #eee;
+        padding-top: 4px;
+    }
+
+    /* ===== BIG RULE ===== */
+    .big-rule {
+        text-align: center;
+        padding: 14px;
+        margin: 14px 0;
+        background: var(--navy);
+        color: var(--gold);
+        border-radius: 10px;
+        font-family: 'Fredoka One', cursive;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+    .big-rule .emoji { font-size: 20px; }
+
+    /* ===== PRINT ===== */
+    @media print {
+        body { background: #fff; }
+        .page {
+            width: 100%;
+            min-height: auto;
+            margin: 0;
+            padding: 0.4in 0.5in;
+            box-shadow: none;
+        }
+        .main-header, .callout, .callout-gold, .callout-red, .callout-blue,
+        .callout-green, .callout-navy, .rules-table th, .diagram,
+        .step-list li::before, .section-number, .big-rule,
+        .roster-header, .flow-box, .rules-table tr:nth-child(even) td {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- ============================================================= -->
+<!-- PAGE 1: OVERVIEW & CORE RULES                                  -->
+<!-- ============================================================= -->
+<div class="page">
+    <div class="main-header">
+        <h1>SOTC MATH JEOPARDY</h1>
+        <div class="subtitle">Official Rules &amp; Game Management Guide</div>
+    </div>
+
+    <!-- THE BIG RULE -->
+    <div class="big-rule">
+        BOTH ANSWERS MUST BE CORRECT TO SCORE
+    </div>
+
+    <div class="callout callout-navy">
+        <strong>How It Works:</strong> Every question has two parts — a <strong>Tier A</strong> problem for younger players and a <strong>Tier B</strong> problem for older players. Your team must get <strong>BOTH</strong> right to earn the points. One right and one wrong = zero points. This means your whole team matters.
+    </div>
+
+    <!-- SECTION 1: TEAMS -->
+    <div class="section-header">
+        <span class="section-number">1</span> Teams
+    </div>
+
+    <p style="font-size:13px; margin-bottom: 8px;">Four teams compete. Teams should be <strong>mixed age</strong> — every team needs younger AND older players.</p>
+
+    <div style="display: flex; gap: 12px; justify-content: center; margin: 10px 0;">
+        <span class="team-badge badge-red">RED TEAM</span>
+        <span class="team-badge badge-blue">BLUE TEAM</span>
+        <span class="team-badge badge-gold">GOLD TEAM</span>
+        <span class="team-badge badge-green">GREEN TEAM</span>
+    </div>
+
+    <div class="callout callout-gold">
+        <strong>Why mixed age?</strong> Tier A questions are for younger kids. Tier B questions are for older kids. If your team has no younger players, nobody can answer Tier A — and you need both to score.
+    </div>
+
+    <!-- SECTION 2: HOW EACH ROUND WORKS -->
+    <div class="section-header">
+        <span class="section-number">2</span> How Each Round Works
+    </div>
+
+    <ol class="step-list">
+        <li><strong>Game Master picks a question</strong> (or lets the winning team pick). The board shows a category and point value.</li>
+        <li><strong>Both Tier A and Tier B appear on screen.</strong> The Game Master reads them aloud.</li>
+        <li><strong>All 4 teams huddle</strong> (60 seconds). Each team decides their Tier A answer and Tier B answer. Teams write BOTH answers on their whiteboard — one on top, one on bottom.</li>
+        <li><strong>"Boards up!"</strong> — All teams hold up their whiteboards at the same time. No changing answers after boards go up.</li>
+        <li><strong>Game Master reveals the correct answers</strong> and scores each team.</li>
+    </ol>
+
+    <div class="diagram">
+        <div class="diagram-title">ANSWER FLOW</div>
+        <div class="flow-row">
+            <div class="flow-box flow-navy">Question<br>Selected</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-gold">Teams<br>Huddle<br>(60 sec)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-blue">Boards<br>Up!</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-green">Review<br>&amp; Score</div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: SCORING -->
+    <div class="section-header">
+        <span class="section-number">3</span> Scoring
+    </div>
+
+    <table class="rules-table">
+        <tr>
+            <th>Tier A</th>
+            <th>Tier B</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td style="color: var(--green); font-weight:800;">&#10003; Correct</td>
+            <td style="color: var(--green); font-weight:800;">&#10003; Correct</td>
+            <td><strong style="color: var(--green);">FULL POINTS</strong> awarded to the team</td>
+        </tr>
+        <tr>
+            <td style="color: var(--green); font-weight:800;">&#10003; Correct</td>
+            <td style="color: var(--red); font-weight:800;">&#10007; Wrong</td>
+            <td><strong style="color: var(--red);">ZERO POINTS</strong> — both must be right</td>
+        </tr>
+        <tr>
+            <td style="color: var(--red); font-weight:800;">&#10007; Wrong</td>
+            <td style="color: var(--green); font-weight:800;">&#10003; Correct</td>
+            <td><strong style="color: var(--red);">ZERO POINTS</strong> — both must be right</td>
+        </tr>
+        <tr>
+            <td style="color: var(--red); font-weight:800;">&#10007; Wrong</td>
+            <td style="color: var(--red); font-weight:800;">&#10007; Wrong</td>
+            <td><strong style="color: var(--red);">ZERO POINTS</strong></td>
+        </tr>
+    </table>
+
+    <div class="callout callout-blue">
+        <strong>Multiple teams can score!</strong> Unlike TV Jeopardy, ALL teams answer every question. If 3 teams get both tiers right, all 3 teams earn the points. This keeps everyone engaged — there's no "sitting out" while another team answers.
+    </div>
+
+    <div class="callout callout-red">
+        <strong>Daily Double:</strong> When a Daily Double is revealed, the team that selected it can wager up to their current score (minimum 100 points). Only that team answers. Both tiers must still be correct to earn the wager — if either is wrong, they lose the wagered points.
+    </div>
+
+    <div class="page-footer">SOTC Math Jeopardy — Rules &amp; Game Management &bull; Page 1</div>
+</div>
+
+<!-- ============================================================= -->
+<!-- PAGE 2: TEAM MANAGEMENT & LATE ARRIVALS                        -->
+<!-- ============================================================= -->
+<div class="page">
+    <div class="main-header">
+        <h1>MANAGING TEAMS</h1>
+        <div class="subtitle">Handling Late Arrivals, Team Balance &amp; Flexible Rosters</div>
+    </div>
+
+    <!-- SECTION 4: INITIAL SETUP -->
+    <div class="section-header">
+        <span class="section-number">4</span> Initial Team Setup
+    </div>
+
+    <ol class="step-list">
+        <li><strong>Sort students into two groups:</strong> "Younger" (roughly grades 1-3 or anyone working on Spark/Nebula/Drift warm-ups) and "Older" (roughly grades 4-7 or Helix/Blaze/Quantum/Cipher warm-ups).</li>
+        <li><strong>Count each group.</strong> Divide each group by 4 — that's how many of each go to each team.</li>
+        <li><strong>Assign using a snake draft:</strong> Alternate assigning younger/older students to Red, Blue, Gold, Green so teams stay balanced.</li>
+        <li><strong>Minimum requirement:</strong> Each team MUST have at least 1 younger AND 1 older player. If you don't have enough of one group, have a flexible player cover both tiers (see below).</li>
+    </ol>
+
+    <div class="callout callout-gold">
+        <strong>Example:</strong> 24 kids arrive on time — 10 younger, 14 older.<br>
+        Each team gets: 2-3 younger + 3-4 older = 6 per team.
+    </div>
+
+    <!-- SECTION 5: LATE ARRIVALS -->
+    <div class="section-header">
+        <span class="section-number">5</span> Late Arrivals — The Drop-In System
+    </div>
+
+    <p style="font-size:13px; margin-bottom: 8px;">Kids will arrive throughout the game. Here's how to handle it without disrupting play:</p>
+
+    <div class="diagram">
+        <div class="diagram-title">LATE ARRIVAL FLOW</div>
+        <div class="flow-row">
+            <div class="flow-box flow-navy">Student<br>Arrives</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-gold">Check<br>Team Sizes</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-blue">Join Smallest<br>Team</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box flow-green">Sit With Team<br>Start Playing</div>
+        </div>
+    </div>
+
+    <div class="sub-header">Rules for Late Arrivals</div>
+    <ul class="bullet-list">
+        <li><strong>Always join the smallest team.</strong> If two teams are tied for smallest, join whichever needs that age group more.</li>
+        <li><strong>No switching teams.</strong> Once assigned, you're on that team for the whole game.</li>
+        <li><strong>New players join between questions.</strong> Don't interrupt a huddle — wait until the current question is scored, then add the player.</li>
+        <li><strong>The Game Assistant handles all team assignments</strong> so the Game Master can keep the game flowing. (See Roles below.)</li>
+    </ul>
+
+    <div class="callout callout-green">
+        <strong>Quick balance check:</strong> After every 3-4 questions, glance at team sizes. If one team has 2+ more players than another, consider re-balancing by moving the most recent addition. Only do this between questions.
+    </div>
+
+    <!-- SECTION 6: EDGE CASES -->
+    <div class="section-header">
+        <span class="section-number">6</span> Edge Cases
+    </div>
+
+    <table class="rules-table">
+        <tr>
+            <th style="width:35%;">Situation</th>
+            <th>Solution</th>
+        </tr>
+        <tr>
+            <td>A team has NO younger players</td>
+            <td>Assign the youngest older player as a "flex" — they answer Tier A. Move the next younger late arrival to this team first.</td>
+        </tr>
+        <tr>
+            <td>A team has NO older players</td>
+            <td>Assign the oldest younger player as a "flex" — they attempt Tier B. Move the next older late arrival to this team first.</td>
+        </tr>
+        <tr>
+            <td>Only 8-12 kids at start</td>
+            <td>Run 2 teams instead of 4. Split into Red vs. Blue. When more kids arrive, split into 4 teams at the next natural break.</td>
+        </tr>
+        <tr>
+            <td>A student needs to leave early</td>
+            <td>They quietly leave. Don't rebalance unless it creates a team with zero younger or zero older players.</td>
+        </tr>
+        <tr>
+            <td>Way more kids than expected (40+)</td>
+            <td>Teams of 10+ are fine. Rotate who writes on the whiteboard each question so everyone stays involved.</td>
+        </tr>
+    </table>
+
+    <div class="page-footer">SOTC Math Jeopardy — Rules &amp; Game Management &bull; Page 2</div>
+</div>
+
+<!-- ============================================================= -->
+<!-- PAGE 3: ANSWER REVIEW & GAME ROLES                             -->
+<!-- ============================================================= -->
+<div class="page">
+    <div class="main-header">
+        <h1>ANSWER REVIEW &amp; ROLES</h1>
+        <div class="subtitle">How to Check Answers, Resolve Disputes &amp; Keep It Moving</div>
+    </div>
+
+    <!-- SECTION 7: WHITEBOARD SYSTEM -->
+    <div class="section-header">
+        <span class="section-number">7</span> The Whiteboard System
+    </div>
+
+    <p style="font-size:13px; margin-bottom: 8px;">Each team gets <strong>one whiteboard</strong> (or large sheet of paper). This is how answers are submitted.</p>
+
+    <div class="sub-header">Whiteboard Format</div>
+    <div class="whiteboard-example">
+        <div class="wb-card">
+            <div class="wb-label">TIER A (Younger)</div>
+            <div class="wb-answer">7 baskets</div>
+            <div style="border-top: 2px dashed #ccc; margin: 8px 0;"></div>
+            <div class="wb-label">TIER B (Older)</div>
+            <div class="wb-answer">54 points</div>
+            <div class="wb-team badge-red" style="margin-top: 8px;">RED</div>
+        </div>
+        <div class="wb-card">
+            <div class="wb-label">TIER A (Younger)</div>
+            <div class="wb-answer">7 baskets</div>
+            <div style="border-top: 2px dashed #ccc; margin: 8px 0;"></div>
+            <div class="wb-label">TIER B (Older)</div>
+            <div class="wb-answer">52 points</div>
+            <div class="wb-team badge-blue" style="margin-top: 8px;">BLUE</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; font-size: 12px; color: #888; margin-bottom: 12px;">
+        Red team got both right = <strong style="color: var(--green);">FULL POINTS</strong> &nbsp;|&nbsp;
+        Blue team got Tier B wrong = <strong style="color: var(--red);">ZERO</strong>
+    </div>
+
+    <div class="callout callout-navy">
+        <strong>Key rule:</strong> A younger team member must write the Tier A answer. An older team member must write the Tier B answer. This ensures the right kids are doing the right work — no older kid carrying the whole board.
+    </div>
+
+    <!-- SECTION 8: ANSWER REVIEW PROCESS -->
+    <div class="section-header">
+        <span class="section-number">8</span> Reviewing Answers
+    </div>
+
+    <ol class="step-list">
+        <li><strong>"Boards up!"</strong> — All 4 teams raise their whiteboards simultaneously. No more writing after this call.</li>
+        <li><strong>Game Master clicks "Show Answer"</strong> on the jeopardy screen. The correct answers for both tiers appear.</li>
+        <li><strong>Game Master reads Tier A answer aloud.</strong> Scan all 4 boards. Announce which teams got Tier A correct.</li>
+        <li><strong>Game Master reads Tier B answer aloud.</strong> Scan all 4 boards. Announce which teams got Tier B correct.</li>
+        <li><strong>Award points</strong> ONLY to teams that got BOTH right. Click the + button for each scoring team on the game screen.</li>
+        <li><strong>Quick teach (optional):</strong> If most teams missed it, take 30 seconds to explain the answer. Keep it brief.</li>
+    </ol>
+
+    <div class="sub-header">Acceptable Answers</div>
+    <table class="rules-table">
+        <tr><th>Situation</th><th>Rule</th></tr>
+        <tr><td>Answer is mathematically correct but written differently</td><td><strong>Accept it.</strong> "1/2" and "0.5" are both correct. "3 remainder 5" and "3 R 5" are both fine.</td></tr>
+        <tr><td>Minor spelling error but answer is clear</td><td><strong>Accept it.</strong> We're testing math, not spelling.</td></tr>
+        <tr><td>Answer is close but not exact (e.g., "about 47" when answer is 46.8)</td><td><strong>Reject.</strong> Math must be precise. Exception: if the question said "round" or "estimate."</td></tr>
+        <tr><td>Work is shown but final answer is wrong</td><td><strong>Reject.</strong> The final answer matters. Good effort though.</td></tr>
+        <tr><td>Team disputes a ruling</td><td><strong>Game Master's call is final.</strong> Keep the game moving. If legitimately unclear, give the benefit of the doubt.</td></tr>
+    </table>
+
+    <!-- SECTION 9: GAME ROLES -->
+    <div class="section-header">
+        <span class="section-number">9</span> Game Roles
+    </div>
+
+    <table class="rules-table">
+        <tr><th style="width:25%;">Role</th><th style="width:20%;">Who</th><th>Responsibilities</th></tr>
+        <tr>
+            <td><strong>Game Master</strong></td>
+            <td>Lead Instructor</td>
+            <td>Runs the board, reads questions, calls "boards up," reviews answers, awards points, keeps energy high. Controls the laptop.</td>
+        </tr>
+        <tr>
+            <td><strong>Game Assistant</strong></td>
+            <td>Co-Instructor or Volunteer</td>
+            <td>Handles late arrivals (assigns to teams), watches for cheating (phones, peeking), manages whiteboards/markers, does quick balance checks.</td>
+        </tr>
+        <tr>
+            <td><strong>Team Captain</strong></td>
+            <td>1 older student per team</td>
+            <td>Leads the huddle, makes sure younger players answer Tier A, organizes who writes on the board. Keeps team focused.</td>
+        </tr>
+        <tr>
+            <td><strong>Board Writer</strong></td>
+            <td>Rotates each question</td>
+            <td>Writes the team's answers on the whiteboard. Younger player writes Tier A, older player writes Tier B.</td>
+        </tr>
+    </table>
+
+    <div class="page-footer">SOTC Math Jeopardy — Rules &amp; Game Management &bull; Page 3</div>
+</div>
+
+<!-- ============================================================= -->
+<!-- PAGE 4: QUICK-REFERENCE & TIMELINE                             -->
+<!-- ============================================================= -->
+<div class="page">
+    <div class="main-header">
+        <h1>QUICK REFERENCE</h1>
+        <div class="subtitle">Game Timeline, Materials Checklist &amp; Pro Tips</div>
+    </div>
+
+    <!-- SECTION 10: TIMELINE -->
+    <div class="section-header">
+        <span class="section-number">10</span> Game Timeline (30-40 Minutes)
+    </div>
+
+    <table class="rules-table">
+        <tr><th style="width:20%;">Time</th><th style="width:25%;">Activity</th><th>Notes</th></tr>
+        <tr><td>0:00 - 3:00</td><td>Team setup</td><td>Sort by age group, assign to 4 teams, hand out whiteboards. Explain rules if first time.</td></tr>
+        <tr><td>3:00 - 5:00</td><td>Practice round</td><td>Do one question as a group. Walk through the whiteboard process. Show what "both correct" means.</td></tr>
+        <tr><td>5:00 - 30:00</td><td>Game play</td><td>~25 questions at roughly 1 minute each. Late arrivals join between questions.</td></tr>
+        <tr><td>30:00 - 35:00</td><td>Final scores</td><td>Click "Show Winner." Celebrate ALL teams — highlight best comeback, closest score, etc.</td></tr>
+    </table>
+
+    <div class="callout callout-blue">
+        <strong>Pacing tip:</strong> If the game is dragging, skip to higher-value questions (more exciting). If energy is high, let the winning team pick the next question. Average about 60-90 seconds per question including huddle time.
+    </div>
+
+    <!-- SECTION 11: MATERIALS -->
+    <div class="section-header">
+        <span class="section-number">11</span> Materials Checklist
+    </div>
+
+    <ul class="bullet-list">
+        <li>&#9744; Laptop or tablet with jeopardy game open in browser</li>
+        <li>&#9744; Projector or large screen (so all 40 kids can see)</li>
+        <li>&#9744; 4 whiteboards (or large paper/cardboard) — one per team</li>
+        <li>&#9744; 8 dry-erase markers (2 per team — different colors help)</li>
+        <li>&#9744; 4 erasers or paper towels</li>
+        <li>&#9744; Team color indicators (colored tape, bandanas, or sticky labels)</li>
+        <li>&#9744; This rules sheet (for Game Master reference)</li>
+        <li>&#9744; Roster sheet (next page) for tracking team membership</li>
+        <li>&#9744; Prizes (optional — stickers, snacks, bragging rights)</li>
+    </ul>
+
+    <!-- SECTION 12: PRO TIPS -->
+    <div class="section-header">
+        <span class="section-number">12</span> Pro Tips
+    </div>
+
+    <div class="callout callout-green">
+        <strong>Keep it loud and fun.</strong> This is a game, not a test. Cheer when teams get it right. Groan dramatically when they're close. Ham it up. Energy from the Game Master drives energy from the kids.
+    </div>
+
+    <div class="callout callout-gold">
+        <strong>Rotate board writers.</strong> Tell Team Captains: "Pick someone different to write each question." This prevents one kid from dominating and keeps everyone involved.
+    </div>
+
+    <div class="callout callout-blue">
+        <strong>Use the timer strategically.</strong> The game has a 60-second timer built in. For easier questions (100-200 pts), give 30-45 seconds. For hard ones (400-500 pts), give the full 60. Pause the timer if you need to re-read a question.
+    </div>
+
+    <div class="callout callout-navy">
+        <strong>Connect to coding class.</strong> When a problem involves patterns, logic, or step-by-step thinking, point it out: "That's exactly how you think when you write code — break it into steps!" Reinforce why math matters for programming.
+    </div>
+
+    <div class="callout callout-red">
+        <strong>If a team is way behind:</strong> Don't let them give up. Encourage them on the next question. Consider a "bonus round" at the end where trailing teams get a shot at catching up. The goal is engagement, not just winning.
+    </div>
+
+    <div class="page-footer">SOTC Math Jeopardy — Rules &amp; Game Management &bull; Page 4</div>
+</div>
+
+<!-- ============================================================= -->
+<!-- PAGE 5: PRINTABLE TEAM ROSTER                                  -->
+<!-- ============================================================= -->
+<div class="page">
+    <div class="main-header">
+        <h1>TEAM ROSTER SHEET</h1>
+        <div class="subtitle">Print This &bull; Track Team Membership &bull; Note Late Arrivals</div>
+    </div>
+
+    <div style="text-align: center; font-size: 13px; margin-bottom: 6px;">
+        <strong>Date:</strong> _________________________ &nbsp;&nbsp;&nbsp;
+        <strong>Game Master:</strong> _________________________ &nbsp;&nbsp;&nbsp;
+        <strong>Game Assistant:</strong> _________________________
+    </div>
+
+    <div class="roster-grid">
+        <!-- RED TEAM -->
+        <div class="roster-card roster-card-red">
+            <div class="roster-header" style="background: var(--red);">RED TEAM</div>
+            <div class="roster-section-label">Younger Players (Tier A)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label">Older Players (Tier B)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label" style="color: var(--red);">Late Arrivals (note time)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+        </div>
+
+        <!-- BLUE TEAM -->
+        <div class="roster-card roster-card-blue">
+            <div class="roster-header" style="background: var(--blue);">BLUE TEAM</div>
+            <div class="roster-section-label">Younger Players (Tier A)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label">Older Players (Tier B)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label" style="color: var(--blue);">Late Arrivals (note time)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+        </div>
+
+        <!-- GOLD TEAM -->
+        <div class="roster-card roster-card-gold">
+            <div class="roster-header" style="background: var(--team-gold); color: var(--navy);">GOLD TEAM</div>
+            <div class="roster-section-label">Younger Players (Tier A)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label">Older Players (Tier B)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label" style="color: var(--team-gold);">Late Arrivals (note time)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+        </div>
+
+        <!-- GREEN TEAM -->
+        <div class="roster-card roster-card-green">
+            <div class="roster-header" style="background: var(--green);">GREEN TEAM</div>
+            <div class="roster-section-label">Younger Players (Tier A)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label">Older Players (Tier B)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+            <div class="roster-section-label" style="color: var(--green);">Late Arrivals (note time)</div>
+            <div class="roster-line"></div>
+            <div class="roster-line"></div>
+        </div>
+    </div>
+
+    <div style="margin-top: 12px; font-size: 12px; text-align: center; color: #888;">
+        <strong>Balance check:</strong> After every 3-4 questions, compare team sizes. Move the most recent addition if a team is 2+ players larger than another.
+    </div>
+
+    <div class="callout callout-gold" style="margin-top: 12px;">
+        <strong>Sorting tip for the Game Assistant:</strong> When a student arrives, ask: "What warm-up sheet do you usually do?" If they say Spark, Nebula, or Drift → Younger. If they say Helix, Blaze, Quantum, or Cipher → Older. Then check which team is smallest and assign.
+    </div>
+
+    <div class="page-footer">SOTC Math Jeopardy — Rules &amp; Game Management &bull; Page 5</div>
+</div>
+
+</body>
+</html>

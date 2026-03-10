@@ -1,0 +1,16 @@
+Speaker 1  0:00  
+Okay, here's what we're going to do with the class. The original lego education framework that we used last year would have followed the following prescription. Students build a car. Students practice driving the car forward and backwards. First challenge is driving the car specific distance and backing up exactly on that line
+
+Unknown Speaker  0:40  
+and starting where you finish. Then the next prescription is
+
+Speaker 1  0:49  
+driving in a square, driving forward a specific distance, and making three right turns and navigating a square that the teacher builds, and then the next version of that is understanding The difference between tank turns and pivot turns. And you I'm driving in a square one level of complexity that could be added is doing all of these things under time and designing a vehicle that could not only navigate these courses, but navigate courses in a shorter amount of time. A couple of things that you have as constraints would be gear ratios, the weight of your vehicle, the kind of turn that you use, and so that's something that's probably already in the curriculum that we have.
+
+Unknown Speaker  2:13  
+Another thing is, I want to incorporate using the light matrix. So we have
+
+Speaker 1  2:27  
+a curriculum guide that incorporates using lights. And so I want to blend the two right, building a car, driving and using the lights. So one example of that may be on each kind of turn, making the lights work, or signaling in some sort of way, or each action, having the lights turn or signal and then the other piece is allowing students to do this while having students who are working in code blocks and then students who are working in Python, or doing the Python slow enough so that the kids actually learn.
+
+Transcribed by https://otter.ai

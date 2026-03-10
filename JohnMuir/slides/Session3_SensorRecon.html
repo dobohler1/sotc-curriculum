@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3 — Sensor Recon</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 56px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+  h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 28px; font-weight: 600; margin-bottom: 12px; color: #8ecae6; }
+  p, li { font-size: 26px; line-height: 1.5; }
+  ul { margin-left: 30px; }
+  li { margin: 10px 0; }
+
+  .subtitle { font-size: 28px; color: #8ecae6; font-weight: 400; margin-bottom: 30px; }
+  .big-goal { font-size: 38px; color: #ffd60a; font-weight: 700; text-align: center; margin: 40px 0; }
+
+  /* Code blocks */
+  pre {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 22px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  .kw { color: #ff6b9d; }  /* keywords */
+  .fn { color: #8ecae6; }  /* functions */
+  .str { color: #a8db8f; } /* strings */
+  .num { color: #ffd60a; } /* numbers */
+  .cm { color: #6a7a8a; }  /* comments */
+  .err { color: #ff4444; text-decoration: line-through; }
+  .fix { color: #00e676; font-weight: bold; }
+
+  /* Table groups */
+  .group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .group-card {
+    border-radius: 12px;
+    padding: 24px;
+    border: 3px solid;
+  }
+  .group-red { background: #2a1015; border-color: #e74c3c; }
+  .group-red h3 { color: #ff6b6b; }
+  .group-yellow { background: #2a2510; border-color: #f1c40f; }
+  .group-yellow h3 { color: #ffd60a; }
+  .group-green { background: #102a15; border-color: #2ecc71; }
+  .group-green h3 { color: #69db7c; }
+
+  .group-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .group-card .names { font-size: 20px; color: #b0bdd0; margin-bottom: 10px; }
+  .group-card .task { font-size: 20px; font-weight: 600; }
+
+  /* Concept cards */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .concept-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .concept-card h3 { font-size: 22px; margin-bottom: 10px; }
+  .concept-card p { font-size: 22px; }
+  .concept-card code {
+    background: #0d1b2a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 20px;
+    color: #ffd60a;
+  }
+
+  /* Sensor diagram */
+  .sensor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 30px 0;
+  }
+  .sensor-box {
+    background: #1b2838;
+    border: 3px solid #2a3f5f;
+    border-radius: 14px;
+    padding: 30px;
+    text-align: center;
+  }
+  .sensor-icon { font-size: 60px; margin-bottom: 12px; }
+  .sensor-name { font-size: 28px; font-weight: 700; color: #8ecae6; margin-bottom: 8px; }
+  .sensor-desc { font-size: 22px; color: #b0bdd0; }
+  .sensor-code { font-family: monospace; font-size: 18px; color: #ffd60a; margin-top: 10px; }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin-left: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    padding-left: 50px;
+    position: relative;
+    margin: 16px 0;
+    font-size: 26px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 36px; height: 36px;
+    background: #ffd60a;
+    color: #0d1b2a;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Question box */
+  .question-box {
+    background: #1b2838;
+    border: 3px solid #ffd60a;
+    border-radius: 12px;
+    padding: 30px 36px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .question-box p {
+    font-size: 30px;
+    color: #ffd60a;
+    font-weight: 600;
+  }
+  .question-box .alt {
+    font-size: 22px;
+    color: #8ecae6;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  /* Fix table */
+  .fix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 22px;
+  }
+  .fix-table th {
+    text-align: left;
+    padding: 14px 20px;
+    background: #1b2838;
+    color: #8ecae6;
+    font-weight: 600;
+  }
+  .fix-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #2a3f5f;
+  }
+  .fix-table .wrong { color: #ff6b6b; font-family: monospace; }
+  .fix-table .right { color: #69db7c; font-family: monospace; }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+    color: #4a5568;
+    z-index: 10;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: #ffd60a;
+    transition: width 0.3s;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide active" id="s1">
+  <h1>Sensor Recon</h1>
+  <p class="subtitle">Session 3 &mdash; Your Robot Can See</p>
+  <div class="big-goal">Today's Goal: Make your robot react to the world around it.</div>
+  <p style="text-align:center; color:#6a7a8a; font-size:20px;">No more blind driving. Today your robot learns to sense.</p>
+</div>
+
+<!-- SLIDE 2: Review -->
+<div class="slide" id="s2">
+  <h2>What Can Your Robot Do Right Now?</h2>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3 style="color:#69db7c;">It CAN</h3>
+      <ul>
+        <li>Drive forward and reverse</li>
+        <li>Turn left and right</li>
+        <li>Make sounds</li>
+        <li>Display on the light matrix</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#ff6b6b;">It CAN'T</h3>
+      <ul>
+        <li>See obstacles</li>
+        <li>React to colors</li>
+        <li>Stop before hitting something</li>
+        <li>Make decisions on its own</li>
+      </ul>
+    </div>
+  </div>
+  <p style="text-align:center; color:#ffd60a; font-size:28px; margin-top:20px;">Today we fix the right column.</p>
+</div>
+
+<!-- SLIDE 3: Meet the Sensors -->
+<div class="slide" id="s3">
+  <h2>Meet the Sensors</h2>
+  <div class="sensor-grid">
+    <div class="sensor-box">
+      <div class="sensor-icon">&#x1F4CF;</div>
+      <div class="sensor-name">Distance Sensor</div>
+      <div class="sensor-desc">Measures how far away something is. Like sonar &mdash; sends out a signal and times the bounce.</div>
+      <div class="sensor-code">distance_sensor.distance(port.F)</div>
+      <p style="font-size:18px; color:#69db7c; margin-top:8px;">Returns distance in mm (-1 = nothing detected)</p>
+    </div>
+    <div class="sensor-box">
+      <div class="sensor-icon">&#x1F308;</div>
+      <div class="sensor-name">Color Sensor</div>
+      <div class="sensor-desc">Reads the color of a surface underneath the robot. Points straight down.</div>
+      <div class="sensor-code">color_sensor.color(port.E)</div>
+      <p style="font-size:18px; color:#69db7c; margin-top:8px;">Returns a number (9=Red, 7=Yellow, 5=Green...)</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Demo Moment -->
+<div class="slide" id="s4">
+  <h2>Watch This</h2>
+  <div class="question-box">
+    <p>Coach G demos a robot that drives forward and stops before hitting a wall.</p>
+    <p class="alt">No one touches the robot. It decides when to stop on its own.</p>
+  </div>
+  <p style="text-align:center; font-size:28px; margin-top:30px;">How does it know when to stop?</p>
+  <p style="text-align:center; color:#8ecae6; font-size:24px; margin-top:10px;">It reads the distance sensor over and over, hundreds of times per second, until it sees something close.</p>
+</div>
+
+<!-- SLIDE 5: The Code - Distance Sensor -->
+<div class="slide" id="s5">
+  <h2>Program SENSOR &mdash; Stop Before You Crash</h2>
+  <p style="color:#8ecae6; margin-bottom:10px;">Type this exactly. New parts are highlighted in the comments.</p>
+  <pre>
+<span class="kw">from</span> hub <span class="kw">import</span> light_matrix, sound, port
+<span class="kw">import</span> motor_pair, distance_sensor, runloop
+
+motor_pair.pair(motor_pair.PAIR_1, <span class="num">0</span>, <span class="num">1</span>)
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    light_matrix.write(<span class="str">"GO"</span>)
+
+    <span class="cm"># Start driving (doesn't stop on its own)</span>
+    motor_pair.move(motor_pair.PAIR_1, <span class="num">0</span>, velocity=<span class="num">40</span>)
+
+    <span class="cm"># Keep checking distance</span>
+    <span class="kw">while</span> <span class="num">True</span>:
+        dist = distance_sensor.distance(port.F)
+        <span class="kw">if</span> dist != <span class="num">-1</span> <span class="kw">and</span> dist &lt; <span class="num">150</span>:  <span class="cm"># within 15cm</span>
+            motor_pair.stop(motor_pair.PAIR_1)
+            <span class="kw">await</span> sound.beep(<span class="num">1000</span>, <span class="num">300</span>, <span class="num">100</span>)
+            light_matrix.write(<span class="str">"STOP"</span>)
+            <span class="kw">break</span>
+        <span class="kw">await</span> runloop.sleep_ms(<span class="num">50</span>)
+
+runloop.run(main())
+  </pre>
+</div>
+
+<!-- SLIDE 6: New Concepts Explained -->
+<div class="slide" id="s6">
+  <h2>What's New Here?</h2>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3><code>motor_pair.move()</code></h3>
+      <p>Starts driving and <strong>keeps going</strong>. Unlike <code>move_for_time()</code>, it doesn't stop on its own. You decide when to stop.</p>
+    </div>
+    <div class="concept-card">
+      <h3><code>while True:</code></h3>
+      <p>Runs forever (until you <code>break</code> out). The robot checks the sensor, then checks again, then again...</p>
+    </div>
+    <div class="concept-card">
+      <h3><code>break</code></h3>
+      <p>Exits the <code>while</code> loop. When the sensor sees something close, we <code>break</code> out and stop driving.</p>
+    </div>
+    <div class="concept-card">
+      <h3><code>distance_sensor.distance()</code></h3>
+      <p>Returns distance in millimeters. Returns <code>-1</code> if nothing is detected. Check for both.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Line by Line -->
+<div class="slide" id="s7">
+  <h2>Line by Line &mdash; The Sensor Loop</h2>
+  <pre style="font-size:22px;">
+<span class="kw">while</span> <span class="num">True</span>:                                   <span class="cm"># loop forever</span>
+    dist = distance_sensor.distance(port.F)  <span class="cm"># read sensor</span>
+    <span class="kw">if</span> dist != <span class="num">-1</span> <span class="kw">and</span> dist &lt; <span class="num">150</span>:           <span class="cm"># something close?</span>
+        motor_pair.stop(motor_pair.PAIR_1)   <span class="cm"># stop motors</span>
+        <span class="kw">await</span> sound.beep(<span class="num">1000</span>, <span class="num">300</span>, <span class="num">100</span>)   <span class="cm"># beep!</span>
+        light_matrix.write(<span class="str">"STOP"</span>)          <span class="cm"># show STOP</span>
+        <span class="kw">break</span>                                <span class="cm"># exit loop</span>
+    <span class="kw">await</span> runloop.sleep_ms(<span class="num">50</span>)               <span class="cm"># wait 50ms</span>
+  </pre>
+  <p style="margin-top:20px; color:#8ecae6; font-size:24px; text-align:center;">Think of it like this: <strong>Drive. Check. Drive. Check. Drive. Check. STOP.</strong></p>
+</div>
+
+<!-- SLIDE 8: Table Tasks -->
+<div class="slide" id="s8">
+  <h2>Your Task</h2>
+  <div class="group-grid">
+    <div class="group-card group-red">
+      <h3>RED TABLE</h3>
+      <div class="names">Angelo, Prince, Kazi, Kenneth, Markies, Xavier</div>
+      <div class="task">Type Program SENSOR from the slide exactly. Get it running. Put your hand in front of the distance sensor &mdash; does it stop?</div>
+    </div>
+    <div class="group-card group-yellow">
+      <h3>YELLOW TABLE</h3>
+      <div class="names">Alex, An, Jeremiah, Hector</div>
+      <div class="task">Get Program SENSOR running, then change the distance threshold. Can you make it stop at 30cm instead of 15cm? Add a reverse after it stops.</div>
+    </div>
+    <div class="group-card group-green">
+      <h3>GREEN TABLE</h3>
+      <div class="names">Vincent, Winston + anyone who finishes</div>
+      <div class="task">Get the sensor code running, then make the robot: stop, reverse, turn, and try driving in a new direction. Add the color sensor for a bonus behavior.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Challenge -->
+<div class="slide" id="s9">
+  <h2>Challenge: Obstacle Avoidance</h2>
+  <p style="color:#ffd60a; margin-bottom:16px;">Once your robot can stop, make it smart enough to try again.</p>
+  <ol class="steps">
+    <li>Drive forward</li>
+    <li>Stop when the distance sensor sees an obstacle</li>
+    <li>Beep and display "STOP" on the matrix</li>
+    <li>Reverse for 1 second</li>
+    <li>Turn to a new direction</li>
+    <li>Try driving forward again</li>
+  </ol>
+  <p style="margin-top:24px; color:#8ecae6; font-size:22px; text-align:center;">Hint: Wrap the whole thing in a bigger loop so it keeps trying.</p>
+</div>
+
+<!-- SLIDE 10: Bonus - Color Sensor -->
+<div class="slide" id="s10">
+  <h2>Bonus: The Color Sensor</h2>
+  <p style="margin-bottom:16px;">Your robot can also see colors on the surface below it.</p>
+  <pre style="font-size:20px;">
+<span class="kw">from</span> hub <span class="kw">import</span> light_matrix, port
+<span class="kw">import</span> color_sensor
+
+<span class="cm"># Read the color once</span>
+color = color_sensor.color(port.E)
+
+<span class="kw">if</span> color == <span class="num">9</span>:     <span class="cm"># Red</span>
+    light_matrix.write(<span class="str">"RED"</span>)
+<span class="kw">elif</span> color == <span class="num">5</span>:   <span class="cm"># Green</span>
+    light_matrix.write(<span class="str">"GRN"</span>)
+<span class="kw">elif</span> color == <span class="num">3</span>:   <span class="cm"># Blue</span>
+    light_matrix.write(<span class="str">"BLU"</span>)
+<span class="kw">else</span>:
+    light_matrix.write(<span class="str">"???"</span>)
+  </pre>
+  <p style="text-align:center; color:#6a7a8a; font-size:20px; margin-top:12px;">Color values: 0=Black, 1=Violet, 3=Blue, 4=Cyan, 5=Green, 7=Yellow, 9=Red, 10=White</p>
+</div>
+
+<!-- SLIDE 11: Common Issues -->
+<div class="slide" id="s11">
+  <h2>Sensor Not Working? Check These.</h2>
+  <table class="fix-table">
+    <tr>
+      <th>Problem</th>
+      <th>Fix</th>
+    </tr>
+    <tr>
+      <td>Distance always shows -1</td>
+      <td class="right">Check the port letter. If sensor is in port F, use <code style="color:#ffd60a;">port.F</code>. Look at the cable.</td>
+    </tr>
+    <tr>
+      <td>Robot never stops</td>
+      <td class="right">Put something big and flat in front of the sensor (a book). Small or angled objects can be missed.</td>
+    </tr>
+    <tr>
+      <td>"distance_sensor not defined"</td>
+      <td class="right">Add <code style="color:#ffd60a;">import distance_sensor</code> at the top of your code.</td>
+    </tr>
+    <tr>
+      <td>"port not defined"</td>
+      <td class="right">Add <code style="color:#ffd60a;">from hub import port</code> to your import line.</td>
+    </tr>
+    <tr>
+      <td>Robot drives but code freezes</td>
+      <td class="right">Make sure you have <code style="color:#ffd60a;">await runloop.sleep_ms(50)</code> inside your while loop.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- SLIDE 12: Submit -->
+<div class="slide" id="s12">
+  <h2>Submit Your Sensor Code</h2>
+  <ol class="steps">
+    <li>Open Google Classroom &mdash; class code: <strong style="color:#ffd60a;">w4m3nvl6</strong></li>
+    <li>Find <strong>Assignment 7: "Sensor Recon"</strong></li>
+    <li>Paste your code</li>
+    <li>Answer the questions about what your robot does</li>
+    <li>Click <strong>Turn In</strong></li>
+  </ol>
+  <p style="color:#6a7a8a; margin-top:24px; font-size:20px;">Even if you only got the basic stop-on-obstacle working, submit it. That's real sensor programming.</p>
+</div>
+
+<!-- SLIDE 13: Close -->
+<div class="slide" id="s13">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:48px;">Your robot can see now.</h1>
+    <p style="font-size:28px; margin-top:20px; color:#8ecae6;">It drives. It senses. It reacts. It makes decisions.</p>
+    <p style="font-size:24px; margin-top:30px; color:#6a7a8a;">Next session: The Gauntlet &mdash; navigate a full obstacle course autonomously.</p>
+  </div>
+</div>
+
+<div class="nav">
+  <span id="slideNum">1</span> / <span id="totalSlides">13</span> &nbsp; &larr; &rarr; to navigate
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = current + 1;
+    document.getElementById('totalSlides').textContent = slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  show(0);
+</script>
+</body>
+</html>

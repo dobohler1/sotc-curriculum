@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOTC Math Competition — Instructor Answer Key</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.5;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+            font-size: 11pt;
+            color: #222;
+        }
+        h1 {
+            text-align: center;
+            color: #c45200;
+            border-bottom: 3px solid #c45200;
+            padding-bottom: 10px;
+            font-size: 20pt;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        h2 {
+            background: #1a1a2e;
+            color: #ffd700;
+            padding: 8px 12px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 14pt;
+            page-break-after: avoid;
+        }
+        h3 {
+            color: #c45200;
+            border-left: 4px solid #c45200;
+            padding-left: 10px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 12pt;
+            page-break-after: avoid;
+        }
+        .answer-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 8px 12px;
+            margin: 8px 0;
+            font-size: 13pt;
+            font-weight: bold;
+        }
+        .answer-box .label {
+            color: #2e7d32;
+            font-weight: normal;
+            font-size: 10pt;
+        }
+        .section {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .solution-steps {
+            background: #fff;
+            padding: 10px;
+            border-left: 3px solid #2196f3;
+            margin: 8px 0;
+        }
+        .solution-steps ol, .solution-steps ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        .mistakes {
+            background: #fff3e0;
+            border-left: 3px solid #ff9800;
+            padding: 8px 10px;
+            margin: 8px 0;
+        }
+        .stuck {
+            background: #e3f2fd;
+            border-left: 3px solid #2196f3;
+            padding: 8px 10px;
+            margin: 8px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+        th {
+            background: #1a1a2e;
+            color: #ffd700;
+            padding: 8px;
+            text-align: center;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .tier-label {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 9pt;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .tier1 { background: #e8f5e9; color: #2e7d32; }
+        .tier2 { background: #fff3e0; color: #e65100; }
+        .tier3 { background: #fce4ec; color: #c2185b; }
+        .varsity { background: #f3e5f5; color: #7b1fa2; }
+        code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        @media print {
+            body {
+                padding: 0.3in;
+            }
+            h2 {
+                margin-top: 15px;
+            }
+            .section, .solution-steps, .mistakes, .stuck {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>SOTC Math Competition</h1>
+<p class="subtitle">Instructor Answer Key — Quick Reference & Detailed Solutions</p>
+
+<h2>Quick Answer Reference</h2>
+
+<table>
+    <tr>
+        <th>Quarter</th>
+        <th><span class="tier-label tier1">Tier 1</span><br>1st-3rd</th>
+        <th><span class="tier-label tier2">Tier 2</span><br>4th-5th</th>
+        <th><span class="tier-label tier3">Tier 3</span><br>6th-7th</th>
+        <th><span class="tier-label varsity">Varsity</span><br>Algebra</th>
+    </tr>
+    <tr>
+        <td><strong>Q1: Warm-Up</strong></td>
+        <td><strong>10</strong></td>
+        <td><strong>8 bags</strong></td>
+        <td><strong>10 more</strong></td>
+        <td><strong>27 players</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Q2: Practice Court</strong></td>
+        <td><strong>100 ft</strong></td>
+        <td><strong>288 ft</strong></td>
+        <td><strong>6.4 ft/sec</strong></td>
+        <td><strong>15 seconds</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Q3: Game Stats</strong></td>
+        <td><strong>6 pts</strong></td>
+        <td><strong>20 pts</strong></td>
+        <td><strong>60%</strong></td>
+        <td><strong>12 shots</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Q4: Championship</strong></td>
+        <td><strong>10 medals</strong></td>
+        <td><strong>7 games</strong></td>
+        <td><strong>$6,000</strong></td>
+        <td><strong>28 / 14 / 10</strong></td>
+    </tr>
+</table>
+
+<h2>Quarter 1: "Warm-Up Drills"</h2>
+
+<h3><span class="tier-label tier1">Tier 1</span> How many basketballs?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 10 basketballs
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    A pyramid of basketballs (4 on bottom row, 3, 2, 1 on top)
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    Count each row: 4 + 3 + 2 + 1 = <strong>10</strong>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "Start at the bottom and count each row. How many on the bottom? Now the next row up?"
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Miscounting — have them point to each ball as they count
+</div>
+
+<!-- TIER 2 Q1 -->
+<h3><span class="tier-label tier2">Tier 2</span> How many bags?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 8 bags
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    48 basketballs, 6 per bag
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    48 ÷ 6 = <strong>8 bags</strong>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "If each bag holds 6 balls, how many groups of 6 are in 48? Count by 6s."
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Multiplying instead of dividing (gets 288)
+</div>
+
+<!-- TIER 3 Q1 -->
+<h3><span class="tier-label tier3">Tier 3</span> How many MORE old than new?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 10 more old balls (accept 9 or 10)
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    48 basketballs. 40% are new. Rest (60%) are old.
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ol>
+        <li>New balls: 48 × 0.40 = 19.2 ≈ <strong>19</strong></li>
+        <li>Old balls: 48 × 0.60 = 28.8 ≈ <strong>29</strong></li>
+        <li>Difference: 29 − 19 = <strong>10 more old</strong></li>
+    </ol>
+    <em>Shortcut: 60% − 40% = 20% → 48 × 0.20 = 9.6 ≈ 10</em>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "What's 10% of 48? (4.8) So what's 40%? (4.8 × 4 = 19.2)"
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Just subtracting percentages (60 − 40 = 20) — that's not the answer!
+</div>
+
+<!-- VARSITY Q1 -->
+<h3><span class="tier-label varsity">Varsity</span> How many players?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 27 players
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Team has 20–35 players<br>
+    • Rows of 3: 0 left over (divides evenly)<br>
+    • Rows of 4: 3 left over<br>
+    • Rows of 5: 2 left over
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ol>
+        <li>List multiples of 3 in range: 21, 24, 27, 30, 33</li>
+        <li>Check "remainder 3 when ÷ 4":
+            <ul>
+                <li>21 ÷ 4 = 5 R1 ✗</li>
+                <li>24 ÷ 4 = 6 R0 ✗</li>
+                <li><strong>27 ÷ 4 = 6 R3 ✓</strong></li>
+                <li>30 ÷ 4 = 7 R2 ✗</li>
+            </ul>
+        </li>
+        <li>Verify: 27 ÷ 5 = 5 R2 ✓</li>
+    </ol>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "Start with numbers that divide evenly by 3. Then check each one against the other two rules."
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Stopping after checking only one condition (picks 21 or 24)
+</div>
+
+<h2 class="page-break">Quarter 2: "The Practice Court"</h2>
+
+<h3><span class="tier-label tier1">Tier 1</span> Total feet?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 100 feet
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Player runs baseline (50 ft) 2 times
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    50 + 50 = <strong>100 ft</strong>  (or 50 × 2 = 100)
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "If you run 50 feet, then run 50 feet again, how far total?"
+</div>
+
+<!-- TIER 2 Q2 -->
+<h3><span class="tier-label tier2">Tier 2</span> Perimeter?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 288 feet
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Court is 94 ft long × 50 ft wide
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    Perimeter = all 4 sides = 94 + 94 + 50 + 50 = <strong>288 ft</strong><br>
+    <em>Or: P = 2(94) + 2(50) = 188 + 100 = 288</em>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "Perimeter means walking ALL the way around. A rectangle has 4 sides — two long ones and two short ones."
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Calculating AREA instead (94 × 50 = 4,700) or only adding two sides (144)
+</div>
+
+<!-- TIER 3 Q2 -->
+<h3><span class="tier-label tier3">Tier 3</span> Speed in ft/sec?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 6.4 ft/sec
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Player runs 288 ft in 45 seconds
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    Speed = Distance ÷ Time = 288 ÷ 45 = <strong>6.4 ft/sec</strong>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "Speed is how far you go in ONE second. If she went 288 feet in 45 seconds, divide to find one second."
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Dividing backwards (45 ÷ 288 = 0.156)
+</div>
+
+<!-- VARSITY Q2 -->
+<h3><span class="tier-label varsity">Varsity</span> When does B catch A?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 15 seconds
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Player A: 6 ft/sec | Player B: 8 ft/sec | B starts 30 ft behind A
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution (Relative Speed):</div>
+    <ol>
+        <li>B gains on A at: 8 − 6 = <strong>2 ft/sec</strong></li>
+        <li>Gap to close: 30 ft</li>
+        <li>Time = 30 ÷ 2 = <strong>15 seconds</strong></li>
+    </ol>
+    <div class="section-title">Solution (Algebra):</div>
+    Position A = 6t, Position B = 8t − 30<br>
+    Set equal: 6t = 8t − 30 → 30 = 2t → t = <strong>15</strong>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "B is faster by how much per second? (2 ft/sec) How long to gain 30 feet at that rate?"
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Dividing 30 by just 8 or 6 (gets 3.75 or 5), forgetting the head start
+</div>
+
+<h2 class="page-break">Quarter 3: "Game Stats"</h2>
+
+<h3><span class="tier-label tier1">Tier 1</span> How many MORE pts do Lions have?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 6 points
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Scoreboard: Lions 24, Tigers 18
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    24 − 18 = <strong>6 points</strong>
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Adding instead (24 + 18 = 42)
+</div>
+
+<!-- TIER 2 Q3 -->
+<h3><span class="tier-label tier2">Tier 2</span> Total points?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 20 points
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Marcus made: 4 free throws (1pt), 5 two-ptrs (2pt), 2 three-ptrs (3pt)
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ul>
+        <li>Free throws: 4 × 1 = 4</li>
+        <li>Two-pointers: 5 × 2 = 10</li>
+        <li>Three-pointers: 2 × 3 = 6</li>
+        <li>Total: 4 + 10 + 6 = <strong>20 points</strong></li>
+    </ul>
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Adding just the counts (4 + 5 + 2 = 11) instead of multiplying first
+</div>
+
+<!-- TIER 3 Q3 -->
+<h3><span class="tier-label tier3">Tier 3</span> Shooting %?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 60%
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Marcus took 20 shots, made 12
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    Shooting % = (Made ÷ Taken) × 100 = (12 ÷ 20) × 100 = <strong>60%</strong><br>
+    <em>Or: 12/20 = 6/10 = 60%</em>
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Dividing backwards (20 ÷ 12 = 167%)
+</div>
+
+<!-- VARSITY Q3 -->
+<h3><span class="tier-label varsity">Varsity</span> Shots taken today?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 12 shots
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    BEFORE: 40% shooting, 60 shots taken<br>
+    TODAY: Made ALL shots<br>
+    NOW: 50% all-time
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ol>
+        <li>Before: 40% of 60 = <strong>24 makes</strong> out of 60 shots</li>
+        <li>Let x = shots today (all made)</li>
+        <li>New equation: (24 + x)/(60 + x) = 0.50</li>
+        <li>Solve: 24 + x = 0.5(60 + x)<br>
+            24 + x = 30 + 0.5x<br>
+            0.5x = 6<br>
+            x = <strong>12 shots</strong></li>
+    </ol>
+    <em>Check: 36/72 = 50% ✓</em>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "She made 24 out of 60. Both the numerator AND denominator increase by x. What value makes it equal 50%?"
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Setting up (24 + x)/60 = 0.5 — forgetting denominator also increases!
+</div>
+
+<h2 class="page-break">Quarter 4: "Championship Round"</h2>
+
+<h3><span class="tier-label tier1">Tier 1</span> Total medals?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 10 medals
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    5 players, each gets 2 medals
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    5 × 2 = <strong>10 medals</strong>
+</div>
+
+<!-- TIER 2 Q4 -->
+<h3><span class="tier-label tier2">Tier 2</span> Total GAMES played?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> 7 games
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Tournament bracket: 8 → 4 → 2 → 1 (champ)
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ul>
+        <li>Round 1: 8→4 teams = 4 games</li>
+        <li>Round 2: 4→2 teams = 2 games</li>
+        <li>Finals: 2→1 = 1 game</li>
+        <li>Total: 4 + 2 + 1 = <strong>7 games</strong></li>
+    </ul>
+    <em>Shortcut: 8 teams − 1 champion = 7 losers = 7 games</em>
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Counting teams instead of games (gets 8)
+</div>
+
+<!-- TIER 3 Q4 -->
+<h3><span class="tier-label tier3">Tier 3</span> Total revenue?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> $6,000
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Section A: $25 each, 120 tickets | Section B: $15 each, 200 tickets
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ul>
+        <li>Section A: 25 × 120 = $3,000</li>
+        <li>Section B: 15 × 200 = $3,000</li>
+        <li>Total: <strong>$6,000</strong></li>
+    </ul>
+</div>
+
+<!-- VARSITY Q4 -->
+<h3><span class="tier-label varsity">Varsity</span> Each player's points?</h3>
+
+<div class="answer-box">
+    <span class="label">ANSWER:</span> Alex = 28, Jordan = 14, Casey = 10
+</div>
+
+<div class="section">
+    <div class="section-title">What students see:</div>
+    Three players scored 52 points total<br>
+    • Alex: 2× Jordan's pts<br>
+    • Jordan: Casey + 4 pts
+</div>
+
+<div class="solution-steps">
+    <div class="section-title">Solution:</div>
+    <ol>
+        <li>Let C = Casey's points</li>
+        <li>Jordan = C + 4</li>
+        <li>Alex = 2(C + 4) = 2C + 8</li>
+        <li>Total: C + (C + 4) + (2C + 8) = 52<br>
+            4C + 12 = 52<br>
+            4C = 40<br>
+            C = <strong>10</strong></li>
+        <li>Casey = 10, Jordan = 14, Alex = 28</li>
+    </ol>
+    <em>Check: 10 + 14 + 28 = 52 ✓</em>
+</div>
+
+<div class="stuck">
+    <div class="section-title">If student is stuck:</div>
+    "Use a letter for Casey. Write Jordan and Alex using that letter. Add them up and set equal to 52."
+</div>
+
+<div class="mistakes">
+    <div class="section-title">Common mistakes:</div>
+    Making Alex = 2 × Casey (should be 2 × Jordan)<br>
+    Forgetting to distribute: 2(C+4) = 2C + 8, not 2C + 4
+</div>
+
+<h2 class="page-break">Verification Tips</h2>
+
+<div class="section">
+    <div class="section-title">When checking student answers:</div>
+    <ol>
+        <li><strong>Ask them to explain</strong> — per the rules, they must explain or lose points</li>
+        <li><strong>Quick verbal checks:</strong>
+            <ul>
+                <li>"Walk me through your steps"</li>
+                <li>"How did you get that number?"</li>
+                <li>"What operation did you use?"</li>
+            </ul>
+        </li>
+        <li><strong>For Varsity:</strong> Check their written work, not just final answer</li>
+    </ol>
+</div>
+
+<h2>Kid-Friendly Vocabulary</h2>
+
+<table>
+    <tr>
+        <th>Math Term</th>
+        <th>Say Instead</th>
+    </tr>
+    <tr>
+        <td>Remainder</td>
+        <td>"Left over"</td>
+    </tr>
+    <tr>
+        <td>Quotient</td>
+        <td>"The answer when you divide"</td>
+    </tr>
+    <tr>
+        <td>Product</td>
+        <td>"The answer when you multiply"</td>
+    </tr>
+    <tr>
+        <td>Percentage</td>
+        <td>"Out of 100"</td>
+    </tr>
+    <tr>
+        <td>Variable</td>
+        <td>"The letter for the unknown number"</td>
+    </tr>
+    <tr>
+        <td>Perimeter</td>
+        <td>"Distance all the way around"</td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment 4: Code Clinic — My Working Program</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.6;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 24px; color: #1a2744; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #6a7a8a; margin-bottom: 24px; }
+  h2 { font-size: 18px; color: #1a2744; margin: 24px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  .instructions {
+    background: #f7f8f9;
+    border: 1px solid #e2e6ec;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .instructions p { margin: 10px 0; }
+  .checklist {
+    list-style: none;
+    margin: 12px 0 12px 0;
+    font-size: 15px;
+  }
+  .checklist li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+  }
+  .checklist li::before {
+    content: "\2610";
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+  }
+  .callout {
+    border-left: 4px solid #2e6b9e;
+    background: #eef5fb;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: #1a3d5c;
+  }
+  .points {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  @media print {
+    body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Assignment 4: Code Clinic &mdash; My Working Program</h1>
+<p class="subtitle">SOTC 2026 &mdash; John Muir &mdash; Python Robotics</p>
+<span class="points">100 POINTS</span>
+
+<div class="instructions">
+  <h2>What to Submit</h2>
+  <p>Paste your working code from today's session.</p>
+  <p>This can be Program BLUE, Program GOLD, or your own version &mdash; whatever you got running on the robot.</p>
+  <p><strong>If your code isn't fully working yet, submit what you have.</strong> Partial work is better than nothing.</p>
+</div>
+
+<h2>Your Code Should Include</h2>
+<ul class="checklist">
+  <li>Imports at the top (e.g., <code>from hub import light_matrix</code>)</li>
+  <li><code>async def main():</code></li>
+  <li>At least one command inside main</li>
+  <li><code>runloop.run(main())</code> at the bottom</li>
+</ul>
+
+<div class="callout">
+  <strong>How to submit:</strong> Copy your code from the LEGO app, paste it into this assignment, and click Turn In.
+</div>
+
+</body>
+</html>

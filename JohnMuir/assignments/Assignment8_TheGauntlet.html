@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment 8: The Gauntlet</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.6;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 24px; color: #1a2744; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #6a7a8a; margin-bottom: 24px; }
+  h2 { font-size: 18px; color: #1a2744; margin: 28px 0 8px; }
+  h3 { font-size: 15px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ol, ul { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 12px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .points {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .badge {
+    display: inline-block;
+    background: #1a7742;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; }
+  .callout {
+    border-left: 4px solid;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  .callout-red { border-color: #c0392b; background: #fdf0ef; color: #7a1f1a; }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 24px 0; }
+  .part {
+    background: #f7f8f9;
+    border: 1px solid #e2e6ec;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .part-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .answer-box {
+    background: #fff;
+    border: 2px dashed #d0d6e0;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 10px 0;
+    min-height: 80px;
+    font-size: 14px;
+    color: #8a8a8a;
+  }
+  .answer-box.tall { min-height: 200px; }
+
+  @media print {
+    body { padding: 20px; }
+    pre, .part { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Assignment 8: The Gauntlet</h1>
+<p class="subtitle">SOTC 2026 &mdash; John Muir &mdash; Python Robotics</p>
+<span class="points">100 POINTS</span>
+
+<p>Your robot navigates an obstacle course autonomously. No remote control. No touching it after you press play. It drives, senses, decides, and acts &mdash; all on its own.</p>
+
+<hr>
+
+<h2>The Course</h2>
+<p>Coach G sets up a course with 2&ndash;3 obstacles (books, boxes, or cones). Your robot starts at one end and must reach the other end by detecting and avoiding obstacles along the way.</p>
+
+<ul>
+  <li><strong>Start zone:</strong> Robot begins here. You press play and step back.</li>
+  <li><strong>Obstacles:</strong> 2&ndash;3 objects placed in the path. Your robot must not hit them.</li>
+  <li><strong>Finish zone:</strong> The end of the course. Getting here = success.</li>
+</ul>
+
+<p>You get <strong>3 attempts</strong>. Your best run counts.</p>
+
+<hr>
+
+<h2>Requirements (must include all 5)</h2>
+<ol>
+  <li><strong>Autonomous driving</strong> &mdash; robot drives forward on its own using <code>motor_pair.move()</code>.</li>
+  <li><strong>Obstacle detection</strong> &mdash; uses the distance sensor in a <code>while True:</code> loop to detect obstacles.</li>
+  <li><strong>Obstacle avoidance</strong> &mdash; when an obstacle is detected, the robot must stop and then navigate around it (reverse, turn, or both).</li>
+  <li><strong>Status signaling</strong> &mdash; the robot uses sound AND light matrix to indicate what it's doing (e.g., beep when it detects something, display "GO" at start, "DONE" at finish).</li>
+  <li><strong>Multiple obstacles</strong> &mdash; the navigation logic must handle more than one obstacle (i.e., the robot keeps going after avoiding the first one, not just stopping).</li>
+</ol>
+
+<hr>
+
+<h2>Scoring</h2>
+<table>
+  <thead>
+    <tr><th>Category</th><th>Points</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Robot drives forward autonomously</td><td>10</td></tr>
+    <tr><td>Distance sensor detects obstacle correctly</td><td>15</td></tr>
+    <tr><td>Robot stops on detection (no collision)</td><td>15</td></tr>
+    <tr><td>Avoidance maneuver works (reverse + turn)</td><td>15</td></tr>
+    <tr><td>Robot continues after first obstacle (handles multiple)</td><td>15</td></tr>
+    <tr><td>Sound signals used</td><td>5</td></tr>
+    <tr><td>Light matrix signals used</td><td>5</td></tr>
+    <tr><td>Code is readable and commented</td><td>10</td></tr>
+    <tr><td>Robot reaches the finish zone</td><td>10</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-green">
+  <strong>Bonus (no extra points, bragging rights):</strong>
+  <ul style="margin-top:6px;">
+    <li>Add the <strong>color sensor</strong> to detect a red piece of paper as the finish line</li>
+    <li>Use <strong>if/elif/else</strong> for multi-level distance reactions (slow down when far, stop when close)</li>
+    <li>Write a <strong>custom function</strong> for the avoidance maneuver</li>
+    <li>Add a <strong>victory sound sequence</strong> when the robot finishes</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2>Starter Code</h2>
+<p>This code handles basic detect-and-avoid for one obstacle, then repeats. You need to tune the numbers and may want to add more logic.</p>
+
+<pre>
+from hub import light_matrix, sound, port
+import motor_pair, distance_sensor, runloop
+
+motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+
+async def avoid_obstacle():
+    """Stop, signal, reverse, and turn to avoid."""
+    motor_pair.stop(motor_pair.PAIR_1)
+    await sound.beep(800, 300, 100)
+    light_matrix.write("!")
+
+    # Reverse for 1 second
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 1000, 0, velocity=-40)
+    # Turn right for 0.8 seconds
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 800, 100, velocity=30)
+
+async def main():
+    light_matrix.write("GO")
+    await runloop.sleep_ms(500)
+
+    for attempt in range(20):  # try up to 20 check-and-avoid cycles
+        # Drive forward
+        motor_pair.move(motor_pair.PAIR_1, 0, velocity=40)
+
+        # Check for obstacles
+        while True:
+            dist = distance_sensor.distance(port.F)
+            if dist != -1 and dist < 150:  # within 15cm
+                await avoid_obstacle()
+                break
+            await runloop.sleep_ms(50)
+
+    # Done navigating
+    motor_pair.stop(motor_pair.PAIR_1)
+    await sound.beep(600, 500, 100)
+    light_matrix.write("DONE")
+
+runloop.run(main())
+</pre>
+
+<div class="callout callout-amber">
+  <strong>Important:</strong> The starter code loops 20 times. That's a lot. Your robot might loop forever if it never gets stuck. You can lower that number, or add a second exit condition (like detecting the finish line color). Tune the numbers based on your testing.
+</div>
+
+<hr>
+
+<h2>Tuning Guide</h2>
+<p>These are the numbers you should experiment with:</p>
+<table>
+  <thead>
+    <tr><th>What to Change</th><th>Where in Code</th><th>Try This</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Detection distance</td><td><code>dist < 150</code></td><td>Try <code>200</code> for earlier detection or <code>100</code> for later</td></tr>
+    <tr><td>Driving speed</td><td><code>velocity=40</code></td><td>Lower is safer. Try <code>25</code> for more control.</td></tr>
+    <tr><td>Reverse time</td><td><code>1000</code> in reverse line</td><td>Try <code>1500</code> if it doesn't back up enough</td></tr>
+    <tr><td>Turn time</td><td><code>800</code> in turn line</td><td>Try <code>1200</code> for a wider turn</td></tr>
+    <tr><td>Turn direction</td><td><code>100</code> steering value</td><td>Use <code>-100</code> to turn left instead of right</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>Green Table: Finish Line Detection</h2>
+<p>Add the color sensor to detect a red finish line. Place a red piece of paper at the end of the course.</p>
+
+<pre>
+import color_sensor
+
+# Add this inside your while True loop, after the distance check:
+color = color_sensor.color(port.E)
+if color == 9:  # Red
+    motor_pair.stop(motor_pair.PAIR_1)
+    await sound.beep(440, 500, 100)
+    await sound.beep(880, 500, 100)
+    light_matrix.write("WIN")
+    return  # exit the main function entirely
+</pre>
+
+<div class="callout callout-blue">
+  <strong>Color sensor values:</strong> 0=Black, 1=Violet, 3=Blue, 4=Cyan, 5=Green, 7=Yellow, 9=Red, 10=White. The sensor must be close to the surface to work &mdash; it reads the color directly underneath it.
+</div>
+
+<hr>
+
+<h2>What to Submit</h2>
+
+<div class="part">
+  <span class="part-label">Part 1 &mdash; Your Code</span>
+  <p>Paste your complete Python code &mdash; the final version you used for your best course run.</p>
+  <div class="answer-box tall">[Paste your code here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 2 &mdash; Course Performance</span>
+  <p>How did your robot do? How many obstacles did it avoid? Did it reach the finish? What happened on your best run?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 3 &mdash; What Did You Change?</span>
+  <p>What numbers or logic did you change from the starter code? Why? What effect did each change have?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 4 &mdash; If You Had More Time</span>
+  <p>If you had one more session to improve your robot, what would you add or change? Be specific &mdash; what code would you write?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="callout callout-blue">
+  <strong>How to submit:</strong> Copy your code from the LEGO app, paste it into this assignment, answer the reflection questions, and click Turn In.
+</div>
+
+</body>
+</html>

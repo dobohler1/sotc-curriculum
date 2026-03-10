@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SOTC Math Competition - Instructor Handout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            max-width: 8in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+        h1 {
+            text-align: center;
+            font-size: 18pt;
+            border-bottom: 3px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 14pt;
+            background-color: #f0f0f0;
+            padding: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 10pt;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .highlight {
+            background-color: #ffffcc;
+            padding: 10px;
+            border: 2px solid #333;
+            margin: 10px 0;
+        }
+        .script {
+            background-color: #e8f4e8;
+            padding: 10px;
+            border-left: 4px solid #228B22;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .warning {
+            background-color: #ffe8e8;
+            padding: 8px;
+            border-left: 4px solid #cc0000;
+        }
+        .score-table td {
+            text-align: center;
+            height: 30px;
+        }
+        .team-red { color: #cc0000; font-weight: bold; }
+        .team-blue { color: #0066cc; font-weight: bold; }
+        .team-gold { color: #cc9900; font-weight: bold; }
+        .team-green { color: #228B22; font-weight: bold; }
+        @media print {
+            .page-break { page-break-before: always; }
+            body { padding: 0.25in; }
+        }
+        .quick-ref {
+            border: 2px solid #333;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .quick-ref h3 {
+            margin-top: 0;
+            background-color: #333;
+            color: white;
+            padding: 5px;
+            margin: -10px -10px 10px -10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>SOTC MATH COMPETITION<br>INSTRUCTOR HANDOUT</h1>
+
+<h2>THE GAME IN 30 SECONDS</h2>
+<ol>
+    <li>Show problem → kids solve at their tier</li>
+    <li>Timer ends → pencils down</li>
+    <li>Show answers → captains check</li>
+    <li>Bonus points for good questions or finding mistakes</li>
+    <li>Captain reports Yes/No for each tier → record score → next round</li>
+</ol>
+
+<h2>TIER LEVELS</h2>
+<table>
+    <tr><th>Tier</th><th>Who Does It</th></tr>
+    <tr><td><strong>TIER A</strong></td><td>Grades 1-3</td></tr>
+    <tr><td><strong>TIER B</strong></td><td>Grades 4-7 (including captains)</td></tr>
+    <tr><td><strong>BONUS</strong></td><td>Anyone who finishes early</td></tr>
+</table>
+
+<div class="highlight">
+    <strong>THE LEVEL-UP RULE:</strong><br><br>
+    ✓ Younger kid does harder tier = <strong>COUNTS</strong> (leveling up!)<br>
+    ✗ Older kid does easier tier = <strong>DOESN'T COUNT</strong><br><br>
+    <em>Example: 5th grader does Tier A = NO points. 2nd grader does Tier B = YES points.</em>
+</div>
+
+<h2>SCORING</h2>
+<table>
+    <tr><th>What</th><th>Points</th></tr>
+    <tr><td>Team got Tier A correct (by a Gr 1-3 student)</td><td><strong>2 pts</strong></td></tr>
+    <tr><td>Team got Tier B correct (by a Gr 4-7 student)</td><td><strong>2 pts</strong></td></tr>
+    <tr><td>Team got Bonus correct (anyone)</td><td><strong>2 pts</strong></td></tr>
+    <tr><td>Good question asked</td><td><strong>+1 pt</strong></td></tr>
+    <tr><td>Found mistake in answer</td><td><strong>+3 pts</strong></td></tr>
+</table>
+<p><strong>MAX BASE SCORE PER ROUND = 6 pts</strong></p>
+
+<h2>ROUND TIMING (5 min total)</h2>
+<table>
+    <tr><th>Time</th><th>Action</th><th>What to Say</th></tr>
+    <tr><td>0:00</td><td>Show problem</td><td><em>"Eyes on screen. Tier A is... Tier B is..."</em></td></tr>
+    <tr><td>0:30</td><td>Start timer</td><td><em>"3 minutes. GO!"</em></td></tr>
+    <tr><td>3:00</td><td>Warning</td><td><em>"30 seconds!"</em></td></tr>
+    <tr><td>3:30</td><td>Stop work</td><td><em>"PENCILS DOWN!"</em></td></tr>
+    <tr><td>3:30</td><td>Show answers</td><td><em>"Here are the answers. Captains, check your team."</em></td></tr>
+    <tr><td>4:15</td><td>Bonus points</td><td><em>"Any questions? Anyone find a mistake?"</em></td></tr>
+    <tr><td>4:30</td><td>Collect scores</td><td><em>"Captains, report. Tier A yes or no?"</em></td></tr>
+    <tr><td>5:00</td><td>Next round</td><td>Update scoreboard, move on</td></tr>
+</table>
+
+<h2>COLLECTING SCORES</h2>
+<div class="script">
+    "Red Team—Tier A, yes or no? Tier B? Bonus?"<br>
+    "Blue Team—Tier A, yes or no? Tier B? Bonus?"<br>
+    (repeat for Gold, Green)
+</div>
+<p>Circle Y or N on score sheet. Add points. Done.</p>
+
+<h2>LATE ARRIVALS</h2>
+<table>
+    <tr><th>Step</th><th>Action</th></tr>
+    <tr><td>1</td><td>Ask: <em>"Name? Grade?"</em></td></tr>
+    <tr><td>2</td><td>Assign to smallest team</td></tr>
+    <tr><td>3</td><td><em>"Grab paper, sit with [team]. Do Tier [A/B] based on your grade."</em></td></tr>
+</table>
+<p><strong>Takes 10 seconds. They're in.</strong></p>
+
+<h2>TROUBLESHOOTING</h2>
+<table>
+    <tr><th>Problem</th><th>Solution</th></tr>
+    <tr><td>No captain on team</td><td>Oldest student reports</td></tr>
+    <tr><td>Older kid claims Tier A</td><td><em>"Doesn't count—do Tier B"</em></td></tr>
+    <tr><td>Team has no young kids</td><td>They skip Tier A points that round</td></tr>
+    <tr><td>Team has no older kids</td><td>Young kids can level up to Tier B</td></tr>
+    <tr><td>Kids talking during work</td><td><em>"Silent work time!"</em></td></tr>
+    <tr><td>Argument about answer</td><td>You have final say. Move on.</td></tr>
+</table>
+
+<h2>OPENING SCRIPT</h2>
+<div class="script">
+    "Welcome to the Math Competition!<br><br>
+    I show a problem. Solve it at YOUR level—Tier A for grades 1-3, Tier B for grades 4 and up.<br><br>
+    Important: You can level UP but not DOWN. If you're in 4th grade or higher, Tier A doesn't count for you.<br><br>
+    When timer ends, pencils down. I show answers. Captains check your team and report yes or no for each tier.<br><br>
+    Bonus points if you ask a good question or find a mistake in my answer.<br><br>
+    Team with the most points wins. Let's go!"
+</div>
+
+<h2>CLOSING SCRIPT</h2>
+<div class="script">
+    "Let's add up the scores!<br><br>
+    Red Team total... Blue Team... Gold... Green...<br><br>
+    The winner is [TEAM]! High-fives all around!"
+</div>
+
+<!-- Page 2: Score Sheet -->
+<div class="page-break"></div>
+
+<h1>SCORE SHEET</h1>
+<p><strong>Date:</strong> ___________________ <strong>Instructor:</strong> ___________________</p>
+
+<h2>ROUND 1</h2>
+<table class="score-table">
+    <tr>
+        <th>Team</th>
+        <th>Tier A (2 pts)</th>
+        <th>Tier B (2 pts)</th>
+        <th>Bonus (2 pts)</th>
+        <th>Q's/Mistakes</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td class="team-red">RED</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-blue">BLUE</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-gold">GOLD</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-green">GREEN</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+</table>
+
+<h2>ROUND 2</h2>
+<table class="score-table">
+    <tr>
+        <th>Team</th>
+        <th>Tier A (2 pts)</th>
+        <th>Tier B (2 pts)</th>
+        <th>Bonus (2 pts)</th>
+        <th>Q's/Mistakes</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td class="team-red">RED</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-blue">BLUE</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-gold">GOLD</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-green">GREEN</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+</table>
+
+<h2>ROUND 3</h2>
+<table class="score-table">
+    <tr>
+        <th>Team</th>
+        <th>Tier A (2 pts)</th>
+        <th>Tier B (2 pts)</th>
+        <th>Bonus (2 pts)</th>
+        <th>Q's/Mistakes</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td class="team-red">RED</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-blue">BLUE</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-gold">GOLD</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-green">GREEN</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+</table>
+
+<h2>ROUND 4</h2>
+<table class="score-table">
+    <tr>
+        <th>Team</th>
+        <th>Tier A (2 pts)</th>
+        <th>Tier B (2 pts)</th>
+        <th>Bonus (2 pts)</th>
+        <th>Q's/Mistakes</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td class="team-red">RED</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-blue">BLUE</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-gold">GOLD</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+    <tr>
+        <td class="team-green">GREEN</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>Y / N</td>
+        <td>_____</td>
+        <td>_____</td>
+    </tr>
+</table>
+
+<h2>FINAL SCORES</h2>
+<table class="score-table">
+    <tr>
+        <th>Team</th>
+        <th>R1</th>
+        <th>R2</th>
+        <th>R3</th>
+        <th>R4</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td class="team-red">RED</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td><strong>______</strong></td>
+    </tr>
+    <tr>
+        <td class="team-blue">BLUE</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td><strong>______</strong></td>
+    </tr>
+    <tr>
+        <td class="team-gold">GOLD</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td><strong>______</strong></td>
+    </tr>
+    <tr>
+        <td class="team-green">GREEN</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td>____</td>
+        <td><strong>______</strong></td>
+    </tr>
+</table>
+
+<div class="highlight" style="text-align: center; font-size: 16pt; margin-top: 20px;">
+    <strong>WINNER: _________________________________</strong>
+</div>
+
+</body>
+</html>

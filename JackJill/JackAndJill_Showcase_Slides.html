@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build It. Code It. Race It.</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 56px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+  h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 28px; font-weight: 600; margin-bottom: 12px; color: #8ecae6; }
+  p, li { font-size: 26px; line-height: 1.5; }
+  ul { margin-left: 30px; }
+  li { margin: 10px 0; }
+
+  .subtitle { font-size: 28px; color: #8ecae6; font-weight: 400; margin-bottom: 30px; }
+  .big-goal { font-size: 38px; color: #ffd60a; font-weight: 700; text-align: center; margin: 40px 0; }
+  .highlight { color: #ffd60a; }
+  .cyan { color: #8ecae6; }
+  .green { color: #69db7c; }
+
+  /* Code blocks (for Python reveal) */
+  pre {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 22px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  .kw { color: #ff6b9d; }
+  .fn { color: #8ecae6; }
+  .str { color: #a8db8f; }
+  .num { color: #ffd60a; }
+  .cm { color: #6a7a8a; }
+
+  /* ===== SPIKE Word Block styling ===== */
+  .block-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 700px;
+    margin: 20px auto;
+  }
+  .block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 30px;
+    padding: 12px 22px;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    color: #fff;
+  }
+  /* Category colors matching SPIKE 3 */
+  .block-event {
+    background: #e8a317;
+    color: #fff;
+    border-radius: 30px 30px 8px 8px;
+    padding-top: 16px;
+  }
+  .block-movement {
+    background: #e05a9c;
+  }
+  .block-sound {
+    background: #9b59b6;
+  }
+  .block-light {
+    background: #e67e22;
+  }
+  .block-control {
+    background: #e0892e;
+  }
+  /* Block icon circle */
+  .block-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  /* Parameter bubbles */
+  .param {
+    display: inline-block;
+    background: #fff;
+    color: #333;
+    border-radius: 20px;
+    padding: 2px 14px;
+    font-weight: 700;
+    font-size: 19px;
+    margin: 0 2px;
+  }
+  .param-drop {
+    display: inline-block;
+    background: #fff;
+    color: #333;
+    border-radius: 20px;
+    padding: 2px 14px;
+    font-weight: 700;
+    font-size: 19px;
+    margin: 0 2px;
+  }
+  .param-drop::after {
+    content: " \25BE";
+    font-size: 14px;
+    color: #999;
+  }
+
+  .block-group-label {
+    font-size: 16px;
+    color: #8ecae6;
+    margin: 14px 0 4px 0;
+    font-weight: 600;
+  }
+  .block-new {
+    position: relative;
+  }
+  .block-new::before {
+    content: "NEW";
+    position: absolute;
+    left: -52px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffd60a;
+    color: #0d1b2a;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin-left: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    padding-left: 50px;
+    position: relative;
+    margin: 16px 0;
+    font-size: 26px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 36px; height: 36px;
+    background: #ffd60a;
+    color: #0d1b2a;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Roles grid */
+  .roles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 30px 0;
+  }
+  .role-card {
+    border-radius: 16px;
+    padding: 30px;
+    border: 3px solid;
+    text-align: center;
+  }
+  .role-driver { background: #1a2a15; border-color: #2ecc71; }
+  .role-driver h3 { color: #69db7c; font-size: 32px; }
+  .role-nav { background: #1a1530; border-color: #8e44ad; }
+  .role-nav h3 { color: #c39bd3; font-size: 32px; }
+
+  /* Score table */
+  .score-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 26px;
+  }
+  .score-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #2a3f5f;
+  }
+  .score-table td:last-child {
+    text-align: right;
+    color: #ffd60a;
+    font-weight: 700;
+  }
+
+  /* Two-column comparison */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 20px 0;
+  }
+  .compare-col {
+    background: #1b2838;
+    border-radius: 12px;
+    padding: 24px;
+    border: 2px solid #2a3f5f;
+  }
+  .compare-col h3 { text-align: center; margin-bottom: 16px; }
+
+  /* Parts grid */
+  .parts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 30px 0;
+  }
+  .part-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .part-icon { font-size: 48px; margin-bottom: 10px; }
+  .part-name { font-size: 22px; font-weight: 700; color: #ffd60a; }
+  .part-desc { font-size: 16px; color: #8ecae6; margin-top: 6px; }
+
+  /* Where-to-find callout */
+  .find-it {
+    background: #1b2838;
+    border: 2px dashed #4a5568;
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin: 16px auto;
+    max-width: 700px;
+    font-size: 20px;
+    color: #8ecae6;
+  }
+  .find-it strong { color: #ffd60a; }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+    color: #4a5568;
+    z-index: 10;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: #ffd60a;
+    transition: width 0.3s;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SLIDE 1: Title                               -->
+<!-- ============================================ -->
+<div class="slide active" id="s1">
+  <div style="text-align:center;">
+    <p class="subtitle">SOTC Robotics Presents</p>
+    <h1 style="font-size:72px;">Build It. Code It. <span class="highlight">Race It.</span></h1>
+    <p style="font-size:30px; margin-top:30px; color:#8ecae6;">Your first robot program in under an hour.</p>
+    <p style="font-size:22px; margin-top:40px; color:#4a5568;">LEGO SPIKE Prime &nbsp;|&nbsp; Jack &amp; Jill Cluster</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 2: What Is a Robot?                    -->
+<!-- ============================================ -->
+<div class="slide" id="s2">
+  <div style="text-align:center;">
+    <h2 style="font-size:48px;">What Is a Robot?</h2>
+    <p style="font-size:30px; margin-top:30px; color:#8ecae6;">A machine that can <span class="highlight">sense</span>, <span class="highlight">think</span>, and <span class="highlight">act</span> &mdash; on its own.</p>
+    <div style="margin-top:50px;">
+      <p style="font-size:28px; color:#6a7a8a;">Your phone? Not a robot.</p>
+      <p style="font-size:28px; color:#6a7a8a; margin-top:10px;">A remote control car? Not a robot.</p>
+      <p style="font-size:28px; color:#ffd60a; margin-top:20px; font-weight:700;">A car that drives itself and stops before hitting a wall?<br>That's a robot.</p>
+    </div>
+    <p style="font-size:28px; margin-top:50px;">Today, you're going to program one.</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 3: Meet Your Robot                     -->
+<!-- ============================================ -->
+<div class="slide" id="s3">
+  <h2>Meet Your Robot</h2>
+  <p class="subtitle">Four parts. That's all you need to know.</p>
+  <div class="parts-grid">
+    <div class="part-card">
+      <div class="part-icon">&#129504;</div>
+      <div class="part-name">The Hub</div>
+      <div class="part-desc">The brain. Runs your code. Has a light display and speaker.</div>
+    </div>
+    <div class="part-card">
+      <div class="part-icon">&#9881;&#65039;</div>
+      <div class="part-name">Motors</div>
+      <div class="part-desc">Make the wheels spin. Port A = left. Port B = right.</div>
+    </div>
+    <div class="part-card">
+      <div class="part-icon">&#128065;</div>
+      <div class="part-name">Sensors</div>
+      <div class="part-desc">The robot's eyes. Detects color and distance.</div>
+    </div>
+    <div class="part-card">
+      <div class="part-icon">&#128187;</div>
+      <div class="part-name">Your Code</div>
+      <div class="part-desc">YOU tell the robot what to do. It only follows instructions.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 4: Roles                               -->
+<!-- ============================================ -->
+<div class="slide" id="s4">
+  <h2>Find Your Partner</h2>
+  <p class="subtitle">Two people per robot. Two jobs.</p>
+  <div class="roles-grid">
+    <div class="role-card role-driver">
+      <h3>DRIVER</h3>
+      <p style="font-size:24px; margin-top:16px;">Hands on the laptop.</p>
+      <p style="font-size:22px; margin-top:10px; color:#a8db8f;">You drag the blocks and click Play.</p>
+    </div>
+    <div class="role-card role-nav">
+      <h3>NAVIGATOR</h3>
+      <p style="font-size:24px; margin-top:16px;">Eyes on the screen.</p>
+      <p style="font-size:22px; margin-top:10px; color:#c39bd3;">You read each step aloud and check for mistakes.</p>
+    </div>
+  </div>
+  <p style="text-align:center; color:#ffd60a; font-size:24px; margin-top:20px;">You'll switch roles halfway through!</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 5: Open the App                        -->
+<!-- ============================================ -->
+<div class="slide" id="s5">
+  <h2>Open the SPIKE App</h2>
+  <ol class="steps">
+    <li>Open the <strong class="highlight">SPIKE&trade;</strong> app on your laptop</li>
+    <li>Click <strong class="cyan">New Project</strong></li>
+    <li>Select <strong class="cyan">Word Blocks</strong> (not Python, not Icon Blocks)</li>
+    <li>Make sure your robot is <strong class="green">connected</strong> &mdash; green dot in the top-left</li>
+  </ol>
+  <p style="margin-top:30px; color:#6a7a8a; font-size:22px;">Navigator: confirm each step before the Driver moves on.</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 6: Step 1 - Make It Move               -->
+<!-- ============================================ -->
+<div class="slide" id="s6">
+  <h2>Step 1: <span class="highlight">Make It Move</span></h2>
+  <p class="subtitle">Drag these blocks into your workspace. Snap them together top to bottom.</p>
+
+  <div class="block-stack">
+    <div class="block block-event">
+      <span class="block-icon">&#9873;</span>
+      when program starts
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      set movement motors to <span class="param-drop">A + B</span>
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">forward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+  </div>
+
+  <div class="find-it">
+    <strong>MOVEMENT</strong> menu on the left sidebar &rarr; look for the pink blocks with a gear icon
+  </div>
+
+  <p style="text-align:center; color:#69db7c; font-size:28px; margin-top:16px; font-weight:700;">Click the green Play button. Watch your robot go!</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 7: What just happened                  -->
+<!-- ============================================ -->
+<div class="slide" id="s7">
+  <h2>What Just Happened?</h2>
+  <table class="score-table" style="width:90%;">
+    <tr>
+      <td style="color:#e05a9c; font-weight:600;">set movement motors to A+B</td>
+      <td style="color:#fff; text-align:left;">Told the hub which ports the wheels are plugged into</td>
+    </tr>
+    <tr>
+      <td style="color:#e05a9c; font-weight:600;">move forward</td>
+      <td style="color:#fff; text-align:left;">Both wheels spin the same direction &rarr; straight line</td>
+    </tr>
+    <tr>
+      <td style="color:#e05a9c; font-weight:600;">for 2 seconds</td>
+      <td style="color:#fff; text-align:left;">Then it stops on its own</td>
+    </tr>
+  </table>
+  <p style="text-align:center; margin-top:40px; font-size:28px;">
+    Three blocks. That's all it took.<br>
+    <span class="highlight">You're a programmer now.</span>
+  </p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 8: Step 2 - Add Reverse                -->
+<!-- ============================================ -->
+<div class="slide" id="s8">
+  <h2>Step 2: <span class="highlight">Forward AND Backward</span></h2>
+  <p class="subtitle">Add 2 more blocks below your existing program.</p>
+
+  <div class="block-stack">
+    <div class="block block-event">
+      <span class="block-icon">&#9873;</span>
+      when program starts
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      set movement motors to <span class="param-drop">A + B</span>
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">forward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+    <div class="block block-control block-new">
+      <span class="block-icon">&#9203;</span>
+      wait <span class="param">1</span> seconds
+    </div>
+    <div class="block block-movement block-new">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">backward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+  </div>
+
+  <div class="find-it">
+    <strong>wait</strong> block is in the <strong>CONTROL</strong> menu (orange) &nbsp;|&nbsp;
+    For backward: click the <strong>forward</strong> dropdown on a new move block and change it to <strong>backward</strong>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 9: Step 3 - Backup Beep                -->
+<!-- ============================================ -->
+<div class="slide" id="s9">
+  <h2>Step 3: <span class="highlight">Add the Backup Beep</span></h2>
+  <p class="subtitle">Real trucks beep when they reverse. So should your robot.</p>
+
+  <div class="block-stack">
+    <div class="block block-event">
+      <span class="block-icon">&#9873;</span>
+      when program starts
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      set movement motors to <span class="param-drop">A + B</span>
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">forward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+    <div class="block block-control">
+      <span class="block-icon">&#9203;</span>
+      wait <span class="param">1</span> seconds
+    </div>
+    <div class="block block-sound block-new">
+      <span class="block-icon">&#9835;</span>
+      play beep <span class="param">72</span> for <span class="param">0.5</span> seconds
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">backward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+  </div>
+
+  <div class="find-it">
+    <strong>play beep</strong> is in the <strong>SOUND</strong> menu (purple) &nbsp;|&nbsp;
+    <strong>72</strong> = a high-pitched beep &nbsp;|&nbsp; Try different numbers! Lower = deeper.
+  </div>
+
+  <p style="text-align:center; color:#69db7c; font-size:24px; margin-top:12px;">Click Play. Did it beep before reversing?</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 10: Step 4 - Add a Face                -->
+<!-- ============================================ -->
+<div class="slide" id="s10">
+  <h2>Step 4: <span class="highlight">Give It a Face</span></h2>
+  <p class="subtitle">Light up the hub's 5x5 display while it drives.</p>
+
+  <div class="block-stack">
+    <div class="block block-event">
+      <span class="block-icon">&#9873;</span>
+      when program starts
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      set movement motors to <span class="param-drop">A + B</span>
+    </div>
+    <div class="block block-light block-new">
+      <span class="block-icon">&#11200;</span>
+      turn on <span class="param">&#9786;</span> for <span class="param">2</span> seconds
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">forward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+    <div class="block block-control">
+      <span class="block-icon">&#9203;</span>
+      wait <span class="param">1</span> seconds
+    </div>
+    <div class="block block-light block-new">
+      <span class="block-icon">&#11200;</span>
+      turn on <span class="param">&#9785;</span> for <span class="param">2</span> seconds
+    </div>
+    <div class="block block-sound">
+      <span class="block-icon">&#9835;</span>
+      play beep <span class="param">72</span> for <span class="param">0.5</span> seconds
+    </div>
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">backward</span> for <span class="param">2</span> <span class="param-drop">seconds</span>
+    </div>
+  </div>
+
+  <div class="find-it">
+    <strong>turn on</strong> is in the <strong>LIGHT</strong> menu &nbsp;|&nbsp;
+    Click the pattern grid to draw a face &mdash; or pick a preset!
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 11: Switch Roles                       -->
+<!-- ============================================ -->
+<div class="slide" id="s11">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:72px;">SWITCH!</h1>
+    <p style="font-size:32px; margin-top:30px;">Drivers become Navigators.</p>
+    <p style="font-size:32px; margin-top:10px;">Navigators become Drivers.</p>
+    <p style="font-size:24px; margin-top:40px; color:#6a7a8a;">New Driver: don't touch the old code. Start a new project.</p>
+    <p style="font-size:24px; margin-top:10px; color:#6a7a8a;">Build the same program from memory &mdash; Navigator can coach you.</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 12: The Python Reveal                  -->
+<!-- ============================================ -->
+<div class="slide" id="s12">
+  <h2>Level Up: <span class="highlight">The Python Reveal</span></h2>
+  <p class="subtitle">Those word blocks? Here's the same program written in Python &mdash; a real programming language.</p>
+  <div class="compare">
+    <div class="compare-col">
+      <h3 style="color:#e05a9c;">Your Word Blocks</h3>
+      <div class="block-stack" style="margin:0; gap:4px;">
+        <div class="block block-event" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9873;</span>
+          when program starts
+        </div>
+        <div class="block block-movement" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9881;</span>
+          set movement motors to <span class="param" style="font-size:13px;">A+B</span>
+        </div>
+        <div class="block block-light" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#11200;</span>
+          turn on <span class="param" style="font-size:13px;">&#9786;</span>
+        </div>
+        <div class="block block-movement" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9881;</span>
+          move forward for <span class="param" style="font-size:13px;">2</span> seconds
+        </div>
+        <div class="block block-control" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9203;</span>
+          wait <span class="param" style="font-size:13px;">1</span> seconds
+        </div>
+        <div class="block block-light" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#11200;</span>
+          turn on <span class="param" style="font-size:13px;">&#9785;</span>
+        </div>
+        <div class="block block-sound" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9835;</span>
+          play beep <span class="param" style="font-size:13px;">72</span> for <span class="param" style="font-size:13px;">0.5</span> seconds
+        </div>
+        <div class="block block-movement" style="font-size:15px; padding:8px 14px;">
+          <span class="block-icon" style="width:24px;height:24px;font-size:12px;">&#9881;</span>
+          move backward for <span class="param" style="font-size:13px;">2</span> seconds
+        </div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <h3 style="color:#69db7c;">The Same Thing in Python</h3>
+      <pre style="font-size:15px; padding:14px; margin:0; border:none;">
+<span class="kw">from</span> hub <span class="kw">import</span> light_matrix, sound
+<span class="kw">import</span> motor_pair, runloop
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    motor_pair.pair(motor_pair.PAIR_1, <span class="num">0</span>, <span class="num">1</span>)
+    light_matrix.show_image(
+        light_matrix.IMAGE_HAPPY)
+    <span class="kw">await</span> motor_pair.move_for_time(
+        motor_pair.PAIR_1,
+        <span class="num">2000</span>, <span class="num">0</span>, velocity=<span class="num">50</span>)
+    <span class="kw">await</span> runloop.sleep_ms(<span class="num">1000</span>)
+    light_matrix.show_image(
+        light_matrix.IMAGE_SAD)
+    <span class="kw">await</span> sound.beep(<span class="num">800</span>, <span class="num">500</span>, <span class="num">100</span>)
+    <span class="kw">await</span> motor_pair.move_for_time(
+        motor_pair.PAIR_1,
+        <span class="num">2000</span>, <span class="num">0</span>, velocity=<span class="num">-50</span>)
+
+runloop.run(main())
+      </pre>
+    </div>
+  </div>
+  <p style="text-align:center; color:#ffd60a; font-size:22px; margin-top:8px;">Same robot. Same behavior. Python is the language used by engineers at Google, NASA, and Tesla.</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 13: Race Intro                         -->
+<!-- ============================================ -->
+<div class="slide" id="s13">
+  <div style="text-align:center;">
+    <h1 style="font-size:64px;">THE RACE</h1>
+    <p class="subtitle" style="font-size:32px;">The 10-Foot Round Trip Challenge</p>
+    <div style="margin-top:40px; text-align:left; max-width:700px; margin-left:auto; margin-right:auto;">
+      <p style="font-size:28px; margin:16px 0;"><span class="highlight">1.</span> Your robot drives forward <strong>exactly 10 feet</strong></p>
+      <p style="font-size:28px; margin:16px 0;"><span class="highlight">2.</span> It <strong>stops</strong></p>
+      <p style="font-size:28px; margin:16px 0;"><span class="highlight">3.</span> It <strong>beeps</strong></p>
+      <p style="font-size:28px; margin:16px 0;"><span class="highlight">4.</span> It reverses back to the <strong>exact starting position</strong></p>
+    </div>
+    <p style="font-size:24px; margin-top:30px; color:#8ecae6;">You get <strong>3 attempts</strong>. Best run counts.</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 14: Race - What to Change              -->
+<!-- ============================================ -->
+<div class="slide" id="s14">
+  <h2>Tuning Your Robot</h2>
+  <p class="subtitle">To go exactly 10 feet you need to experiment with these two numbers:</p>
+
+  <div class="block-stack" style="max-width:600px;">
+    <div class="block block-movement">
+      <span class="block-icon">&#9881;</span>
+      move <span class="param-drop">forward</span> for <span class="param" style="background:#ffd60a; color:#0d1b2a;">???</span> <span class="param-drop">seconds</span>
+    </div>
+  </div>
+
+  <table class="score-table" style="width:85%; margin-top:20px;">
+    <tr>
+      <td style="color:#8ecae6; font-weight:600;">Duration (seconds)</td>
+      <td style="color:#fff; text-align:left;">How long it drives. Try <span class="highlight">4</span>, <span class="highlight">6</span>, <span class="highlight">8</span></td>
+    </tr>
+    <tr>
+      <td style="color:#8ecae6; font-weight:600;">Speed</td>
+      <td style="color:#fff; text-align:left;">Add a <span style="color:#e05a9c; font-weight:600;">set movement speed</span> block. Try <span class="highlight">30</span>, <span class="highlight">50</span>, <span class="highlight">75</span></td>
+    </tr>
+  </table>
+
+  <p style="text-align:center; margin-top:24px; font-size:24px; color:#ff6b9d;">Hint: slow and long is easier to control than fast and short.</p>
+  <p style="text-align:center; margin-top:12px; font-size:22px;">Forward and backward duration should match!</p>
+  <p style="text-align:center; margin-top:12px; font-size:22px; color:#6a7a8a;">Test, adjust, repeat. That's how real engineers do it.</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 15: Scoring                            -->
+<!-- ============================================ -->
+<div class="slide" id="s15">
+  <h2>Race Scoring</h2>
+  <table class="score-table">
+    <tr>
+      <td>Robot reaches the 10-foot line</td>
+      <td>5 pts</td>
+    </tr>
+    <tr>
+      <td>Robot returns within <strong>12 inches</strong> of start</td>
+      <td>5 pts</td>
+    </tr>
+    <tr>
+      <td>Robot returns within <strong>6 inches</strong> of start</td>
+      <td>10 pts</td>
+    </tr>
+    <tr>
+      <td>Robot beeps before reversing</td>
+      <td>5 pts</td>
+    </tr>
+    <tr>
+      <td>Light display changes (forward vs. reverse)</td>
+      <td>5 pts</td>
+    </tr>
+    <tr style="border-top: 2px solid #ffd60a;">
+      <td style="color:#ffd60a; font-weight:700;">Maximum score</td>
+      <td style="font-size:32px;">30 pts</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 16: Sensor Demo                        -->
+<!-- ============================================ -->
+<div class="slide" id="s16">
+  <div style="text-align:center;">
+    <h2>Bonus Round: <span class="highlight">The Robot That Thinks</span></h2>
+    <p style="font-size:28px; margin-top:20px;">What if the robot could <em>stop itself</em> before hitting a wall?</p>
+    <p style="font-size:24px; margin-top:40px; color:#8ecae6;">Watch this.</p>
+    <p style="font-size:20px; margin-top:60px; color:#6a7a8a;">(Instructor demos sensor-equipped robot navigating obstacles)</p>
+    <p style="font-size:26px; margin-top:40px;">That's what you build in the <span class="highlight">full course</span>.</p>
+    <p style="font-size:26px; margin-top:10px;">Sensors. Autonomous navigation. Maze solving. Competition.</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 17: What's Next                        -->
+<!-- ============================================ -->
+<div class="slide" id="s17">
+  <h2>What Comes Next</h2>
+  <p class="subtitle">The full 6-session course</p>
+  <div style="max-width:700px;">
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">01</span> Build your own robot from scratch</p>
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">02</span> Program it to drive, turn, and navigate</p>
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">03</span> Add sensors &mdash; the robot sees the world</p>
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">04</span> Write real Python code &mdash; the language behind Google, NASA, and Tesla</p>
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">05</span> Navigate a maze autonomously</p>
+    <p style="font-size:26px; margin:18px 0;"><span class="highlight" style="font-size:20px; display:inline-block; width:40px;">06</span> Compete in the Robotics &amp; Hoops Championship</p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SLIDE 18: Closing                            -->
+<!-- ============================================ -->
+<div class="slide" id="s18">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:64px;">You Did That.</h1>
+    <p style="font-size:30px; margin-top:24px;">In one hour you programmed a robot to drive, beep, light up, and race.</p>
+    <p style="font-size:28px; margin-top:30px; color:#8ecae6;">Imagine what you could do in six sessions.</p>
+    <p style="font-size:24px; margin-top:50px; color:#6a7a8a;">Talk to your parents. Grab a flyer. Sign up.</p>
+    <p style="font-size:22px; margin-top:20px; color:#4a5568;">SOTC &mdash; Science on the Central Coast</p>
+  </div>
+</div>
+
+<div class="nav">
+  <span id="slideNum">1</span> / <span id="totalSlides">18</span> &nbsp; &larr; &rarr; to navigate
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = current + 1;
+    document.getElementById('totalSlides').textContent = slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  show(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach G — Session Prep Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 48px;
+  }
+  h1 { font-size: 28px; color: #1a2744; margin-bottom: 6px; }
+  .subtitle { font-size: 16px; color: #6a7a8a; margin-bottom: 30px; }
+  h2 {
+    font-size: 20px;
+    color: #1a2744;
+    margin: 32px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e6ec;
+  }
+  h3 { font-size: 16px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ul, ol { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .callout {
+    border-left: 4px solid;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  .callout-red { border-color: #c0392b; background: #fdf0ef; color: #7a1f1a; }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; vertical-align: top; }
+  .section-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 28px 0; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 32px; }
+    h2 { break-after: avoid; }
+    pre, table { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Coach G &mdash; Session Prep Guide</h1>
+  <p class="subtitle">Code Clinic (Session 1) + Prove It (Session 2) &mdash; Everything you need to run both sessions.</p>
+
+  <!-- ===================== GOOGLE CLASSROOM ===================== -->
+  <h2>1. Google Classroom &mdash; What's Already Posted</h2>
+  <p>Everything is already set up in Google Classroom (<code>w4m3nvl6</code>). Here's what students will see:</p>
+
+  <table>
+    <tr><th>Item</th><th>Type</th><th>Who</th></tr>
+    <tr><td><strong>Reference Programs &mdash; BLUE and GOLD</strong></td><td>Material</td><td>All students</td></tr>
+    <tr><td><strong>Assignment 4:</strong> Code Clinic &mdash; My Working Program</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+    <tr><td><strong>Assignment 5:</strong> Prove It &mdash; Demo Program</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+    <tr><td><strong>Assignment 6:</strong> Showcase Routine Challenge</td><td>Assignment (100 pts)</td><td>Green Table only (Vincent, Winston, + anyone who earns it)</td></tr>
+  </table>
+
+  <p>You don't need to create or upload anything. Just know what's there so you can direct students to the right assignment.</p>
+
+  <!-- ===================== SESSION 1 GUIDE ===================== -->
+  <h2>2. Session 1: Code Clinic &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Circulate Red Table for the first 15 minutes. These students have never gotten code running. They don't need a lecture — they need you standing behind them catching typos as they type.
+  </div>
+
+  <h3>Yellow Table &mdash; What Each Student Needs</h3>
+  <p>These students have attempted code before but have specific issues blocking them. Here's what to look for when you get to their screen:</p>
+  <table>
+    <tr><th>Student</th><th>What They Have</th><th>What's Blocking Them</th><th>The Fix</th></tr>
+    <tr>
+      <td><strong>Alex Rios</strong></td>
+      <td>Has imports and partial programs from Assignment 1</td>
+      <td>Syntax errors: <code>awalt</code> instead of <code>await</code>, <code>light matrix</code> with a space</td>
+      <td>Fix the two spelling errors. His code should run immediately after.</td>
+    </tr>
+    <tr>
+      <td><strong>An Dinh</strong></td>
+      <td>Same issues as Alex (they were partners)</td>
+      <td>Same syntax errors blocking execution</td>
+      <td>Same fix. If she doesn't have her old code, have her start fresh with Program BLUE from the board.</td>
+    </tr>
+    <tr>
+      <td><strong>Jeremiah Wong</strong></td>
+      <td>Submitted Program A but it was a color sensor program pasted in the wrong section. Completed Parts 1&ndash;6 of the worksheet.</td>
+      <td>Has conceptual understanding but his code submissions are disorganized. May not have a clean working motor program.</td>
+      <td>Have him start with Program BLUE from the board. He'll move fast once he has the right starting point. Then extend it with reverse and beep since he's done that on the worksheet.</td>
+    </tr>
+    <tr>
+      <td><strong>Hector Gomez Mejia</strong></td>
+      <td>Completed worksheet parts but copy-pasted some wrong answers. Sporadic attendance.</td>
+      <td>May not have working code saved. Needs to get a clean program running.</td>
+      <td>Same as Jeremiah &mdash; start with Program BLUE. If he already has something, check ports and syntax first.</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>If a Yellow Table student doesn't have their old code:</strong> Don't waste time hunting for it. Have them type Program BLUE from the board like Red Table, but they should move faster since they've seen this before. The goal is a working program by end of session, not recovering old files.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session 1 - Code Clinic Slides.html</code> in Chrome/Safari, go full screen (F11 or Cmd+Shift+F)</li>
+    <li>Make sure the Google Classroom material and assignments are posted</li>
+    <li>Have robots charged and ready on tables</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;5</td>
+      <td>Show slides 1&ndash;2. Call out names by table. Students move.</td>
+      <td>Direct traffic. No negotiating on table assignments.</td>
+    </tr>
+    <tr>
+      <td>5&ndash;10</td>
+      <td>Show slide 3 (Program BLUE). Red Table starts typing.</td>
+      <td>Stand at Red Table. Watch screens. Catch typos in real time.</td>
+    </tr>
+    <tr>
+      <td>10&ndash;20</td>
+      <td>Red Table typing. Yellow Table working on existing code.</td>
+      <td>Split time: mostly Red, quick checks on Yellow. The fix for Yellow students is usually ONE thing — find it, fix it, move on.</td>
+    </tr>
+    <tr>
+      <td>20&ndash;25</td>
+      <td>Show slide 6 (Port Check) when students start connecting to robots.</td>
+      <td>This is where port mismatches happen. Help students identify which ports their motors are in and change the one line.</td>
+    </tr>
+    <tr>
+      <td>25&ndash;35</td>
+      <td>Students run code on robots. Troubleshoot.</td>
+      <td>Celebrate every working robot. Seriously — when a Red Table student's robot moves for the first time, make it a moment.</td>
+    </tr>
+    <tr>
+      <td>35&ndash;45</td>
+      <td>Show slide 7 (Submit). Everyone opens Google Classroom.</td>
+      <td>Walk the room. Confirm every student has submitted. Check them off on your roster. No one leaves without submitting.</td>
+    </tr>
+  </table>
+
+  <h3>Common Issues You'll Hit</h3>
+  <table>
+    <tr><th>Problem</th><th>Fix</th></tr>
+    <tr>
+      <td>"My robot won't connect"</td>
+      <td>USB is most reliable (green ring on hub). If Bluetooth, only one laptop at a time per hub. Try turning hub off and on.</td>
+    </tr>
+    <tr>
+      <td>"I typed it exactly but it says error"</td>
+      <td>Check: underscore vs space (<code>light_matrix</code> not <code>light matrix</code>), colon after <code>main():</code>, indentation (4 spaces for everything inside main), <code>await</code> not <code>awalt</code>.</td>
+    </tr>
+    <tr>
+      <td>"My motors spin but the robot doesn't drive"</td>
+      <td>Motors are in wrong ports or paired backwards. Try swapping the two numbers in <code>motor_pair.pair()</code>.</td>
+    </tr>
+    <tr>
+      <td>"I already know how to do this"</td>
+      <td>Great — move to Green Table. Grab the Showcase Routine from Google Classroom.</td>
+    </tr>
+    <tr>
+      <td>Student sitting on phone</td>
+      <td>Laptop open, phone in bag. If they won't start, sit next to them and type the first line together. Getting the first line on screen is the hardest part.</td>
+    </tr>
+  </table>
+
+  <!-- ===================== SESSION 2 GUIDE ===================== -->
+  <h2>3. Session 2: Prove It &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Every student demos. No exceptions, no skipping, no "I'll do it later." Even if their code doesn't run, they come to the table and explain where they're stuck. A score of 1 is infinitely better than a score of 0.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session 2 - Prove It Slides.html</code> in Chrome/Safari, go full screen</li>
+    <li>Set up one "demo table" at the front with a robot ready to go</li>
+    <li>Have your roster ready to check off scores (printed or on your phone)</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;3</td>
+      <td>Slide 1 (title). Quick overview: today you demo.</td>
+      <td>Set expectations. "Everyone presents today. No exceptions."</td>
+    </tr>
+    <tr>
+      <td>3&ndash;8</td>
+      <td>Slide 2 (Bug Hunt). Students find 3 bugs silently.</td>
+      <td>Hands up, don't shout. First 3 correct answers demo first. This creates a competitive incentive.</td>
+    </tr>
+    <tr>
+      <td>8&ndash;10</td>
+      <td>Slide 3 (answers). Quick review.</td>
+      <td>Keep it fast. "Underscore, colon, spelling. That's it. These are the same mistakes we keep making."</td>
+    </tr>
+    <tr>
+      <td>10&ndash;20</td>
+      <td>Slide 4. Open work time. Last chance to get code ready.</td>
+      <td>Circulate. Priority: anyone who still doesn't have working code from Session 1.</td>
+    </tr>
+    <tr>
+      <td>20&ndash;40</td>
+      <td>Slides 5&ndash;7. Demo circuit begins.</td>
+      <td>Call students one at a time. Score live. Keep it moving — 90 seconds each. Students waiting continue working.</td>
+    </tr>
+    <tr>
+      <td>40&ndash;45</td>
+      <td>Slide 8&ndash;9. Submit final code + written reflection.</td>
+      <td>Anyone who updated code resubmits. Everyone answers the written question.</td>
+    </tr>
+  </table>
+
+  <h3>Demo Scoring Sheet</h3>
+  <p>Print this or score on your phone. Circle the score.</p>
+  <table>
+    <tr><th>Student</th><th>3</th><th>2</th><th>1</th><th>0</th><th>Notes</th></tr>
+    <tr><td>Angelo Carpio-Camarena</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Alex Rios</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>An Dinh</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Prince Jaden Arcadio</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jeremiah Wong</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Hector Gomez Mejia</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Markies Madrigal</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Xavier Lawson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kenneth Tran</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kazi Johnson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Vincent Chau</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Winston Zhou</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jacob Peterson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Audrey James Roby</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="callout callout-red">
+    <strong>If a student refuses to demo:</strong> Don't force a confrontation. Say: "You can go last. But everyone goes." If they still won't, score them a 0 and note it. The goal is data, not conflict.
+  </div>
+
+  <!-- ===================== GREEN TABLE STRETCH ===================== -->
+  <h2>4. Green Table: Showcase Routine Challenge</h2>
+
+  <div class="callout callout-green">
+    <strong>Assignment 6</strong> is already in Google Classroom with the full brief &mdash; requirements, scoring rubric, example code skeleton, and submission instructions. You do not need to explain it to them.
+  </div>
+
+  <p><strong>What to say:</strong> "You're at Green Table. Open Google Classroom, find Assignment 6: Showcase Routine Challenge. Read the requirements, grab a robot, and work independently. You'll demo your routine in Session 2."</p>
+
+  <p>That's it. These students are self-directed. Let them read the assignment themselves, figure out the code, and test on their own. If they have a question, they should try to solve it before asking you &mdash; that's part of the challenge.</p>
+
+  <hr>
+
+  <h3>A Note on Vincent and Winston</h3>
+  <p>These two don't need hand-holding. Give them the assignment and get out of their way. If they finish early, the best use of their time is helping a Red or Yellow Table student get their code running &mdash; but they should <strong>point at the screen and explain, not type for the other student</strong>. If they take over someone's keyboard, the other student learns nothing.</p>
+
+  <p>If Jacob Peterson returns, <strong>do not automatically put him at Green Table.</strong> Have him work at Yellow Table first and demonstrate independently that he can write and explain code without Vincent. If he can, he earns Green Table. If he can't, that's important information.</p>
+
+  <hr>
+
+  <p style="font-size:13px; color:#6a7a8a; font-style:italic; margin-top:24px;">Files for this session: <code>Session 1 - Code Clinic Slides.html</code>, <code>Session 2 - Prove It Slides.html</code> (open in browser, go full screen). This guide is for your reference only &mdash; do not share with students.</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOTC Math Jeopardy v2 — Science on the Court</title>
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #243660;
+    --navy-dark: #111D35;
+    --gold: #D4A843;
+    --gold-light: #E8C76A;
+    --gold-dim: #9E7D33;
+    --white: #F5F5F5;
+    --gray: #555;
+    --used: #2A3450;
+    --red: #E74C3C;
+    --blue: #3498DB;
+    --team-gold: #D4A843;
+    --green: #2ECC71;
+    --timer-green: #2ECC71;
+    --timer-yellow: #F1C40F;
+    --timer-red: #E74C3C;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--navy-dark);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ========== HEADER ========== */
+  .game-header {
+    text-align: center;
+    padding: 12px 16px 8px;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+    border-bottom: 3px solid var(--gold);
+  }
+  .game-header h1 {
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+  }
+  .game-header .subtitle {
+    font-size: clamp(0.7rem, 1.4vw, 1rem);
+    color: var(--gold-dim);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* ========== JEOPARDY BOARD ========== */
+  .board-container {
+    padding: 10px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto repeat(5, 1fr);
+    gap: 6px;
+    width: 100%;
+    aspect-ratio: 5 / 3.2;
+  }
+
+  /* Category headers */
+  .category-header {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 4px;
+    cursor: default;
+  }
+  .category-header span {
+    font-size: clamp(0.8rem, 1.8vw, 1.3rem);
+    font-weight: 800;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.15;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  }
+
+  /* Point cells */
+  .cell {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border: 2px solid rgba(212,168,67,0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .cell:hover:not(.used) {
+    background: linear-gradient(135deg, var(--navy-light) 0%, #2E4578 100%);
+    border-color: var(--gold);
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(212,168,67,0.25);
+  }
+  .cell .points {
+    font-size: clamp(1.2rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: var(--gold-light);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+  .cell.used {
+    background: var(--used);
+    border-color: rgba(100,100,120,0.2);
+    cursor: default;
+    opacity: 0.35;
+  }
+  .cell.used .points {
+    color: #445;
+  }
+  .cell .daily-double-star {
+    display: none;
+  }
+
+  /* ========== QUESTION OVERLAY ========== */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .overlay.active {
+    display: flex;
+  }
+
+  .question-panel {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+    border: 3px solid var(--gold);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1300px;
+    max-height: 95vh;
+    overflow-y: auto;
+    padding: 24px 28px;
+    box-shadow: 0 0 60px rgba(212,168,67,0.2);
+    position: relative;
+  }
+
+  /* Daily Double splash */
+  .daily-double-splash {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: var(--navy-dark);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .daily-double-splash.active {
+    display: flex;
+    animation: ddFlash 0.6s ease;
+  }
+  @keyframes ddFlash {
+    0% { opacity: 0; transform: scale(0.7); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .daily-double-splash h2 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+    animation: ddPulse 0.8s ease infinite alternate;
+  }
+  @keyframes ddPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+  .daily-double-splash .dd-subtitle {
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    color: var(--gold-dim);
+    margin-top: 12px;
+    letter-spacing: 2px;
+  }
+  .daily-double-splash button {
+    margin-top: 30px;
+    padding: 14px 48px;
+    font-size: 1.2rem;
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  .daily-double-splash button:hover {
+    background: var(--gold-light);
+  }
+
+  /* Question header */
+  .q-header {
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid rgba(212,168,67,0.3);
+  }
+  .q-category {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .q-points-display {
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    color: var(--gold-light);
+    font-weight: 800;
+    margin-top: 4px;
+  }
+  .q-dd-badge {
+    display: none;
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 4px 16px;
+    border-radius: 20px;
+    margin-top: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Tier columns */
+  .tiers-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .tier-col {
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(212,168,67,0.2);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .tier-col.tier-a { border-left: 5px solid var(--timer-green); }
+  .tier-col.tier-b { border-left: 5px solid var(--blue); }
+
+  .tier-label {
+    font-size: clamp(0.8rem, 1.4vw, 1.1rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .tier-a .tier-label { color: var(--timer-green); }
+  .tier-b .tier-label { color: var(--blue); }
+
+  .tier-question {
+    font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+    line-height: 1.5;
+    color: var(--white);
+    min-height: 80px;
+  }
+
+  .tier-answer {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 2px dashed rgba(212,168,67,0.3);
+    font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .tier-a .tier-answer { color: var(--timer-green); }
+  .tier-b .tier-answer { color: #5DADE2; }
+  .tier-answer.visible { display: block; }
+
+  /* Timer */
+  .timer-container {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .timer-display {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s;
+  }
+  .timer-bar-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s linear, background 0.5s;
+    width: 100%;
+  }
+
+  /* Control buttons */
+  .q-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .q-controls button {
+    padding: 12px 32px;
+    font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-answer {
+    background: var(--gold);
+    color: var(--navy-dark);
+  }
+  .btn-answer:hover { background: var(--gold-light); }
+  .btn-back {
+    background: rgba(255,255,255,0.12);
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.2) !important;
+  }
+  .btn-back:hover { background: rgba(255,255,255,0.2); }
+  .btn-timer-toggle {
+    background: rgba(231,76,60,0.8);
+    color: white;
+  }
+  .btn-timer-toggle:hover { background: rgba(231,76,60,1); }
+
+  /* ========== SCOREBOARD ========== */
+  .scoreboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 10px 16px;
+  }
+  .scoreboard-title {
+    text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .teams-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .team-card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--navy);
+    border: 2px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .team-color-bar {
+    height: 8px;
+  }
+  .team-card[data-team="red"] .team-color-bar { background: var(--red); }
+  .team-card[data-team="blue"] .team-color-bar { background: var(--blue); }
+  .team-card[data-team="gold"] .team-color-bar { background: var(--team-gold); }
+  .team-card[data-team="green"] .team-color-bar { background: var(--green); }
+
+  .team-card[data-team="red"] { border-color: rgba(231,76,60,0.3); }
+  .team-card[data-team="blue"] { border-color: rgba(52,152,219,0.3); }
+  .team-card[data-team="gold"] { border-color: rgba(212,168,67,0.3); }
+  .team-card[data-team="green"] { border-color: rgba(46,204,113,0.3); }
+
+  .team-info {
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .team-name {
+    font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .team-card[data-team="red"] .team-name { color: var(--red); }
+  .team-card[data-team="blue"] .team-name { color: var(--blue); }
+  .team-card[data-team="gold"] .team-name { color: var(--team-gold); }
+  .team-card[data-team="green"] .team-name { color: var(--green); }
+
+  .team-score {
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--white);
+    margin: 4px 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .team-buttons {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    padding-bottom: 4px;
+  }
+  .team-buttons button {
+    width: 44px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .team-buttons .btn-plus {
+    background: rgba(46,204,113,0.25);
+    color: var(--green);
+    border: 1px solid rgba(46,204,113,0.4);
+  }
+  .team-buttons .btn-plus:hover { background: rgba(46,204,113,0.45); }
+  .team-buttons .btn-minus {
+    background: rgba(231,76,60,0.25);
+    color: var(--red);
+    border: 1px solid rgba(231,76,60,0.4);
+  }
+  .team-buttons .btn-minus:hover { background: rgba(231,76,60,0.45); }
+
+  /* Custom score button */
+  .team-buttons .btn-custom {
+    width: auto;
+    padding: 0 8px;
+    background: rgba(212,168,67,0.2);
+    color: var(--gold);
+    border: 1px solid rgba(212,168,67,0.35);
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+  }
+  .team-buttons .btn-custom:hover { background: rgba(212,168,67,0.4); }
+
+  /* Points label under +/- */
+  .points-label {
+    text-align: center;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.35);
+    padding-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========== RESET BUTTON ========== */
+  .footer-controls {
+    text-align: center;
+    padding: 6px 0 18px;
+  }
+  .footer-controls button {
+    padding: 8px 24px;
+    font-size: 0.8rem;
+    background: rgba(231,76,60,0.15);
+    color: rgba(231,76,60,0.7);
+    border: 1px solid rgba(231,76,60,0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin: 0 6px;
+  }
+  .footer-controls button:hover {
+    background: rgba(231,76,60,0.3);
+    color: var(--red);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .board { aspect-ratio: auto; gap: 4px; }
+    .cell { min-height: 52px; }
+    .tiers-container { grid-template-columns: 1fr; gap: 12px; }
+    .teams-grid { grid-template-columns: repeat(2, 1fr); }
+    .question-panel { padding: 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .teams-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .board { gap: 3px; }
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .overlay.active .question-panel {
+    animation: fadeIn 0.3s ease;
+  }
+
+  /* Winner celebration */
+  .winner-banner {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0,0,0,0.9);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .winner-banner.active {
+    display: flex;
+  }
+  .winner-banner h2 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 10px rgba(212,168,67,0.4);
+    text-align: center;
+  }
+  .winner-banner p {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: var(--white);
+    margin-top: 10px;
+  }
+  .winner-banner .close-hint {
+    margin-top: 30px;
+    color: var(--gold-dim);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="game-header">
+  <h1>SOTC Math Jeopardy</h1>
+  <div class="subtitle">Fresh Set &mdash; Version 2</div>
+</header>
+
+<!-- ==================== GAME BOARD ==================== -->
+<div class="board-container">
+  <div class="board" id="board">
+    <!-- JS will populate -->
+  </div>
+</div>
+
+<!-- ==================== SCOREBOARD ==================== -->
+<div class="scoreboard">
+  <div class="scoreboard-title">Scoreboard</div>
+  <div class="teams-grid">
+    <div class="team-card" data-team="red">
+      <div class="team-color-bar"></div>
+      <div class="team-info">
+        <div class="team-name">Red Team</div>
+        <div class="team-score" id="score-red">0</div>
+        <div class="team-buttons">
+          <button class="btn-minus" onclick="changeScore('red', -100)" title="Subtract 100">-</button>
+          <button class="btn-custom" onclick="customScore('red')" title="Add/subtract custom points">PTS</button>
+          <button class="btn-plus" onclick="changeScore('red', 100)" title="Add 100">+</button>
+        </div>
+        <div class="points-label">&minus;100 &nbsp;/&nbsp; +100</div>
+      </div>
+    </div>
+    <div class="team-card" data-team="blue">
+      <div class="team-color-bar"></div>
+      <div class="team-info">
+        <div class="team-name">Blue Team</div>
+        <div class="team-score" id="score-blue">0</div>
+        <div class="team-buttons">
+          <button class="btn-minus" onclick="changeScore('blue', -100)" title="Subtract 100">-</button>
+          <button class="btn-custom" onclick="customScore('blue')" title="Add/subtract custom points">PTS</button>
+          <button class="btn-plus" onclick="changeScore('blue', 100)" title="Add 100">+</button>
+        </div>
+        <div class="points-label">&minus;100 &nbsp;/&nbsp; +100</div>
+      </div>
+    </div>
+    <div class="team-card" data-team="gold">
+      <div class="team-color-bar"></div>
+      <div class="team-info">
+        <div class="team-name">Gold Team</div>
+        <div class="team-score" id="score-gold">0</div>
+        <div class="team-buttons">
+          <button class="btn-minus" onclick="changeScore('gold', -100)" title="Subtract 100">-</button>
+          <button class="btn-custom" onclick="customScore('gold')" title="Add/subtract custom points">PTS</button>
+          <button class="btn-plus" onclick="changeScore('gold', 100)" title="Add 100">+</button>
+        </div>
+        <div class="points-label">&minus;100 &nbsp;/&nbsp; +100</div>
+      </div>
+    </div>
+    <div class="team-card" data-team="green">
+      <div class="team-color-bar"></div>
+      <div class="team-info">
+        <div class="team-name">Green Team</div>
+        <div class="team-score" id="score-green">0</div>
+        <div class="team-buttons">
+          <button class="btn-minus" onclick="changeScore('green', -100)" title="Subtract 100">-</button>
+          <button class="btn-custom" onclick="customScore('green')" title="Add/subtract custom points">PTS</button>
+          <button class="btn-plus" onclick="changeScore('green', 100)" title="Add 100">+</button>
+        </div>
+        <div class="points-label">&minus;100 &nbsp;/&nbsp; +100</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer controls -->
+<div class="footer-controls">
+  <button onclick="showWinner()">Show Winner</button>
+  <button onclick="resetGame()">Reset Game</button>
+</div>
+
+<!-- ==================== QUESTION OVERLAY ==================== -->
+<div class="overlay" id="overlay">
+  <div class="question-panel" id="questionPanel">
+    <div class="q-header">
+      <div class="q-category" id="qCategory"></div>
+      <div class="q-points-display" id="qPoints"></div>
+      <div class="q-dd-badge" id="qDDBadge">Daily Double!</div>
+    </div>
+    <div class="timer-container">
+      <div class="timer-display" id="timerDisplay">60</div>
+      <div class="timer-bar-track">
+        <div class="timer-bar-fill" id="timerBar"></div>
+      </div>
+    </div>
+    <div class="tiers-container">
+      <div class="tier-col tier-a">
+        <div class="tier-label">Tier A &mdash; Grades 1&ndash;3</div>
+        <div class="tier-question" id="tierAQuestion"></div>
+        <div class="tier-answer" id="tierAAnswer"></div>
+      </div>
+      <div class="tier-col tier-b">
+        <div class="tier-label">Tier B &mdash; Grades 4&ndash;7</div>
+        <div class="tier-question" id="tierBQuestion"></div>
+        <div class="tier-answer" id="tierBAnswer"></div>
+      </div>
+    </div>
+    <div class="q-controls">
+      <button class="btn-timer-toggle" id="btnTimerToggle" onclick="toggleTimer()">Pause Timer</button>
+      <button class="btn-answer" id="btnShowAnswer" onclick="showAnswer()">Show Answer</button>
+      <button class="btn-back" onclick="backToBoard()">Back to Board</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DAILY DOUBLE SPLASH ==================== -->
+<div class="daily-double-splash" id="ddSplash">
+  <h2>Daily Double!</h2>
+  <div class="dd-subtitle">Points are doubled for this question!</div>
+  <button onclick="closeDDSplash()">Let's Go!</button>
+</div>
+
+<!-- ==================== WINNER BANNER ==================== -->
+<div class="winner-banner" id="winnerBanner" onclick="this.classList.remove('active')">
+  <h2 id="winnerText"></h2>
+  <p id="winnerScore"></p>
+  <div class="close-hint">Click anywhere to close</div>
+</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// ===================================================
+// QUESTION DATA
+// Each category has 5 levels (100-500).
+// Each level has: tierA (question, answer), tierB (question, answer)
+// ===================================================
+
+const categories = [
+  {
+    name: "Buzzer Beater",
+    questions: [
+      {
+        points: 100,
+        tierA: {
+          q: "A race is 20 seconds long. You've been running for 13 seconds. How many seconds are left?",
+          a: "20 - 13 = 7 seconds"
+        },
+        tierB: {
+          q: "A sprinter runs 100 meters in 12.5 seconds. Another runs it in 14.2 seconds. How much faster was the first sprinter? If the faster sprinter could keep that pace, how far would they run in 1 minute?",
+          a: "1.7 seconds faster. 60 \u00F7 12.5 = 4.8, so 4.8 \u00D7 100 = 480 meters"
+        }
+      },
+      {
+        points: 200,
+        tierA: {
+          q: "A swimmer does 3 laps. Each lap takes 2 minutes. How many minutes does she swim in total?",
+          a: "3 \u00D7 2 = 6 minutes"
+        },
+        tierB: {
+          q: "A cyclist rides 15 miles per hour for 2.5 hours, then 12 miles per hour for 1.5 hours. How far did they ride in total?",
+          a: "15 \u00D7 2.5 + 12 \u00D7 1.5 = 37.5 + 18 = 55.5 miles"
+        }
+      },
+      {
+        points: 300,
+        tierA: {
+          q: "Practice starts at 4:00. It lasts 1 hour and 30 minutes. What time does practice end?",
+          a: "5:30"
+        },
+        tierB: {
+          q: "A marathon is 26 miles. A runner finishes the first 13 miles in 1 hour 45 minutes and the second 13 miles in 2 hours 10 minutes. What was her total time? How many minutes is that?",
+          a: "3 hours 55 minutes = 235 minutes"
+        }
+      },
+      {
+        points: 400,
+        tierA: {
+          q: "A ball is thrown 8 feet on the first try and 12 feet on the second try. How far was it thrown in total? How much farther was the second throw?",
+          a: "20 feet total, 4 feet farther"
+        },
+        tierB: {
+          q: "A track is 400 meters around. An athlete runs 6 laps in 12 minutes. What was her speed in meters per minute? How many laps would she complete in 20 minutes at that pace?",
+          a: "2400 \u00F7 12 = 200 meters/min. 20 \u00D7 200 = 4000 meters. 4000 \u00F7 400 = 10 laps"
+        }
+      },
+      {
+        points: 500,
+        tierA: {
+          q: "You walk 5 blocks to the gym. Then you walk 3 blocks to the store. Then you walk 7 blocks home. How many blocks did you walk in total? If each block takes 2 minutes, how long were you walking?",
+          a: "15 blocks, 30 minutes"
+        },
+        tierB: {
+          q: "Two runners start at the same point. Runner A goes 8 mph east. Runner B goes 6 mph west. After 1.5 hours, how far apart are they? If Runner B then turns around and runs toward Runner A at the same speed, how long until they meet?",
+          a: "8 \u00D7 1.5 + 6 \u00D7 1.5 = 12 + 9 = 21 miles apart. They close at 8 + 6 = 14 mph. 21 \u00F7 14 = 1.5 hours"
+        }
+      }
+    ]
+  },
+  {
+    name: "Rebound Math",
+    questions: [
+      {
+        points: 100,
+        tierA: {
+          q: "A basketball is round like a circle. If you walk around the outside of the basketball court and it takes 100 steps, how many steps is halfway around?",
+          a: "50 steps"
+        },
+        tierB: {
+          q: "A rectangular basketball court is 94 feet long and 50 feet wide. What is the perimeter of the court?",
+          a: "2 \u00D7 94 + 2 \u00D7 50 = 288 feet"
+        }
+      },
+      {
+        points: 200,
+        tierA: {
+          q: "A soccer field has 4 corners. A triangle has 3 corners. How many corners do they have together?",
+          a: "7 corners"
+        },
+        tierB: {
+          q: "A triangular pennant flag has a base of 8 inches and a height of 14 inches. What is its area?",
+          a: "\u00BD \u00D7 8 \u00D7 14 = 56 square inches"
+        }
+      },
+      {
+        points: 300,
+        tierA: {
+          q: "You need 6 feet of rope to make one jump rope. How many feet of rope do you need for 4 jump ropes?",
+          a: "24 feet"
+        },
+        tierB: {
+          q: "A circular track has a radius of 35 meters. What is the circumference? (Use \u03C0 \u2248 3.14). If you run around it twice, how far do you go?",
+          a: "2 \u00D7 3.14 \u00D7 35 = 219.8 meters. Twice = 439.6 meters"
+        }
+      },
+      {
+        points: 400,
+        tierA: {
+          q: "A basketball hoop is 10 feet high. You can reach 6 feet. How much higher do you need to jump to touch the rim?",
+          a: "4 feet"
+        },
+        tierB: {
+          q: "A rectangular gym floor needs to be refinished. The gym is 84 feet by 50 feet. Refinishing costs $3 per square foot. What is the total cost?",
+          a: "84 \u00D7 50 = 4,200 sq ft. 4,200 \u00D7 $3 = $12,600"
+        }
+      },
+      {
+        points: 500,
+        tierA: {
+          q: "Your room is 10 steps long and 8 steps wide. If you walk all the way around the edge, how many steps is that?",
+          a: "10 + 8 + 10 + 8 = 36 steps"
+        },
+        tierB: {
+          q: "A running track has two straight sides of 100 meters each and two semicircular ends, each with a radius of 32 meters. What is the total distance around the track? (Use \u03C0 \u2248 3.14)",
+          a: "Two straights: 200m. Two semicircles = one full circle: 2 \u00D7 3.14 \u00D7 32 = 200.96m. Total: 200 + 200.96 = 400.96 \u2248 401 meters"
+        }
+      }
+    ]
+  },
+  {
+    name: "MVP Stats",
+    questions: [
+      {
+        points: 100,
+        tierA: {
+          q: "In three games, a player scored 4, 6, and 2 points. What was her highest score? What was her lowest?",
+          a: "Highest: 6, Lowest: 2"
+        },
+        tierB: {
+          q: "A player scored 18, 24, 15, 22, and 21 points in 5 games. What was his average (mean) score?",
+          a: "(18 + 24 + 15 + 22 + 21) \u00F7 5 = 100 \u00F7 5 = 20 points"
+        }
+      },
+      {
+        points: 200,
+        tierA: {
+          q: "Your team won 5 games and lost 3 games. How many total games did you play? Did you win more or lose more?",
+          a: "8 games total, won more"
+        },
+        tierB: {
+          q: "A basketball team's record is 28 wins and 12 losses. What percentage of their games have they won?",
+          a: "28 \u00F7 40 = 0.70 = 70%"
+        }
+      },
+      {
+        points: 300,
+        tierA: {
+          q: "Here are the ages of 5 players: 8, 9, 8, 10, 8. Which age appears the most?",
+          a: "8 appears 3 times \u2014 it's the mode"
+        },
+        tierB: {
+          q: "A player's scores for 6 games are: 12, 18, 24, 15, 30, 21. What is the median score? What is the range?",
+          a: "Ordered: 12, 15, 18, 21, 24, 30. Median: (18 + 21) \u00F7 2 = 19.5. Range: 30 - 12 = 18"
+        }
+      },
+      {
+        points: 400,
+        tierA: {
+          q: "Three friends ran a race. Mia took 12 seconds, Jay took 15 seconds, and Kim took 10 seconds. Put them in order from fastest to slowest.",
+          a: "Kim (10s), Mia (12s), Jay (15s)"
+        },
+        tierB: {
+          q: "A pitcher threw 45 strikes out of 75 total pitches. What fraction of pitches were strikes? Simplify the fraction. What percentage is that?",
+          a: "45/75 = 3/5 = 60%"
+        }
+      },
+      {
+        points: 500,
+        tierA: {
+          q: "A player scored 3 points in game 1, 5 in game 2, 7 in game 3, and 9 in game 4. If the pattern continues, how many will she score in game 5?",
+          a: "11 points \u2014 pattern adds 2 each game"
+        },
+        tierB: {
+          q: "Team A averages 95 points per game over 20 games. Team B averages 102 points per game over 15 games. Which team has scored more total points, and by how much?",
+          a: "Team A: 95 \u00D7 20 = 1,900. Team B: 102 \u00D7 15 = 1,530. Team A scored 370 more points"
+        }
+      }
+    ]
+  },
+  {
+    name: "Playbook",
+    questions: [
+      {
+        points: 100,
+        tierA: {
+          q: "What comes next? 2, 4, 6, 8, ___",
+          a: "10 \u2014 counting by 2s"
+        },
+        tierB: {
+          q: "A football team scores this pattern of points over 5 games: 14, 21, 28, 35, ___. What's the next score? What's the rule?",
+          a: "42. Rule: add 7 each game"
+        }
+      },
+      {
+        points: 200,
+        tierA: {
+          q: "Fill in the blank: 5 + ___ = 12",
+          a: "7"
+        },
+        tierB: {
+          q: "A player scores x points per game. After 6 games she has 132 points total. Write the equation and solve for x.",
+          a: "6x = 132, x = 22 points per game"
+        }
+      },
+      {
+        points: 300,
+        tierA: {
+          q: "Double it! 3 \u2192 6. 5 \u2192 10. 8 \u2192 ?",
+          a: "16"
+        },
+        tierB: {
+          q: "In a tournament, each round eliminates half the teams. Starting with 64 teams, write out how many are left after each round until there's a champion. How many rounds is that?",
+          a: "64 \u2192 32 \u2192 16 \u2192 8 \u2192 4 \u2192 2 \u2192 1. That's 6 rounds"
+        }
+      },
+      {
+        points: 400,
+        tierA: {
+          q: "A coach gives out 2 water bottles per player. There are 8 players. How many water bottles does the coach need? If 3 more players join, how many more bottles?",
+          a: "16 bottles. 3 more players need 6 more bottles"
+        },
+        tierB: {
+          q: "A gym membership costs $25 to join plus $10 per month. Write an expression for the total cost after m months. How much does 8 months cost? How many months can you afford with $175?",
+          a: "Cost = 25 + 10m. 8 months: 25 + 80 = $105. $175: 175 - 25 = 150, 150 \u00F7 10 = 15 months"
+        }
+      },
+      {
+        points: 500,
+        tierA: {
+          q: "Start at 1. The rule is 'double and add 1.' 1 \u2192 3 \u2192 7 \u2192 ___. What comes next?",
+          a: "7 \u00D7 2 + 1 = 15"
+        },
+        tierB: {
+          q: "A ball bounces to 3/4 of its previous height each time. If it's dropped from 256 cm, how high does it bounce after the 1st, 2nd, 3rd, and 4th bounce?",
+          a: "1st: 192cm, 2nd: 144cm, 3rd: 108cm, 4th: 81cm"
+        }
+      }
+    ]
+  },
+  {
+    name: "Concession Stand",
+    questions: [
+      {
+        points: 100,
+        tierA: {
+          q: "A water bottle costs $2. You have $5. How much change do you get?",
+          a: "$3"
+        },
+        tierB: {
+          q: "Nachos cost $4.50, a hot dog costs $3.75, and a drink costs $2.25. What's the total? If you pay with $20, how much change?",
+          a: "$10.50 total. $9.50 change"
+        }
+      },
+      {
+        points: 200,
+        tierA: {
+          q: "Popcorn costs $3. You buy 4 bags for your friends. How much do you spend?",
+          a: "$12"
+        },
+        tierB: {
+          q: "A team needs to raise $840 for new uniforms. They sell candy bars for $2.50 each. How many candy bars do they need to sell?",
+          a: "840 \u00F7 2.50 = 336 candy bars"
+        }
+      },
+      {
+        points: 300,
+        tierA: {
+          q: "You have $10. You buy a hot dog for $3 and chips for $2. How much do you have left? Can you also buy a $4 drink?",
+          a: "$5 left. Yes, you can buy the drink and have $1 left"
+        },
+        tierB: {
+          q: "A sporting goods store has a 20% off sale. A basketball costs $35 and shoes cost $85. What's the total after the discount?",
+          a: "Original: $120. 20% off: $120 \u00D7 0.80 = $96"
+        }
+      },
+      {
+        points: 400,
+        tierA: {
+          q: "Your team is selling cupcakes for $1 each. Monday you sold 8, Tuesday you sold 12, Wednesday you sold 6. How much money did you make in 3 days?",
+          a: "26 cupcakes \u00D7 $1 = $26"
+        },
+        tierB: {
+          q: "A gym charges $45/month. A yearly pass costs $450. How much do you save per year by buying the yearly pass? What percentage discount is that compared to paying monthly?",
+          a: "Monthly for year: $540. Save: $540 - $450 = $90. Discount: 90 \u00F7 540 = 16.7%"
+        }
+      },
+      {
+        points: 500,
+        tierA: {
+          q: "You saved $3 each week for 5 weeks. Then you spent $7 on a t-shirt. How much do you have left? If you keep saving $3/week, how many more weeks until you have $20?",
+          a: "$15 saved - $7 = $8 left. Need $12 more. $12 \u00F7 $3 = 4 more weeks"
+        },
+        tierB: {
+          q: "A booster club sells 200 tickets at $15 each and 150 tickets at $25 each. They spend $2,800 on event costs and donate 30% of the profit to charity. How much goes to charity?",
+          a: "Revenue: 200 \u00D7 15 + 150 \u00D7 25 = 3,000 + 3,750 = $6,750. Profit: 6,750 - 2,800 = $3,950. Charity: 3,950 \u00D7 0.30 = $1,185"
+        }
+      }
+    ]
+  }
+];
+
+// ===================================================
+// GAME STATE
+// ===================================================
+const scores = { red: 0, blue: 0, gold: 0, green: 0 };
+const usedCells = new Set();
+let dailyDoubles = new Set();
+let timerInterval = null;
+let timerSeconds = 60;
+let timerPaused = false;
+let currentPoints = 0;
+let currentIsDD = false;
+let audioCtx = null;
+
+// Pick 2 random daily doubles
+function pickDailyDoubles() {
+  dailyDoubles = new Set();
+  while (dailyDoubles.size < 2) {
+    const cat = Math.floor(Math.random() * 5);
+    const row = Math.floor(Math.random() * 5);
+    dailyDoubles.add(`${cat}-${row}`);
+  }
+}
+
+// ===================================================
+// BUILD THE BOARD
+// ===================================================
+function buildBoard() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+
+  // Category headers
+  categories.forEach(cat => {
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.innerHTML = `<span>${cat.name}</span>`;
+    board.appendChild(header);
+  });
+
+  // Question cells: rows by point value
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 5; col++) {
+      const key = `${col}-${row}`;
+      const pts = categories[col].questions[row].points;
+      const cell = document.createElement('div');
+      cell.className = 'cell' + (usedCells.has(key) ? ' used' : '');
+      cell.id = `cell-${key}`;
+      cell.innerHTML = `<span class="points">${pts}</span>`;
+      if (!usedCells.has(key)) {
+        cell.addEventListener('click', () => openQuestion(col, row));
+      }
+      board.appendChild(cell);
+    }
+  }
+}
+
+// ===================================================
+// OPEN QUESTION
+// ===================================================
+function openQuestion(col, row) {
+  const key = `${col}-${row}`;
+  if (usedCells.has(key)) return;
+
+  const cat = categories[col];
+  const q = cat.questions[row];
+  currentPoints = q.points;
+  currentIsDD = dailyDoubles.has(key);
+
+  // Mark used
+  usedCells.add(key);
+  const cell = document.getElementById(`cell-${key}`);
+  cell.classList.add('used');
+  cell.onclick = null;
+
+  // Fill question panel
+  document.getElementById('qCategory').textContent = cat.name;
+
+  if (currentIsDD) {
+    document.getElementById('qPoints').textContent = `${q.points * 2} Points (Double!)`;
+    document.getElementById('qDDBadge').style.display = 'inline-block';
+  } else {
+    document.getElementById('qPoints').textContent = `${q.points} Points`;
+    document.getElementById('qDDBadge').style.display = 'none';
+  }
+
+  document.getElementById('tierAQuestion').textContent = q.tierA.q;
+  document.getElementById('tierAAnswer').textContent = q.tierA.a;
+  document.getElementById('tierBQuestion').textContent = q.tierB.q;
+  document.getElementById('tierBAnswer').textContent = q.tierB.a;
+
+  // Hide answers
+  document.getElementById('tierAAnswer').classList.remove('visible');
+  document.getElementById('tierBAnswer').classList.remove('visible');
+  document.getElementById('btnShowAnswer').style.display = '';
+
+  // Daily Double splash
+  if (currentIsDD) {
+    document.getElementById('ddSplash').classList.add('active');
+    playDDSound();
+  } else {
+    showQuestionOverlay();
+  }
+}
+
+function closeDDSplash() {
+  document.getElementById('ddSplash').classList.remove('active');
+  showQuestionOverlay();
+}
+
+function showQuestionOverlay() {
+  document.getElementById('overlay').classList.add('active');
+  startTimer();
+}
+
+// ===================================================
+// TIMER
+// ===================================================
+function startTimer() {
+  clearInterval(timerInterval);
+  timerSeconds = 60;
+  timerPaused = false;
+  updateTimerDisplay();
+  document.getElementById('btnTimerToggle').textContent = 'Pause Timer';
+
+  timerInterval = setInterval(() => {
+    if (!timerPaused) {
+      timerSeconds--;
+      updateTimerDisplay();
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        playBuzzer();
+      }
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const display = document.getElementById('timerDisplay');
+  const bar = document.getElementById('timerBar');
+  display.textContent = Math.max(0, timerSeconds);
+
+  const pct = (timerSeconds / 60) * 100;
+  bar.style.width = pct + '%';
+
+  let color;
+  if (timerSeconds > 30) {
+    color = 'var(--timer-green)';
+  } else if (timerSeconds > 10) {
+    color = 'var(--timer-yellow)';
+  } else {
+    color = 'var(--timer-red)';
+  }
+  display.style.color = color;
+  bar.style.background = color;
+}
+
+function toggleTimer() {
+  timerPaused = !timerPaused;
+  document.getElementById('btnTimerToggle').textContent = timerPaused ? 'Resume Timer' : 'Pause Timer';
+}
+
+// ===================================================
+// SHOW ANSWER
+// ===================================================
+function showAnswer() {
+  clearInterval(timerInterval);
+  document.getElementById('tierAAnswer').classList.add('visible');
+  document.getElementById('tierBAnswer').classList.add('visible');
+  document.getElementById('btnShowAnswer').style.display = 'none';
+}
+
+// ===================================================
+// BACK TO BOARD
+// ===================================================
+function backToBoard() {
+  clearInterval(timerInterval);
+  document.getElementById('overlay').classList.remove('active');
+}
+
+// ===================================================
+// SCOREBOARD
+// ===================================================
+function changeScore(team, amount) {
+  scores[team] += amount;
+  document.getElementById(`score-${team}`).textContent = scores[team].toLocaleString();
+}
+
+function customScore(team) {
+  const val = prompt(`Enter points to add to ${team.charAt(0).toUpperCase() + team.slice(1)} Team.\nUse a negative number to subtract (e.g., -200).`);
+  if (val === null) return;
+  const num = parseInt(val, 10);
+  if (isNaN(num)) { alert('Please enter a valid number.'); return; }
+  changeScore(team, num);
+}
+
+// ===================================================
+// WINNER
+// ===================================================
+function showWinner() {
+  let maxScore = -Infinity;
+  let winners = [];
+  for (const [team, score] of Object.entries(scores)) {
+    if (score > maxScore) {
+      maxScore = score;
+      winners = [team];
+    } else if (score === maxScore) {
+      winners.push(team);
+    }
+  }
+
+  const nameMap = { red: 'Red Team', blue: 'Blue Team', gold: 'Gold Team', green: 'Green Team' };
+
+  if (winners.length > 1 && maxScore === 0) {
+    document.getElementById('winnerText').textContent = "No scores yet!";
+    document.getElementById('winnerScore').textContent = "Play some questions first.";
+  } else if (winners.length > 1) {
+    document.getElementById('winnerText').textContent = "It's a Tie!";
+    document.getElementById('winnerScore').textContent = winners.map(w => nameMap[w]).join(' & ') + ` with ${maxScore.toLocaleString()} points!`;
+  } else {
+    document.getElementById('winnerText').textContent = `${nameMap[winners[0]]} Wins!`;
+    document.getElementById('winnerScore').textContent = `${maxScore.toLocaleString()} points!`;
+  }
+  document.getElementById('winnerBanner').classList.add('active');
+  playWinSound();
+}
+
+// ===================================================
+// RESET
+// ===================================================
+function resetGame() {
+  if (!confirm('Are you sure you want to reset the entire game? All scores and progress will be lost.')) return;
+  scores.red = 0;
+  scores.blue = 0;
+  scores.gold = 0;
+  scores.green = 0;
+  document.getElementById('score-red').textContent = '0';
+  document.getElementById('score-blue').textContent = '0';
+  document.getElementById('score-gold').textContent = '0';
+  document.getElementById('score-green').textContent = '0';
+  usedCells.clear();
+  pickDailyDoubles();
+  buildBoard();
+}
+
+// ===================================================
+// WEB AUDIO API — SOUND EFFECTS
+// ===================================================
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
+
+function playBuzzer() {
+  try {
+    const ctx = getAudioCtx();
+    // Three descending beeps
+    [0, 0.15, 0.3].forEach((delay, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = 440 - i * 80;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.15);
+    });
+  } catch (e) { /* silent fail */ }
+}
+
+function playDDSound() {
+  try {
+    const ctx = getAudioCtx();
+    // Rising fanfare
+    [0, 0.1, 0.2, 0.35].forEach((delay, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = 330 + i * 110;
+      gain.gain.setValueAtTime(0.25, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.25);
+    });
+  } catch (e) { /* silent fail */ }
+}
+
+function playWinSound() {
+  try {
+    const ctx = getAudioCtx();
+    // Victory fanfare
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => {
+      const delay = i * 0.15;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.2, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + 0.4);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.5);
+    });
+  } catch (e) { /* silent fail */ }
+}
+
+// ===================================================
+// KEYBOARD SHORTCUT
+// ===================================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('ddSplash').classList.contains('active')) {
+      closeDDSplash();
+    } else if (document.getElementById('overlay').classList.contains('active')) {
+      backToBoard();
+    }
+    if (document.getElementById('winnerBanner').classList.contains('active')) {
+      document.getElementById('winnerBanner').classList.remove('active');
+    }
+  }
+  // Space bar to show answer when question is open
+  if (e.code === 'Space' && document.getElementById('overlay').classList.contains('active')) {
+    if (document.getElementById('btnShowAnswer').style.display !== 'none') {
+      e.preventDefault();
+      showAnswer();
+    }
+  }
+});
+
+// ===================================================
+// INITIALIZE
+// ===================================================
+pickDailyDoubles();
+buildBoard();
+</script>
+</body>
+</html>

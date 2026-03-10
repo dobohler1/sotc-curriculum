@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Build It. Code It. Race It. — Student Worksheet</title>
+<style>
+  /* Clean styling that pastes well into Google Docs */
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 750px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .sub-title {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  h2 {
+    font-size: 20px;
+    border-bottom: 2px solid #e05a9c;
+    padding-bottom: 4px;
+    margin-top: 36px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  /* Name/date header */
+  .header-fields {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  .header-fields span {
+    flex: 1;
+    border-bottom: 1px solid #999;
+    padding-bottom: 4px;
+  }
+
+  /* Block representation */
+  .block-stack {
+    margin: 12px 0 16px 0;
+  }
+  .block {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    margin: 2px 0;
+  }
+  .block-event { background: #d4a017; }
+  .block-movement { background: #e05a9c; }
+  .block-sound { background: #9b59b6; }
+  .block-light { background: #e67e22; }
+  .block-control { background: #e0892e; }
+  .param {
+    display: inline-block;
+    background: #fff;
+    color: #333;
+    border-radius: 12px;
+    padding: 1px 8px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  /* Answer blanks */
+  .answer-line {
+    border-bottom: 1px solid #ccc;
+    min-height: 24px;
+    margin: 8px 0;
+    padding: 4px 0;
+  }
+  .answer-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 60px;
+    margin: 8px 0;
+    padding: 8px;
+  }
+
+  /* Checkbox list */
+  .checklist {
+    list-style: none;
+    padding-left: 0;
+  }
+  .checklist li {
+    margin: 6px 0;
+    padding-left: 28px;
+    position: relative;
+  }
+  .checklist li::before {
+    content: "\2610";
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  th {
+    background: #f0f0f0;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+  }
+  td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+  }
+
+  /* Scoring section */
+  .score-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dotted #ccc;
+  }
+  .score-row:last-child { border-bottom: 2px solid #333; }
+
+  /* Tip callouts */
+  .tip {
+    background: #f8f0ff;
+    border-left: 4px solid #9b59b6;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+
+  .section-num {
+    display: inline-block;
+    background: #e05a9c;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  /* Print-friendly */
+  @media print {
+    body { margin: 20px; }
+    .answer-box { min-height: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Build It. Code It. Race It.</h1>
+<p class="sub-title">SOTC Robotics | Jack &amp; Jill Cluster Workshop</p>
+
+<div class="header-fields">
+  <span><strong>Name:</strong>&nbsp;</span>
+  <span><strong>Partner:</strong>&nbsp;</span>
+  <span><strong>Date:</strong>&nbsp;</span>
+</div>
+
+<!-- ============================== -->
+<h2><span class="section-num">1</span> Get Set Up</h2>
+
+<ul class="checklist">
+  <li>SPIKE app is open on your laptop</li>
+  <li>You selected <strong>Word Blocks</strong> (not Python, not Icon Blocks)</li>
+  <li>Robot is connected (green dot in top-left of the app)</li>
+  <li>You and your partner decided who is <strong>Driver</strong> first and who is <strong>Navigator</strong></li>
+</ul>
+
+<table>
+  <tr>
+    <th>Role</th>
+    <th>Job</th>
+  </tr>
+  <tr>
+    <td><strong>Driver</strong></td>
+    <td>Hands on the laptop. Drags blocks and clicks Play.</td>
+  </tr>
+  <tr>
+    <td><strong>Navigator</strong></td>
+    <td>Eyes on the screen AND this worksheet. Reads each step. Checks for mistakes.</td>
+  </tr>
+</table>
+
+<p><strong>Who is the Driver first?</strong></p>
+<div class="answer-line"></div>
+
+<!-- ============================== -->
+<h2><span class="section-num">2</span> Step 1: Make It Move</h2>
+
+<p>Drag these blocks from the <strong>MOVEMENT</strong> menu (pink) and snap them together:</p>
+
+<div class="block-stack">
+  <div><span class="block block-event">when program starts</span></div>
+  <div><span class="block block-movement">set movement motors to <span class="param">A + B</span></span></div>
+  <div><span class="block block-movement">move <span class="param">forward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+</div>
+
+<p>Click the green <strong>Play</strong> button.</p>
+
+<p><strong>What happened?</strong></p>
+<div class="answer-box"></div>
+
+<p><strong>How far did your robot travel in 2 seconds?</strong> (estimate in feet)</p>
+<div class="answer-line"></div>
+
+<!-- ============================== -->
+<h2><span class="section-num">3</span> Step 2: Forward AND Backward</h2>
+
+<p>Add two more blocks <strong>below</strong> your existing program:</p>
+
+<div class="block-stack">
+  <div><span class="block block-event">when program starts</span></div>
+  <div><span class="block block-movement">set movement motors to <span class="param">A + B</span></span></div>
+  <div><span class="block block-movement">move <span class="param">forward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+  <div><span class="block block-control">wait <span class="param">1</span> seconds</span> &larr; <em style="font-size:12px;">CONTROL menu (orange)</em></div>
+  <div><span class="block block-movement">move <span class="param">backward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+</div>
+
+<div class="tip">
+  <strong>How to get "backward":</strong> Drag a new <em>move forward</em> block. Click the word <strong>forward</strong> &mdash; it's a dropdown. Change it to <strong>backward</strong>.
+</div>
+
+<p>Click <strong>Play</strong>.</p>
+
+<p><strong>Did the robot return to its starting position?</strong></p>
+<div class="answer-line"></div>
+
+<p><strong>If it didn't land exactly on the start, why do you think that is?</strong></p>
+<div class="answer-box"></div>
+
+<!-- ============================== -->
+<h2><span class="section-num">4</span> Step 3: Add the Backup Beep</h2>
+
+<p>Insert one new block from the <strong>SOUND</strong> menu (purple), right <strong>before</strong> the backward move:</p>
+
+<div class="block-stack">
+  <div><span class="block block-event">when program starts</span></div>
+  <div><span class="block block-movement">set movement motors to <span class="param">A + B</span></span></div>
+  <div><span class="block block-movement">move <span class="param">forward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+  <div><span class="block block-control">wait <span class="param">1</span> seconds</span></div>
+  <div><span class="block block-sound">play beep <span class="param">72</span> for <span class="param">0.5</span> seconds</span> &larr; <em style="font-size:12px;">NEW! SOUND menu</em></div>
+  <div><span class="block block-movement">move <span class="param">backward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+</div>
+
+<div class="tip">
+  <strong>What's the number 72?</strong> That's the pitch (like a musical note). Higher number = higher pitch. Try changing it!
+</div>
+
+<p>Click <strong>Play</strong>. Did it beep before reversing?&nbsp; <strong>Yes / No</strong></p>
+
+<p><strong>Experiment:</strong> Try changing the beep number. What did you try, and what happened?</p>
+<table>
+  <tr>
+    <th>Beep Number</th>
+    <th>What It Sounded Like</th>
+  </tr>
+  <tr>
+    <td style="height:30px;"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="height:30px;"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="height:30px;"></td>
+    <td></td>
+  </tr>
+</table>
+
+<!-- ============================== -->
+<h2><span class="section-num">5</span> Step 4: Give It a Face</h2>
+
+<p>Add two blocks from the <strong>LIGHT</strong> menu (orange):</p>
+
+<div class="block-stack">
+  <div><span class="block block-event">when program starts</span></div>
+  <div><span class="block block-movement">set movement motors to <span class="param">A + B</span></span></div>
+  <div><span class="block block-light">turn on <span class="param">&#9786;</span> for <span class="param">2</span> seconds</span> &larr; <em style="font-size:12px;">NEW! LIGHT menu</em></div>
+  <div><span class="block block-movement">move <span class="param">forward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+  <div><span class="block block-control">wait <span class="param">1</span> seconds</span></div>
+  <div><span class="block block-light">turn on <span class="param">&#9785;</span> for <span class="param">2</span> seconds</span> &larr; <em style="font-size:12px;">NEW!</em></div>
+  <div><span class="block block-sound">play beep <span class="param">72</span> for <span class="param">0.5</span> seconds</span></div>
+  <div><span class="block block-movement">move <span class="param">backward</span> for <span class="param">2</span> <span class="param">seconds</span></span></div>
+</div>
+
+<div class="tip">
+  <strong>To draw a face:</strong> Click the pattern square on the <em>turn on</em> block. A 5x5 grid pops up. Click pixels to light them up. Draw a happy face for forward and a sad face for backward!
+</div>
+
+<p><strong>What design did you create?</strong> (sketch it on the grid below)</p>
+<table style="width: auto; margin: 8px 0;">
+  <tr><td style="text-align:center; font-weight:bold; padding:4px 20px;">Forward</td><td style="width:30px;"></td><td style="text-align:center; font-weight:bold; padding:4px 20px;">Backward</td></tr>
+  <tr>
+    <td>
+      <table style="margin:0; border-collapse:collapse;">
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+      </table>
+    </td>
+    <td></td>
+    <td>
+      <table style="margin:0; border-collapse:collapse;">
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+        <tr><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td><td style="width:24px;height:24px;border:1px solid #ccc;"></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ============================== -->
+<h2 style="border-color:#e8a317;"><span class="section-num" style="background:#e8a317;">&#9733;</span> SWITCH ROLES!</h2>
+
+<p><strong>New Driver:</strong> Start a fresh project. Build the same program from memory.<br>
+<strong>Navigator:</strong> Coach them &mdash; but don't touch the keyboard!</p>
+
+<p><strong>Who is driving now?</strong></p>
+<div class="answer-line"></div>
+
+<!-- ============================== -->
+<h2><span class="section-num">6</span> The Race: 10-Foot Round Trip</h2>
+
+<p>Your robot must:</p>
+<ol>
+  <li>Drive forward <strong>exactly 10 feet</strong> (to the tape line)</li>
+  <li>Stop</li>
+  <li>Beep</li>
+  <li>Reverse back to the <strong>exact starting position</strong></li>
+</ol>
+
+<h3>How to tune it</h3>
+<p>You have two numbers to adjust:</p>
+<table>
+  <tr>
+    <th>What to Change</th>
+    <th>Where</th>
+    <th>Try These Values</th>
+  </tr>
+  <tr>
+    <td><strong>Duration</strong> (how long it moves)</td>
+    <td>The number in your <em>move forward</em> block</td>
+    <td>4, 6, 8, 10 seconds</td>
+  </tr>
+  <tr>
+    <td><strong>Speed</strong> (how fast it moves)</td>
+    <td>Add a <em>set movement speed</em> block at the top</td>
+    <td>30%, 50%, 75%</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Pro tip:</strong> Slow + long is easier to control than fast + short. And make sure your forward and backward durations match!
+</div>
+
+<h3>Test Log</h3>
+<table>
+  <tr>
+    <th>Attempt</th>
+    <th>Speed</th>
+    <th>Duration (sec)</th>
+    <th>How Far Did It Go?</th>
+    <th>What Did You Change?</th>
+  </tr>
+  <tr>
+    <td style="text-align:center;">1</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">2</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">3</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">4</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">5</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3>Official Race Runs (3 attempts, best counts)</h3>
+<table>
+  <tr>
+    <th>Run</th>
+    <th>Reached 10 ft?<br><span style="font-weight:normal; font-size:12px;">(5 pts)</span></th>
+    <th>Return within 12"?<br><span style="font-weight:normal; font-size:12px;">(5 pts)</span></th>
+    <th>Return within 6"?<br><span style="font-weight:normal; font-size:12px;">(10 pts)</span></th>
+    <th>Beep?<br><span style="font-weight:normal; font-size:12px;">(5 pts)</span></th>
+    <th>Light?<br><span style="font-weight:normal; font-size:12px;">(5 pts)</span></th>
+    <th>Total</th>
+  </tr>
+  <tr>
+    <td style="text-align:center;">1</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">2</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">3</td>
+    <td style="height:30px;"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<p><strong>Best Score: _________ / 30</strong></p>
+
+<!-- ============================== -->
+<h2><span class="section-num">7</span> Reflection</h2>
+
+<p><strong>What was the hardest part of today's activity?</strong></p>
+<div class="answer-box"></div>
+
+<p><strong>What's one thing you would do differently if you did this again?</strong></p>
+<div class="answer-box"></div>
+
+<p><strong>Would you want to come back and learn to make the robot navigate a maze by itself?</strong></p>
+<div class="answer-line"></div>
+
+</body>
+</html>

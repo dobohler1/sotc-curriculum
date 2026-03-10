@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SOTC Robotics Flyer</title>
+<style>
+  @page { size: letter; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, Arial, sans-serif;
+    width: 8.5in;
+    height: 11in;
+    margin: 0 auto;
+    background: #0d1b2a;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 56px 40px;
+  }
+
+  /* Top accent bar */
+  .accent-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #e05a9c, #ffd60a, #8ecae6);
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .header .org {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #8ecae6;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .header h1 .accent { color: #ffd60a; }
+  .header .tagline {
+    font-size: 20px;
+    color: #8ecae6;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  /* What they'll learn */
+  .learn-section {
+    margin-bottom: 24px;
+  }
+  .learn-section h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ffd60a;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .session-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .session-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .session-num {
+    background: #e05a9c;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .session-text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .session-text strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .session-text span {
+    color: #8ecae6;
+    font-size: 13px;
+  }
+
+  /* Highlights strip */
+  .highlights {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    padding: 18px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .hl-item {
+    text-align: center;
+  }
+  .hl-big {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffd60a;
+    line-height: 1;
+  }
+  .hl-label {
+    font-size: 12px;
+    color: #8ecae6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Details section */
+  .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 16px 0;
+  }
+  .detail-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .detail-card h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #e05a9c;
+    margin-bottom: 10px;
+  }
+  .detail-card p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .detail-card .placeholder {
+    color: #ffd60a;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* Bottom CTA */
+  .cta {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .cta-text {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .cta-text .accent { color: #ffd60a; }
+
+  .cta-contact {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #8ecae6;
+  }
+  .cta-contact strong { color: #fff; }
+
+  .qr-placeholder {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #4a5568;
+    border-radius: 8px;
+    margin-top: 10px;
+    line-height: 80px;
+    font-size: 11px;
+    color: #4a5568;
+    text-align: center;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #4a5568;
+    margin-top: 12px;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    text-align: center;
+    margin: 16px 0;
+    padding: 16px 40px;
+  }
+  .pull-quote p {
+    font-size: 17px;
+    font-style: italic;
+    color: #c0c8d4;
+    line-height: 1.5;
+  }
+  .pull-quote .attr {
+    font-size: 13px;
+    color: #6a7a8a;
+    font-style: normal;
+    margin-top: 6px;
+  }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="accent-bar"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="org">Science on the Central Coast</div>
+    <h1>Build It. Code It.<br><span class="accent">Race It.</span></h1>
+    <p class="tagline">LEGO Robotics &amp; Python Programming for Grades 6&ndash;8</p>
+  </div>
+
+  <!-- HIGHLIGHTS -->
+  <div class="highlights">
+    <div class="hl-item">
+      <div class="hl-big">6</div>
+      <div class="hl-label">Sessions</div>
+    </div>
+    <div class="hl-item">
+      <div class="hl-big">SPIKE</div>
+      <div class="hl-label">LEGO Prime</div>
+    </div>
+    <div class="hl-item">
+      <div class="hl-big">Python</div>
+      <div class="hl-label">Real Code</div>
+    </div>
+    <div class="hl-item">
+      <div class="hl-big">2:1</div>
+      <div class="hl-label">Student Ratio</div>
+    </div>
+  </div>
+
+  <!-- SESSION GRID -->
+  <div class="learn-section">
+    <h2>What They'll Learn</h2>
+    <div class="session-grid">
+      <div class="session-item">
+        <div class="session-num">1</div>
+        <div class="session-text">
+          <strong>Build &amp; Drive</strong>
+          <span>Assemble a robot from scratch. Program it to move forward and back.</span>
+        </div>
+      </div>
+      <div class="session-item">
+        <div class="session-num">2</div>
+        <div class="session-text">
+          <strong>Speed &amp; Precision</strong>
+          <span>Drag race challenge. Calibrate distance and speed for accuracy.</span>
+        </div>
+      </div>
+      <div class="session-item">
+        <div class="session-num">3</div>
+        <div class="session-text">
+          <strong>Turns &amp; Navigation</strong>
+          <span>Tank turns, pivot turns, and navigating a square course.</span>
+        </div>
+      </div>
+      <div class="session-item">
+        <div class="session-num">4</div>
+        <div class="session-text">
+          <strong>Sensors &amp; Autonomy</strong>
+          <span>Distance and color sensors. The robot starts making its own decisions.</span>
+        </div>
+      </div>
+      <div class="session-item">
+        <div class="session-num">5</div>
+        <div class="session-text">
+          <strong>Python Programming</strong>
+          <span>Transition from visual blocks to real Python code. The same language used at Google, NASA, and Tesla.</span>
+        </div>
+      </div>
+      <div class="session-item">
+        <div class="session-num">6</div>
+        <div class="session-text">
+          <strong>Competition Day</strong>
+          <span>Maze navigation. Relay races. Robotics &amp; Hoops Championship.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE -->
+  <div class="pull-quote">
+    <p>"Today your child programmed a robot in under an hour. Imagine what they can do with six sessions, real sensors, and Python."</p>
+    <div class="attr">&mdash; Dorian Bohler, Physicist &amp; SOTC Founder</div>
+  </div>
+
+  <!-- DETAILS -->
+  <div class="details">
+    <div class="detail-card">
+      <h3>When</h3>
+      <p class="placeholder">[Dates &amp; Times TBD]</p>
+      <p style="font-size:13px; color:#6a7a8a; margin-top:6px;">6 sessions, once per week</p>
+    </div>
+    <div class="detail-card">
+      <h3>Where</h3>
+      <p class="placeholder">[Location TBD]</p>
+    </div>
+    <div class="detail-card">
+      <h3>Who</h3>
+      <p>Grades <strong>6&ndash;8</strong></p>
+      <p style="font-size:13px; color:#6a7a8a; margin-top:4px;">No experience needed. All materials provided.</p>
+    </div>
+    <div class="detail-card">
+      <h3>Cost</h3>
+      <p class="placeholder">[Cost TBD]</p>
+      <p style="font-size:13px; color:#6a7a8a; margin-top:4px;">All LEGO kits and laptops included.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <p class="cta-text">Spots are limited. <span class="accent">Sign up today.</span></p>
+    <div class="cta-contact">
+      <div><strong>Email:</strong> <span class="placeholder" style="color:#ffd60a;">[email]</span></div>
+      <div><strong>Phone:</strong> <span class="placeholder" style="color:#ffd60a;">[phone]</span></div>
+    </div>
+    <div class="qr-placeholder">QR Code</div>
+    <div class="footer-note">SOTC &mdash; Science on the Central Coast &nbsp;|&nbsp; sotc.org</div>
+  </div>
+
+</div>
+
+</body>
+</html>

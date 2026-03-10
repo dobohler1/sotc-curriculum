@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach G — Sessions 3–4 Prep Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 48px;
+  }
+  h1 { font-size: 28px; color: #1a2744; margin-bottom: 6px; }
+  .subtitle { font-size: 16px; color: #6a7a8a; margin-bottom: 30px; }
+  h2 {
+    font-size: 20px;
+    color: #1a2744;
+    margin: 32px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e6ec;
+  }
+  h3 { font-size: 16px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ul, ol { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .callout {
+    border-left: 4px solid;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  .callout-red { border-color: #c0392b; background: #fdf0ef; color: #7a1f1a; }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; vertical-align: top; }
+  .section-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 28px 0; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 32px; }
+    h2 { break-after: avoid; }
+    pre, table { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Coach G &mdash; Sessions 3&ndash;4 Prep Guide</h1>
+  <p class="subtitle">Sensor Recon (Session 3) + The Gauntlet (Session 4) &mdash; Everything you need to run both sessions.</p>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <h2>1. Overview &mdash; Where Students Are Now</h2>
+
+  <p>After Sessions 1&ndash;2, every student has gotten at least basic Python code running on a SPIKE Prime. They can make the robot drive, beep, and display text. Sessions 3&ndash;4 introduce <strong>sensors</strong> and <strong>autonomous decision-making</strong> &mdash; the robot goes from blind to reactive.</p>
+
+  <table>
+    <tr><th>Session</th><th>Theme</th><th>New Concepts</th><th>Assignment</th></tr>
+    <tr>
+      <td><strong>Session 3:</strong> Sensor Recon</td>
+      <td>Your robot can see</td>
+      <td><code>distance_sensor</code>, <code>color_sensor</code>, <code>while True:</code>, <code>break</code>, <code>motor_pair.move()</code></td>
+      <td>Assignment 7: Sensor Recon</td>
+    </tr>
+    <tr>
+      <td><strong>Session 4:</strong> The Gauntlet</td>
+      <td>Autonomous navigation</td>
+      <td><code>if/elif/else</code> with sensors, custom functions, course navigation</td>
+      <td>Assignment 8: The Gauntlet</td>
+    </tr>
+  </table>
+
+  <!-- ===================== GOOGLE CLASSROOM ===================== -->
+  <h2>2. Google Classroom &mdash; What to Post</h2>
+  <p>Post these items in Google Classroom (<code>w4m3nvl6</code>) before Session 3:</p>
+
+  <table>
+    <tr><th>Item</th><th>Type</th><th>Who</th></tr>
+    <tr><td><strong>Assignment 7:</strong> Sensor Recon</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+    <tr><td><strong>Assignment 8:</strong> The Gauntlet</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+  </table>
+
+  <p>Assignment 7 is due at the end of Session 3. Assignment 8 is due at the end of Session 4. Both require code submission and written reflection questions.</p>
+
+  <!-- ===================== WHERE EACH TABLE STANDS ===================== -->
+  <h2>3. Where Each Table Stands</h2>
+
+  <h3>Red Table &mdash; Status After Session 2</h3>
+  <p>These students have working basic code (forward, beep, display). They can type a program and run it. They still move slowly and make syntax errors, but they've proven they can get code running.</p>
+
+  <div class="callout callout-amber">
+    <strong>What they need in Sessions 3&ndash;4:</strong> The sensor code is longer and more complex than anything they've typed before. The <code>while True:</code> loop with an <code>if</code> statement inside it is a big conceptual jump. Type the code on the board or use the slides. Stand behind Red Table for the first 10 minutes and catch typos in real time. Do not let them get stuck on indentation for 15 minutes.
+  </div>
+
+  <table>
+    <tr><th>Student</th><th>After Session 2</th><th>Session 3 Goal</th></tr>
+    <tr><td><strong>Angelo Carpio-Camarena</strong></td><td>Has working code. Slow typer.</td><td>Get sensor code running with support. Focus on understanding, not speed.</td></tr>
+    <tr><td><strong>Prince Jaden Arcadio</strong></td><td>Has working code.</td><td>Get sensor code running. If he finishes early, have him modify the distance threshold.</td></tr>
+    <tr><td><strong>Kazi Johnson</strong></td><td>Has working code.</td><td>Same as Prince. Pair them if one gets stuck.</td></tr>
+    <tr><td><strong>Kenneth Tran</strong></td><td>Has working code.</td><td>Get sensor code running. May need help with the <code>while True:</code> concept.</td></tr>
+    <tr><td><strong>Markies Madrigal</strong></td><td>Has working code.</td><td>Get sensor code running. Monitor engagement.</td></tr>
+    <tr><td><strong>Xavier Lawson</strong></td><td>Has working code.</td><td>Get sensor code running. Monitor engagement.</td></tr>
+  </table>
+
+  <h3>Yellow Table &mdash; Status After Session 2</h3>
+  <p>These students have working programs and have demoed. They understand the basics and can read code. They're ready to extend into sensors with some guidance.</p>
+
+  <table>
+    <tr><th>Student</th><th>After Session 2</th><th>Session 3 Goal</th></tr>
+    <tr><td><strong>Alex Rios</strong></td><td>Fixed syntax issues. Working code.</td><td>Get sensor code running quickly. Modify distance threshold. Add reverse-and-turn.</td></tr>
+    <tr><td><strong>An Dinh</strong></td><td>Same as Alex. Working code.</td><td>Same goals. Can pair with Alex if they're both stuck on the same issue.</td></tr>
+    <tr><td><strong>Jeremiah Wong</strong></td><td>Has working motor code. Conceptual understanding.</td><td>Get sensor code running. Push him toward the color sensor bonus &mdash; he has the conceptual base for it.</td></tr>
+    <tr><td><strong>Hector Gomez Mejia</strong></td><td>Has working code. Attendance may be an issue.</td><td>If present: get sensor code running. If absent: he'll need catch-up in Session 4.</td></tr>
+  </table>
+
+  <h3>Green Table &mdash; Status After Session 2</h3>
+  <p>Vincent and Winston are self-directed. They've completed the Showcase Routine. They're ready for anything.</p>
+
+  <div class="callout callout-green">
+    <strong>Session 3:</strong> Give them 5 minutes to get the base sensor code running, then redirect them to building their own obstacle avoidance system. Push them toward the color sensor. They should be writing custom functions and combining both sensors.<br><br>
+    <strong>Session 4:</strong> They should be building from scratch, not using the starter code. Challenge them to add the color-sensor finish line detection. They should be the first to run the course, which shows the rest of the class what's possible.
+  </div>
+
+  <p>If Jacob Peterson returns, evaluate where he stands. If he completed the Showcase Routine independently, Green Table. If not, Yellow Table with sensor code.</p>
+
+  <!-- ===================== SESSION 3 GUIDE ===================== -->
+  <h2>4. Session 3: Sensor Recon &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> The sensor code introduces <code>while True:</code> and <code>if</code> statements inside a loop. This is the biggest conceptual jump in the program so far. Do not rush the explanation. Walk through the loop line by line on slides 6 and 7. Make sure students understand what "check, check, check, STOP" means before they start typing.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session 3 - Sensor Recon Slides.html</code> in Chrome/Safari, go full screen (F11 or Cmd+Shift+F)</li>
+    <li>Make sure robots have <strong>distance sensors plugged in</strong>. Note which port for each robot (likely port F, but check). Write the port letter on a sticky note on each robot.</li>
+    <li>Have 2&ndash;3 books or boxes ready for demo. You'll use one to show the robot stopping.</li>
+    <li>Post Assignment 7 in Google Classroom if not already done</li>
+  </ul>
+
+  <h3>Hardware Setup Checklist</h3>
+  <table>
+    <tr><th>Item</th><th>Check</th></tr>
+    <tr><td>Distance sensor plugged into a known port on each robot</td><td>Note the port letter per robot</td></tr>
+    <tr><td>Color sensor plugged in (for Green Table / bonus)</td><td>Note the port letter</td></tr>
+    <tr><td>Motor cables still in the same ports as Sessions 1&ndash;2</td><td>Don't move them</td></tr>
+    <tr><td>Robots charged</td><td></td></tr>
+    <tr><td>A book or box for demo obstacle</td><td>Something big and flat</td></tr>
+  </table>
+
+  <div class="callout callout-red">
+    <strong>The #1 sensor issue:</strong> Students will use the wrong port letter in their code. If the distance sensor is plugged into port D but the code says <code>port.F</code>, the sensor returns -1 forever and the robot never stops. Check the cables. Match the letters. This will eat 10 minutes if you don't catch it early.
+  </div>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;3</td>
+      <td>1&ndash;2</td>
+      <td>Title + review. "What can your robot do? What can't it do?" Quick verbal poll.</td>
+      <td>Get a few answers. Point at the right column of slide 2. "Today we fix this."</td>
+    </tr>
+    <tr>
+      <td>3&ndash;5</td>
+      <td>3</td>
+      <td>Introduce the two sensors. Show them on the robot hardware. Let students touch them.</td>
+      <td>Point at the actual sensors on a robot. "This one measures distance. This one reads color."</td>
+    </tr>
+    <tr>
+      <td>5&ndash;10</td>
+      <td>4</td>
+      <td>Live demo. Run the sensor code on your demo robot. Drive it toward a book. It stops.</td>
+      <td>Let the moment land. "Nobody touched it. It decided to stop on its own." Then ask: "How does it know?"</td>
+    </tr>
+    <tr>
+      <td>10&ndash;15</td>
+      <td>5&ndash;7</td>
+      <td>Show the code. Walk through line by line. Spend extra time on slides 6 and 7 explaining the loop.</td>
+      <td>Go slow here. Ask: "What does <code>while True</code> mean?" (It runs forever.) "What stops it?" (<code>break</code>.) "How often does it check?" (Every 50 milliseconds.)</td>
+    </tr>
+    <tr>
+      <td>15&ndash;17</td>
+      <td>8</td>
+      <td>Show table tasks. Students move to seats and start typing.</td>
+      <td>Direct traffic. Red Table types from the screen. Yellow modifies. Green goes freestyle.</td>
+    </tr>
+    <tr>
+      <td>17&ndash;32</td>
+      <td>&mdash;</td>
+      <td>Hands-on work time (15 min). Students type, test, debug.</td>
+      <td>Circulate. Priority order: (1) Red Table port mismatches, (2) Red Table indentation errors, (3) Yellow Table extensions, (4) Quick check on Green Table. See troubleshooting table below.</td>
+    </tr>
+    <tr>
+      <td>32&ndash;35</td>
+      <td>9</td>
+      <td>Show the challenge slide. Students who have basic code working should try the full avoidance sequence.</td>
+      <td>This is a stretch goal. If a Red Table student just got the basic stop working, that's a win. Don't push them to the challenge if they're still debugging.</td>
+    </tr>
+    <tr>
+      <td>35&ndash;40</td>
+      <td>10&ndash;11</td>
+      <td>Show bonus color sensor slide and troubleshooting slide for students who are stuck.</td>
+      <td>Green Table should be working on color sensor by now. Use the troubleshooting table for anyone still stuck.</td>
+    </tr>
+    <tr>
+      <td>40&ndash;45</td>
+      <td>12&ndash;13</td>
+      <td>Submit code. Wrap up.</td>
+      <td>Everyone opens Google Classroom. Submit Assignment 7. Check off on roster. Preview next session: "Next time, you run a full course."</td>
+    </tr>
+  </table>
+
+  <h3>Session 3 Troubleshooting</h3>
+  <table>
+    <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+    <tr>
+      <td>Robot drives but never stops</td>
+      <td>Wrong port in code</td>
+      <td>Check which port the distance sensor is plugged into. Change <code>port.F</code> to match (e.g., <code>port.D</code>).</td>
+    </tr>
+    <tr>
+      <td>Robot stops immediately without driving</td>
+      <td>Sensor reading something right away (table surface, student's hand)</td>
+      <td>Clear the path in front of the sensor. Make sure nothing is within 15cm at start. Raise the robot if it's reading the table.</td>
+    </tr>
+    <tr>
+      <td>"distance_sensor is not defined"</td>
+      <td>Missing import</td>
+      <td>Add <code>import distance_sensor</code> at the top. It's separate from <code>motor_pair</code>.</td>
+    </tr>
+    <tr>
+      <td>"port is not defined"</td>
+      <td>Missing import</td>
+      <td>Change the first line to: <code>from hub import light_matrix, sound, port</code></td>
+    </tr>
+    <tr>
+      <td>Robot drives forever, code seems frozen</td>
+      <td>Missing <code>await runloop.sleep_ms(50)</code> in the while loop</td>
+      <td>Without the sleep, the loop runs too fast and blocks. Add the sleep line inside the while loop.</td>
+    </tr>
+    <tr>
+      <td>Indentation error on the <code>if</code> line</td>
+      <td>Mixed indentation inside while loop</td>
+      <td>Everything inside <code>while True:</code> needs 8 spaces (4 for main + 4 for while). Everything inside <code>if</code> needs 12 spaces.</td>
+    </tr>
+    <tr>
+      <td>Sensor detects obstacle but robot doesn't stop</td>
+      <td><code>motor_pair.stop()</code> missing or in wrong place</td>
+      <td>Make sure <code>motor_pair.stop(motor_pair.PAIR_1)</code> is inside the <code>if</code> block, before the <code>break</code>.</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>Indentation cheat sheet for this session's code:</strong><br>
+    0 spaces: imports, <code>motor_pair.pair()</code>, <code>runloop.run()</code><br>
+    4 spaces: everything inside <code>async def main():</code><br>
+    8 spaces: everything inside <code>while True:</code><br>
+    12 spaces: everything inside <code>if dist != -1 and dist < 150:</code>
+  </div>
+
+  <!-- ===================== SESSION 4 GUIDE ===================== -->
+  <hr>
+  <h2>5. Session 4: The Gauntlet &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Set up the course before students arrive. If you're building the course during class, you lose 5&ndash;10 minutes of work time. The course doesn't need to be fancy &mdash; 2&ndash;3 books or boxes in a line on the floor, with gaps between them. The point is that the robot has to navigate around real obstacles.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session 4 - The Gauntlet Slides.html</code> in Chrome/Safari, go full screen</li>
+    <li><strong>Set up the course:</strong> On the floor (not a table &mdash; robots will drive off the edge). Use books, boxes, or cones. 2&ndash;3 obstacles with ~18 inches of open space between them.</li>
+    <li>Mark the start zone with tape or a piece of paper</li>
+    <li>For Green Table: place a red piece of paper at the finish zone (for color sensor detection)</li>
+    <li>Post Assignment 8 in Google Classroom if not already done</li>
+    <li>Have your scoring sheet ready (below)</li>
+  </ul>
+
+  <h3>Course Setup Guide</h3>
+
+  <div class="callout callout-green">
+    <strong>Keep it simple.</strong> A straight-ish path, about 4&ndash;5 feet long, with 2&ndash;3 books standing upright as obstacles. The obstacles should be big enough for the distance sensor to detect (a textbook is perfect &mdash; a pencil is not). Leave enough room between obstacles for the robot to reverse and turn. If the course is too tight, no one clears it and frustration wins.
+  </div>
+
+  <p>Recommended layout:</p>
+  <ol>
+    <li><strong>Start zone:</strong> Tape line on the floor. Robot starts here facing forward.</li>
+    <li><strong>Obstacle 1:</strong> A textbook standing upright, about 18 inches from start. Centered in the path.</li>
+    <li><strong>Obstacle 2:</strong> Another book, about 18 inches past obstacle 1, offset slightly to one side.</li>
+    <li><strong>Obstacle 3 (optional):</strong> A third book, 18 inches past obstacle 2, offset to the other side.</li>
+    <li><strong>Finish zone:</strong> Red piece of paper on the floor at the end (for Green Table's color sensor). For everyone else, just reaching this area counts.</li>
+  </ol>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;3</td>
+      <td>1&ndash;2</td>
+      <td>Title + toolkit review. Quick recap of what they know.</td>
+      <td>"You can drive. You can sense. Today you put it all together."</td>
+    </tr>
+    <tr>
+      <td>3&ndash;5</td>
+      <td>3&ndash;4</td>
+      <td>Show the course. Walk students over to see it. Explain the rules.</td>
+      <td>Let them see the physical course. Point to start, obstacles, finish. "3 attempts. Best run counts. No touching the robot once you press play."</td>
+    </tr>
+    <tr>
+      <td>5&ndash;10</td>
+      <td>5&ndash;6</td>
+      <td>Show the new concept (if/elif/else with sensors) and the starter code.</td>
+      <td>Don't over-explain. They've seen <code>while True:</code> and <code>if</code> before. The new thing is combining them with a custom function and looping the whole avoidance. Walk through the starter code quickly.</td>
+    </tr>
+    <tr>
+      <td>10&ndash;12</td>
+      <td>7</td>
+      <td>Show table tasks. Students move to seats.</td>
+      <td>Red Table types starter code. Yellow Table types and modifies. Green Table builds from scratch.</td>
+    </tr>
+    <tr>
+      <td>12&ndash;22</td>
+      <td>&mdash;</td>
+      <td>Build &amp; test time (10 min). Students write code and test away from the course.</td>
+      <td>Circulate. Priority: (1) Red Table getting the starter code running, (2) Yellow Table customizing avoidance, (3) Green Table working independently. Key issue will be port numbers again &mdash; check cables first.</td>
+    </tr>
+    <tr>
+      <td>22&ndash;32</td>
+      <td>11</td>
+      <td>Course testing time (10 min). Students bring robots to the course for test runs.</td>
+      <td>Line them up. Quick test runs. Let students iterate &mdash; run, observe, go back and change a number, run again. This is real engineering.</td>
+    </tr>
+    <tr>
+      <td>32&ndash;42</td>
+      <td>12</td>
+      <td>Official course runs (10&ndash;15 min). Call students one at a time.</td>
+      <td>Score each run. Everyone watches. Celebrate successes. Encourage retries. Keep it moving &mdash; 2 minutes per student max.</td>
+    </tr>
+    <tr>
+      <td>42&ndash;45</td>
+      <td>13&ndash;14</td>
+      <td>Submit code. Final wrap.</td>
+      <td>Everyone submits Assignment 8. Close with: "You built an autonomous robot. That's real robotics."</td>
+    </tr>
+  </table>
+
+  <h3>Gauntlet Scoring Sheet</h3>
+  <p>Print this or score on your phone. Mark the best run out of 3 attempts.</p>
+  <table>
+    <tr><th>Student</th><th>Run 1</th><th>Run 2</th><th>Run 3</th><th>Best</th><th>Notes</th></tr>
+    <tr><td>Angelo Carpio-Camarena</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Alex Rios</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>An Dinh</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Prince Jaden Arcadio</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jeremiah Wong</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Hector Gomez Mejia</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Markies Madrigal</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Xavier Lawson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kenneth Tran</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kazi Johnson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Vincent Chau</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Winston Zhou</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jacob Peterson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Audrey James Roby</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <p>Scoring scale:</p>
+  <table>
+    <tr><th>Score</th><th>Criteria</th></tr>
+    <tr><td><strong>4</strong></td><td>Full course clear. Avoids all obstacles, reaches finish, uses signals, clean code.</td></tr>
+    <tr><td><strong>3</strong></td><td>Avoids 2+ obstacles. Makes progress. Sensor works correctly.</td></tr>
+    <tr><td><strong>2</strong></td><td>Avoids at least 1 obstacle. Code runs without errors.</td></tr>
+    <tr><td><strong>1</strong></td><td>Robot drives and attempts to use the sensor. Code has issues but student can explain logic.</td></tr>
+    <tr><td><strong>0</strong></td><td>No code or no attempt.</td></tr>
+  </table>
+
+  <div class="callout callout-red">
+    <strong>If the course is too hard:</strong> Move obstacles farther apart or remove one. The goal is for students to experience success, not to create an impossible challenge. If nobody clears the course after 3&ndash;4 students, simplify it. A 2 is still a win.
+  </div>
+
+  <h3>Session 4 Troubleshooting</h3>
+  <table>
+    <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+    <tr>
+      <td>Robot avoids first obstacle then drives into the second</td>
+      <td>Code only runs the detection loop once</td>
+      <td>Make sure the avoidance logic is inside a <code>for</code> loop (like the starter code) so it keeps checking after each avoidance.</td>
+    </tr>
+    <tr>
+      <td>Robot keeps turning in circles</td>
+      <td>Always turns the same direction, obstacle is still in the way</td>
+      <td>Reverse more before turning, or alternate turn direction. Or increase the turn angle.</td>
+    </tr>
+    <tr>
+      <td>Robot drives straight into the obstacle even though sensor code is running</td>
+      <td>Robot too fast or detection distance too short</td>
+      <td>Lower velocity to 25&ndash;30. Increase detection threshold to 200&ndash;250mm.</td>
+    </tr>
+    <tr>
+      <td>Color sensor doesn't detect the red paper</td>
+      <td>Sensor too high off the ground, or wrong port</td>
+      <td>Color sensor needs to be pointing downward and within ~1 inch of the surface. Check port letter.</td>
+    </tr>
+    <tr>
+      <td><code>avoid_obstacle is not defined</code></td>
+      <td>Function defined after it's called, or typo in function name</td>
+      <td>Make sure <code>async def avoid_obstacle():</code> is defined <strong>above</strong> <code>async def main():</code> in the code.</td>
+    </tr>
+    <tr>
+      <td>Robot completes course but code errors at the end</td>
+      <td>Loop runs out or tries to access sensor after disconnect</td>
+      <td>Not critical &mdash; if the robot finished the course, that's a success. The error is cosmetic.</td>
+    </tr>
+  </table>
+
+  <!-- ===================== MANAGING THE SESSION FLOW ===================== -->
+  <hr>
+  <h2>6. Managing Engagement Across Both Sessions</h2>
+
+  <h3>Likely Challenges</h3>
+
+  <div class="callout callout-amber">
+    <strong>The "it's too hard" moment:</strong> The sensor code is the longest and most complex code students have typed. Some Red Table students will hit a wall at the <code>while True:</code> loop. When this happens, don't re-explain the concept &mdash; sit next to them, look at their screen, and find the one thing that's wrong. It's almost always indentation or a wrong port letter. Fix that one thing, run the code, and let the working robot carry the momentum.
+  </div>
+
+  <div class="callout callout-blue">
+    <strong>Vincent and Winston in Sessions 3&ndash;4:</strong> These two will finish the basic sensor code in 5 minutes. Redirect them immediately: (1) Write their own avoidance algorithm, (2) Add the color sensor, (3) Help a Red Table student get their code running (but point and explain, don't type for them). In Session 4, they should demo first to show the class what a full course run looks like.
+  </div>
+
+  <h3>If a Student Was Absent for Session 3</h3>
+  <p>They missed the sensor introduction. In Session 4:</p>
+  <ol>
+    <li>Give them the starter code directly (don't make them type from the slides)</li>
+    <li>Spend 2 minutes explaining: "This code drives forward and checks the distance sensor in a loop. When something is close, it stops and turns."</li>
+    <li>Have them run it, see it work, then start modifying</li>
+    <li>They'll learn faster from running working code than from a lecture</li>
+  </ol>
+
+  <!-- ===================== QUICK REFERENCE ===================== -->
+  <hr>
+  <h2>7. Quick Reference: Sensor Commands</h2>
+
+  <p>Keep these handy during the session for quick student help:</p>
+
+  <pre>
+# Distance sensor
+from hub import port
+import distance_sensor
+dist = distance_sensor.distance(port.F)  # returns mm, -1 if nothing
+
+# Color sensor
+from hub import port
+import color_sensor
+color = color_sensor.color(port.E)
+# 0=Black, 1=Violet, 3=Blue, 4=Cyan, 5=Green, 7=Yellow, 9=Red, 10=White
+
+# Continuous drive (doesn't stop on its own)
+motor_pair.move(motor_pair.PAIR_1, 0, velocity=40)
+
+# Stop motors
+motor_pair.stop(motor_pair.PAIR_1)
+
+# Drive for a set time
+await motor_pair.move_for_time(motor_pair.PAIR_1, 2000, 0, velocity=50)
+
+# Reverse
+await motor_pair.move_for_time(motor_pair.PAIR_1, 1000, 0, velocity=-40)
+
+# Turn right
+await motor_pair.move_for_time(motor_pair.PAIR_1, 800, 100, velocity=30)
+
+# Turn left
+await motor_pair.move_for_time(motor_pair.PAIR_1, 800, -100, velocity=30)
+  </pre>
+
+  <h3>Port Mapping</h3>
+  <table>
+    <tr><th>Port Letter</th><th>Code Reference</th></tr>
+    <tr><td>A</td><td><code>port.A</code> (or <code>0</code> for motors)</td></tr>
+    <tr><td>B</td><td><code>port.B</code> (or <code>1</code> for motors)</td></tr>
+    <tr><td>C</td><td><code>port.C</code> (or <code>2</code> for motors)</td></tr>
+    <tr><td>D</td><td><code>port.D</code> (or <code>3</code> for motors)</td></tr>
+    <tr><td>E</td><td><code>port.E</code> (or <code>4</code> for motors)</td></tr>
+    <tr><td>F</td><td><code>port.F</code> (or <code>5</code> for motors)</td></tr>
+  </table>
+
+  <hr>
+
+  <p style="font-size:13px; color:#6a7a8a; font-style:italic; margin-top:24px;">Files for these sessions: <code>Session 3 - Sensor Recon Slides.html</code>, <code>Session 4 - The Gauntlet Slides.html</code> (open in browser, go full screen). Assignments: <code>GC - Assignment 7 Sensor Recon.html</code>, <code>GC - Assignment 8 The Gauntlet.html</code>. This guide is for your reference only &mdash; do not share with students.</p>
+
+</div>
+</body>
+</html>

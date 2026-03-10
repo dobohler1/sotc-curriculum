@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Large reference files (not curriculum)
+math/reference/AOPS_Prealgebra.pdf
+
+# Student data / PII
+math/data/
+JohnMuir/data/
+*.csv
+
+# Email lists
+math/SquarespaceEmailList.csv
+math/ATRoster.csv
+
+# Student assessment submissions with grades
+JohnMuir/reference/ForGrade_*.pdf
