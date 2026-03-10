@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment 9: Square Up</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.6;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 24px; color: #1a2744; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #6a7a8a; margin-bottom: 24px; }
+  h2 { font-size: 18px; color: #1a2744; margin: 28px 0 8px; }
+  h3 { font-size: 15px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ol, ul { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 12px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .points {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; }
+  .callout {
+    border-left: 4px solid;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 24px 0; }
+  .part {
+    background: #f7f8f9;
+    border: 1px solid #e2e6ec;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .part-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .answer-box {
+    background: #fff;
+    border: 2px dashed #d0d6e0;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 10px 0;
+    min-height: 80px;
+    font-size: 14px;
+    color: #8a8a8a;
+  }
+  .answer-box.tall { min-height: 200px; }
+
+  @media print {
+    body { padding: 20px; }
+    pre, .part { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Assignment 9: Square Up</h1>
+<p class="subtitle">SOTC 2026 &mdash; John Muir &mdash; Python Robotics</p>
+<span class="points">100 POINTS</span>
+
+<p>Program your robot to drive a precise 4 ft &times; 4 ft square with turn signals and beeps. Then race it on the course &mdash; fastest clean lap wins.</p>
+
+<hr>
+
+<h2>Requirements (must include all 5)</h2>
+<ol>
+  <li><strong>Drive a complete square</strong> &mdash; 4 straight sides, 4 right turns, return to start.</li>
+  <li><strong>Right turn signal before every turn</strong> &mdash; light up the right column of the 5&times;5 matrix before each turn using <code>light_matrix.set_pixel()</code>.</li>
+  <li><strong>Beep before every turn</strong> &mdash; audible signal before each turn using <code>sound.beep()</code>.</li>
+  <li><strong>Stay in the lane</strong> &mdash; robot must stay inside the 1-foot wide taped lane on the course.</li>
+  <li><strong>Tuned for the course</strong> &mdash; straight sections should be approximately 4 feet, turns should be approximately 90&deg;.</li>
+</ol>
+
+<hr>
+
+<h2>Scoring</h2>
+<table>
+  <thead>
+    <tr><th>Category</th><th>Points</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Robot drives all 4 sides of the square</td><td>20</td></tr>
+    <tr><td>Robot makes 4 right turns (approximately 90&deg;)</td><td>15</td></tr>
+    <tr><td>Right blinker displays before each turn</td><td>15</td></tr>
+    <tr><td>Beep sounds before each turn</td><td>10</td></tr>
+    <tr><td>Robot returns close to starting position</td><td>15</td></tr>
+    <tr><td>Completes a clean lap on the course (stays in lane)</td><td>15</td></tr>
+    <tr><td>Code is readable (comments, clear structure)</td><td>10</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-amber">
+  <strong>Speed bonus:</strong> No extra points for speed, but the fastest clean lap gets bragging rights and recognition. The competition is about precision first, speed second.
+</div>
+
+<hr>
+
+<h2>Starter Code</h2>
+<p>This drives one side and makes one turn. Extend it to complete the full square.</p>
+
+<pre>
+from hub import light_matrix, sound
+import motor_pair
+import runloop
+
+motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+
+async def right_blinker():
+    # Light up right column of the matrix
+    for y in range(5):
+        light_matrix.set_pixel(4, y, 100)
+    await runloop.sleep_ms(500)
+    light_matrix.clear()
+
+async def main():
+    light_matrix.write("GO")
+    await runloop.sleep_ms(500)
+
+    # --- Side 1 ---
+    # Drive forward
+    await motor_pair.move_for_time(
+        motor_pair.PAIR_1, 2000, 0, velocity=50)
+
+    # Signal and turn
+    await right_blinker()
+    await sound.beep(800, 300, 100)
+    await motor_pair.move_for_time(
+        motor_pair.PAIR_1, 800, 100, velocity=30)
+
+    # --- YOUR CODE: Add sides 2, 3, and 4 ---
+
+
+    light_matrix.write("DONE")
+
+runloop.run(main())
+</pre>
+
+<hr>
+
+<h2>Tuning Guide</h2>
+<table>
+  <thead>
+    <tr><th>What to Change</th><th>Where in Code</th><th>Try This</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Distance per side</td><td><code>2000</code> (drive time in ms)</td><td>Increase to go farther, decrease to go shorter. Also try changing <code>velocity</code>.</td></tr>
+    <tr><td>Turn angle</td><td><code>800</code> (turn time in ms)</td><td>Increase for wider turn, decrease for tighter. This is the #1 thing to tune.</td></tr>
+    <tr><td>Speed</td><td><code>velocity=50</code></td><td>Lower = more control, higher = faster but riskier. Try <code>30</code> for safe, <code>70</code> for fast.</td></tr>
+    <tr><td>Drift correction</td><td><code>0</code> (steering on straight)</td><td>If robot drifts left, try <code>2</code>. If right, try <code>-2</code>.</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>What to Submit</h2>
+
+<div class="part">
+  <span class="part-label">Part 1 &mdash; Your Code</span>
+  <p>Paste your complete Python code &mdash; the version from your best course run.</p>
+  <div class="answer-box tall">[Paste your code here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 2 &mdash; Race Results</span>
+  <p>Did your robot complete a clean lap? What was your best time? How many attempts did it take?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="part">
+  <span class="part-label">Part 3 &mdash; What Did You Tune?</span>
+  <p>What numbers did you change from the starter code? What effect did each change have? Which adjustment made the biggest difference?</p>
+  <div class="answer-box">[Your answer here]</div>
+</div>
+
+<div class="callout callout-blue">
+  <strong>How to submit:</strong> Copy your code from the LEGO app, paste it into this assignment, answer the questions, and click Turn In.
+</div>
+
+</body>
+</html>
