@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach G — Sessions 7a–7b Prep Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 48px;
+  }
+  h1 { font-size: 28px; color: #1a2744; margin-bottom: 6px; }
+  .subtitle { font-size: 16px; color: #6a7a8a; margin-bottom: 30px; }
+  h2 {
+    font-size: 20px;
+    color: #1a2744;
+    margin: 32px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e6ec;
+  }
+  h3 { font-size: 16px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ul, ol { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .callout {
+    border-left: 4px solid;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  .callout-red { border-color: #c0392b; background: #fdf0ef; color: #7a1f1a; }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; vertical-align: top; }
+  .section-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 28px 0; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 32px; }
+    h2 { break-after: avoid; }
+    pre, table { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Coach G &mdash; Sessions 7a&ndash;7b Prep Guide</h1>
+  <p class="subtitle">Square Up: Build Day (Session 7a) + Race Day (Session 7b) &mdash; Everything you need to run both sessions.</p>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <h2>1. Overview &mdash; What This Unit Is</h2>
+
+  <p>Square Up is a two-session unit that bridges basic driving code (Sessions 1&ndash;2) and sensors (Sessions 8&ndash;9). Students program their robot to drive a perfect square with turn signals and beeps, then compete for the fastest clean lap on a taped course.</p>
+
+  <table>
+    <tr><th>Session</th><th>Theme</th><th>What Students Do</th><th>Assignment</th></tr>
+    <tr>
+      <td><strong>Session 7a:</strong> Build Day</td>
+      <td>Precision driving</td>
+      <td>Write square-driving code, add right_blinker and beep, tune timing</td>
+      <td rowspan="2">Assignment 7: Square Up</td>
+    </tr>
+    <tr>
+      <td><strong>Session 7b:</strong> Race Day</td>
+      <td>Competition</td>
+      <td>10-min tuning, then timed runs on the taped course</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>Why this unit exists:</strong> After Sessions 1&ndash;2, most students can drive forward and beep. But the jump to sensors is steep &mdash; <code>while True:</code> loops and <code>if</code> statements are a lot at once. Square Up gives students more time with <code>motor_pair.move_for_time()</code>, introduces the <code>light_matrix</code> in a fun way (turn signals), and builds the iterate-test-iterate habit they'll need for sensors. The competition makes it worth caring about precision.
+  </div>
+
+  <!-- ===================== GOOGLE CLASSROOM ===================== -->
+  <h2>2. Google Classroom &mdash; What to Post</h2>
+  <p>Post this in Google Classroom (<code>w4m3nvl6</code>) before Session 7a:</p>
+
+  <table>
+    <tr><th>Item</th><th>Type</th><th>Who</th></tr>
+    <tr><td><strong>Assignment 7:</strong> Square Up</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+  </table>
+
+  <p>Students save their code in Session 7a and submit their final version (from their best race run) at the end of Session 7b. One assignment spans both sessions.</p>
+
+  <!-- ===================== COURSE SETUP ===================== -->
+  <h2>3. Course Setup &mdash; Do This Before Session 7b</h2>
+
+  <div class="callout callout-amber">
+    <strong>Set up the course before students arrive for Session 7b.</strong> If you tape it during class, you lose 5&ndash;10 minutes and students start wandering. For Session 7a, students just need open floor space. The course only matters for Session 7b.
+  </div>
+
+  <h3>Course Specifications</h3>
+  <ul>
+    <li><strong>Size:</strong> 4 ft &times; 4 ft square</li>
+    <li><strong>Lane width:</strong> 1 foot (tape both the inner and outer boundary)</li>
+    <li><strong>Material:</strong> Painter's tape or masking tape on the floor</li>
+    <li><strong>Start/Finish:</strong> Mark one corner with a different color tape or a piece of paper labeled START</li>
+  </ul>
+
+  <h3>Taping Guide</h3>
+  <ol>
+    <li>Tape the outer boundary: a 4 ft &times; 4 ft square on the floor</li>
+    <li>Tape the inner boundary: a 2 ft &times; 2 ft square centered inside, creating a 1-foot lane on all sides</li>
+    <li>Mark the START corner (top-left is easiest &mdash; robot faces right along the first straight)</li>
+    <li>Make sure there's clear space around the outside of the course &mdash; robots that leave the lane will keep driving</li>
+  </ol>
+
+  <div class="callout callout-green">
+    <strong>Pro tip:</strong> Tape the course in an area where students can gather around and watch. The competition is the engagement driver for Session 7b. If the course is hidden in a corner, you lose the audience energy.
+  </div>
+
+  <!-- ===================== SESSION 5 GUIDE ===================== -->
+  <h2>4. Session 7a: Build Day &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Students need to leave with working code that drives a square (or at least 2 sides). If they don't have code saved by the end of Session 7a, they'll spend all of Session 7b building instead of competing. Push them to save their code in Google Classroom even if it's not finished.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session7a_SquareUp.html</code> in Chrome/Safari, go full screen (F11 or Cmd+Shift+F)</li>
+    <li>Have robots charged and ready on tables</li>
+    <li>Clear floor space for testing &mdash; students will be running robots on the floor a lot this session</li>
+    <li>Post Assignment 7 in Google Classroom if not already done</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;3</td>
+      <td>1&ndash;2</td>
+      <td>Title + show the challenge. "4 ft square, 1-foot lane, stay inside."</td>
+      <td>Build excitement: "Next session is a race. Today you build the car."</td>
+    </tr>
+    <tr>
+      <td>3&ndash;5</td>
+      <td>3</td>
+      <td>Show the 6 things the robot needs to do (drive, signal, beep, turn, repeat, stop).</td>
+      <td>Keep it concrete. "Same challenge for everyone. Same code structure."</td>
+    </tr>
+    <tr>
+      <td>5&ndash;10</td>
+      <td>4&ndash;5</td>
+      <td>Show starter code and the two tuning parameters (drive time, turn time).</td>
+      <td>Point at the two numbers on screen. "These are the only two numbers you need to change to make your square bigger, smaller, tighter, wider." Make sure everyone writes down or sees the starter code.</td>
+    </tr>
+    <tr>
+      <td>10&ndash;12</td>
+      <td>6</td>
+      <td>Show the right_blinker function with the matrix visualization.</td>
+      <td>This is a cool moment. "Your robot is going to signal before it turns &mdash; like a car." Show the 5x5 grid with the right column lit up. Don't over-explain the code &mdash; they'll type it.</td>
+    </tr>
+    <tr>
+      <td>12&ndash;15</td>
+      <td>7&ndash;8</td>
+      <td>Show the "one full side" pattern and table tasks. Students start working.</td>
+      <td>Direct traffic by table: Red gets the basic square working, Yellow adds signals, Green uses a for loop.</td>
+    </tr>
+    <tr>
+      <td>15&ndash;35</td>
+      <td>&mdash;</td>
+      <td>Hands-on work time (20 min). The bulk of the session.</td>
+      <td>Circulate. Priority order below. This is a build session &mdash; most of your time is walking the room.</td>
+    </tr>
+    <tr>
+      <td>35&ndash;38</td>
+      <td>9&ndash;10</td>
+      <td>Show tuning tips and competition preview. Students who have code working start tuning.</td>
+      <td>"If your square works, start making it faster and tighter. Next session is real."</td>
+    </tr>
+    <tr>
+      <td>38&ndash;45</td>
+      <td>11&ndash;12</td>
+      <td>Save code. Everyone opens Google Classroom and saves (not submits) their code.</td>
+      <td>Walk the room. Confirm every student has saved. "You need this code next session. If you lose it, you start from scratch."</td>
+    </tr>
+  </table>
+
+  <h3>Circulation Priority During Work Time</h3>
+  <ol>
+    <li><strong>Red Table first 10 minutes:</strong> These students need help getting the starter code typed and running. Common issues: missing <code>import runloop</code>, wrong motor ports, indentation errors. Stand behind them and catch typos as they type.</li>
+    <li><strong>Yellow Table quick checks:</strong> They should be self-sufficient on the basic code. Check in to make sure they're copy-pasting the drive-turn pattern for all 4 sides and adding the blinker function. The main question they'll have: "Where do I put the right_blinker function?" Answer: above <code>async def main():</code>.</li>
+    <li><strong>Green Table &mdash; set and forget:</strong> Tell them to use a <code>for</code> loop. If they don't know how: <code>for i in range(4):</code> with the one-side pattern indented inside. Then leave them alone.</li>
+    <li><strong>Back to Red Table:</strong> By minute 25, Red Table should have at least one side driving. If not, diagnose: is it a code error (won't run) or a tuning error (runs but wrong)?</li>
+  </ol>
+
+  <h3>Where to Put the Blinker Function</h3>
+  <p>Students will ask this. The answer:</p>
+
+  <pre>
+from hub import light_matrix, sound
+import motor_pair
+import runloop
+
+motor_pair.pair(motor_pair.PAIR_1, 0, 1)
+
+# Define the blinker function HERE (before main)
+async def right_blinker():
+    for y in range(5):
+        light_matrix.set_pixel(4, y, 100)
+    await runloop.sleep_ms(500)
+    light_matrix.clear()
+
+# Then main uses it
+async def main():
+    # ... drive, await right_blinker(), beep, turn ...
+
+runloop.run(main())</pre>
+
+  <div class="callout callout-red">
+    <strong>If a student puts <code>right_blinker()</code> inside <code>main()</code>:</strong> It won't cause an error (Python allows nested functions), but it's messy and confusing. Move it above <code>main()</code> for clarity. If they call it without <code>await</code>, the blinker won't actually wait &mdash; the robot will signal and immediately start turning. Make sure they write <code>await right_blinker()</code>.
+  </div>
+
+  <h3>Session 7a Troubleshooting</h3>
+  <table>
+    <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+    <tr>
+      <td>Robot drives but doesn't turn</td>
+      <td>Student only has one copy of the drive code, no turn code yet</td>
+      <td>They need to add the turn line after the drive line. Show them slide 4 again.</td>
+    </tr>
+    <tr>
+      <td>Robot turns but not 90&deg;</td>
+      <td>Turn time needs tuning</td>
+      <td>Start at <code>800</code> ms with steering <code>100</code> and velocity <code>30</code>. Adjust time up or down in increments of 100ms. Every robot is different.</td>
+    </tr>
+    <tr>
+      <td>Robot doesn't drive straight</td>
+      <td>Motor speed difference between wheels</td>
+      <td>Change steering from <code>0</code> to <code>2</code> or <code>-2</code>. Small adjustments. Or check that wheels aren't rubbing on the chassis.</td>
+    </tr>
+    <tr>
+      <td>Square is more like a spiral</td>
+      <td>Turns are slightly less than 90&deg;</td>
+      <td>Increase turn time. This is the most common issue. Even 50ms makes a visible difference over 4 turns.</td>
+    </tr>
+    <tr>
+      <td>"right_blinker is not defined"</td>
+      <td>Function defined after <code>main()</code>, or typo in name</td>
+      <td>Move the function definition above <code>async def main():</code>. Check spelling.</td>
+    </tr>
+    <tr>
+      <td>Blinker shows but robot turns immediately</td>
+      <td>Missing <code>await</code> before <code>right_blinker()</code></td>
+      <td>Must be <code>await right_blinker()</code>, not just <code>right_blinker()</code>.</td>
+    </tr>
+    <tr>
+      <td>"I pasted it 4 times but it only drives one side"</td>
+      <td>Pasted outside the <code>main()</code> function (no indentation)</td>
+      <td>All 4 copies of the drive-turn block need to be indented inside <code>async def main():</code> (4 spaces).</td>
+    </tr>
+    <tr>
+      <td>Code runs but nothing happens</td>
+      <td>Missing <code>runloop.run(main())</code> at the bottom</td>
+      <td>Add it. Must be at the bottom, no indentation.</td>
+    </tr>
+  </table>
+
+  <!-- ===================== SESSION 6 GUIDE ===================== -->
+  <hr>
+  <h2>5. Session 7b: Race Day &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Every student makes at least one official run on the course. Even if their code isn't perfect, they bring their robot to the line and press play. A DNF (did not finish) is infinitely better than "I didn't try." The energy of this session comes from the whole class watching each run. Keep the audience engaged.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session7b_SquareUpRace.html</code> in Chrome/Safari, go full screen</li>
+    <li><strong>Course must be taped and ready</strong> (see Section 3 above)</li>
+    <li>Have a stopwatch ready (phone timer works)</li>
+    <li>Have robots charged and on tables</li>
+    <li>Print the scoring sheet below or have it on your phone</li>
+    <li>Clear chairs/desks away from the course so students can gather around</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;3</td>
+      <td>1&ndash;2</td>
+      <td>Title + show the course. Walk everyone over to see it.</td>
+      <td>"This is the course. 4 feet by 4 feet. 1-foot lane. Stay in the lane or you're eliminated." Let them see it and get excited.</td>
+    </tr>
+    <tr>
+      <td>3&ndash;5</td>
+      <td>3</td>
+      <td>Rules: clean run (stays in lane, signals, beeps, completes square) vs. eliminated (leaves lane, missing signal, stops mid-course).</td>
+      <td>Be clear. "Any wheel outside the tape = that run doesn't count. Missing a beep or blinker = doesn't count. But you get unlimited attempts."</td>
+    </tr>
+    <tr>
+      <td>5&ndash;15</td>
+      <td>4</td>
+      <td>Tuning time. Students open their code from Session 7a and test on the open floor.</td>
+      <td>Circulate. Help anyone who lost their code (have them check Google Classroom for their saved draft). Key question for everyone: "Is your square still a square?" Then: "Is it tight enough for the 1-foot lane?"</td>
+    </tr>
+    <tr>
+      <td>15&ndash;17</td>
+      <td>5</td>
+      <td>Explain the race procedure. Call names, place at start, press play, hands off.</td>
+      <td>"When I call your name, bring your robot to START. Place it facing the first straight. Press play and step back. No touching once it starts."</td>
+    </tr>
+    <tr>
+      <td>17&ndash;40</td>
+      <td>6</td>
+      <td>Official runs. Call students one at a time. Time each run. Record results on the leaderboard.</td>
+      <td>See "Running the Race" section below.</td>
+    </tr>
+    <tr>
+      <td>40&ndash;45</td>
+      <td>7&ndash;8</td>
+      <td>Submit final code. Announce winner. Closing.</td>
+      <td>Everyone submits Assignment 7 with their final code. Celebrate the winner. Close with: "You tuned a robot to navigate a course. That's engineering."</td>
+    </tr>
+  </table>
+
+  <h3>Running the Race</h3>
+
+  <div class="callout callout-blue">
+    <strong>Pace is everything.</strong> You have about 23 minutes for runs. With 10&ndash;14 students and unlimited attempts, you need to keep things moving. Call the next student while the current one is retrieving their robot. Don't let anyone hog the course.
+  </div>
+
+  <p><strong>Race procedure for each run:</strong></p>
+  <ol>
+    <li>Call the student's name</li>
+    <li>Student places robot at START, facing the first straight</li>
+    <li>Student presses play and steps back &mdash; hands off</li>
+    <li>Start your stopwatch when the robot begins moving</li>
+    <li>Watch for: wheels inside tape, blinker before each turn, beep before each turn</li>
+    <li><strong>If the robot leaves the lane:</strong> Call "Out!" &mdash; that attempt is done. Student retrieves robot and can get back in line.</li>
+    <li><strong>If the robot completes the square:</strong> Stop the timer. Record the time. Announce it to the class.</li>
+    <li>Student retrieves robot. Call the next name.</li>
+  </ol>
+
+  <p><strong>Managing the queue:</strong></p>
+  <ul>
+    <li>Go through the roster once (everyone gets their first attempt)</li>
+    <li>Then open it up: anyone who wants another attempt raises their hand</li>
+    <li>Students waiting should be at their laptops tuning their code, not crowding the course</li>
+    <li>If someone keeps failing, encourage them: "Go adjust your turn time by 50 milliseconds and try again"</li>
+  </ul>
+
+  <div class="callout callout-green">
+    <strong>Announce times to the class.</strong> "Vincent: 14.3 seconds! That's the time to beat." This creates natural competition and keeps the audience watching. Update the leaderboard (slide 6) live if you have it projected, or just announce verbally.
+  </div>
+
+  <h3>What Counts as a Clean Run</h3>
+  <table>
+    <tr><th>Requirement</th><th>What to Watch For</th></tr>
+    <tr>
+      <td>Stays in lane</td>
+      <td>All wheels inside the tape for all 4 sides. Be strict &mdash; if you let one slide, everyone will argue.</td>
+    </tr>
+    <tr>
+      <td>Blinker before each turn</td>
+      <td>Right column of the 5&times;5 matrix lights up before each of the 4 turns. Doesn't need to be long &mdash; just visible.</td>
+    </tr>
+    <tr>
+      <td>Beep before each turn</td>
+      <td>Audible beep before each turn. If the room is loud, stand close and listen.</td>
+    </tr>
+    <tr>
+      <td>Completes full square</td>
+      <td>Robot drives all 4 sides and returns to approximately where it started.</td>
+    </tr>
+  </table>
+
+  <h3>Race Day Scoring Sheet</h3>
+  <p>Print this or score on your phone.</p>
+  <table>
+    <tr><th>Student</th><th>Run 1</th><th>Run 2</th><th>Run 3</th><th>Best</th><th>Notes</th></tr>
+    <tr><td>Angelo Carpio-Camarena</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Alex Rios</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>An Dinh</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Prince Jaden Arcadio</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jeremiah Wong</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Hector Gomez Mejia</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Markies Madrigal</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Xavier Lawson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kenneth Tran</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Kazi Johnson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Vincent Chau</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Winston Zhou</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Jacob Peterson</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Audrey James Roby</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <p>Mark each run as a time (e.g., "12.4s") or "DNF" (left the lane / missing signal). Best time column = fastest clean run.</p>
+
+  <div class="callout callout-red">
+    <strong>If a student can't get a clean run after 3+ attempts:</strong> Don't let them spiral. Say: "Your square is close. What's the one thing that's causing you to go out?" Usually it's the turn angle &mdash; point them to adding or subtracting 50&ndash;100ms on the turn time. One targeted fix, then try again.
+  </div>
+
+  <!-- ===================== MANAGING ENGAGEMENT ===================== -->
+  <hr>
+  <h2>6. Managing Engagement Across Both Sessions</h2>
+
+  <h3>Session 7a: The "I'm Done" Problem</h3>
+  <p>Some students will get the basic square working in 15 minutes and say "I'm done." They're not. Push them to:</p>
+  <ol>
+    <li><strong>Add the blinker and beep</strong> (required for a clean race run)</li>
+    <li><strong>Tune for speed</strong> &mdash; higher velocity = shorter race time, but harder to stay in the lane</li>
+    <li><strong>Test on a measured 4-ft stretch</strong> &mdash; put tape down for one side and see if their robot stays in a 1-foot lane</li>
+    <li><strong>Use a for loop</strong> (Green Table) &mdash; cleaner code and easier to tune since they only change the numbers once</li>
+  </ol>
+
+  <h3>Session 7b: Students Who Didn't Save Their Code</h3>
+  <p>Some students will show up to race day without code. Options:</p>
+  <ol>
+    <li>Check Google Classroom &mdash; did they save a draft in Assignment 7?</li>
+    <li>If not, give them the starter code from the slides and 10 minutes during tuning time</li>
+    <li>They probably won't win, but they can still compete &mdash; a slow clean run beats no run</li>
+  </ol>
+
+  <h3>Vincent and Winston in Sessions 7a&ndash;7b</h3>
+
+  <div class="callout callout-green">
+    <strong>Session 7a:</strong> They should use a <code>for</code> loop and finish the square quickly. Then redirect them to tuning for speed. Challenge: "Can you get your time under 10 seconds and still stay in the lane?" They should also be experimenting with velocity and turn timing to find the limit.<br><br>
+    <strong>Session 7b:</strong> Have them run first. Their fast, clean run shows the rest of the class what's possible and sets the benchmark. After their runs, they can help struggling students diagnose turn issues &mdash; but remind them: point and explain, don't type for the other student.
+  </div>
+
+  <h3>If a Student Was Absent for Session 7a</h3>
+  <p>They missed the build session. In Session 7b:</p>
+  <ol>
+    <li>Give them the starter code directly (show them slide 4 from Session 7a)</li>
+    <li>They get the full 10-minute tuning window to build their square</li>
+    <li>Focus them on getting a basic square working &mdash; skip the blinker if they're running out of time (a slow clean run with all signals is better than a fast run with no signals)</li>
+    <li>They can still compete, just from behind. The unlimited attempts policy means they can iterate during the race.</li>
+  </ol>
+
+  <!-- ===================== QUICK REFERENCE ===================== -->
+  <hr>
+  <h2>7. Quick Reference: Key Code for Square Up</h2>
+
+  <p>Keep these handy during both sessions for quick student help:</p>
+
+  <pre>
+# Drive forward (one side of the square)
+await motor_pair.move_for_time(motor_pair.PAIR_1, 2000, 0, velocity=50)
+#                                                 ^^^^       ^^^^
+#                                           time (ms)    speed
+
+# Turn right 90 degrees
+await motor_pair.move_for_time(motor_pair.PAIR_1, 800, 100, velocity=30)
+#                                                 ^^^  ^^^
+#                                            time    steering (100 = hard right)
+
+# Right blinker function
+async def right_blinker():
+    for y in range(5):
+        light_matrix.set_pixel(4, y, 100)    # column 4 = rightmost
+    await runloop.sleep_ms(500)
+    light_matrix.clear()
+
+# Beep
+await sound.beep(800, 300, 100)    # frequency, duration, volume
+
+# For loop version (Green Table)
+for i in range(4):
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 2000, 0, velocity=50)
+    await right_blinker()
+    await sound.beep(800, 300, 100)
+    await motor_pair.move_for_time(motor_pair.PAIR_1, 800, 100, velocity=30)</pre>
+
+  <h3>Tuning Cheat Sheet</h3>
+  <table>
+    <tr><th>What to Change</th><th>Effect</th><th>Typical Range</th></tr>
+    <tr>
+      <td>Drive time (ms)</td>
+      <td>How far the robot drives per side</td>
+      <td>1500&ndash;3500 ms (depends on velocity)</td>
+    </tr>
+    <tr>
+      <td>Drive velocity</td>
+      <td>How fast the robot drives</td>
+      <td>30&ndash;80 (higher = faster but less control)</td>
+    </tr>
+    <tr>
+      <td>Turn time (ms)</td>
+      <td>How far the robot rotates</td>
+      <td>600&ndash;1200 ms (this is the most sensitive parameter)</td>
+    </tr>
+    <tr>
+      <td>Turn velocity</td>
+      <td>How fast the robot turns</td>
+      <td>20&ndash;40 (keep this low for precision)</td>
+    </tr>
+    <tr>
+      <td>Steering on straights</td>
+      <td>Corrects drift (0 = straight, positive = right, negative = left)</td>
+      <td>-5 to 5 (small corrections only)</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>The #1 tuning tip:</strong> Tune the turn first. A bad turn compounds over 4 corners. If the turn is even 5&deg; off, the robot will be 20&deg; off by the end of the square. Get the turn to exactly 90&deg; before worrying about drive distance.
+  </div>
+
+  <hr>
+
+  <p style="font-size:13px; color:#6a7a8a; font-style:italic; margin-top:24px;">Files for these sessions: <code>Session7a_SquareUp.html</code>, <code>Session7b_SquareUpRace.html</code> (open in browser, go full screen). Assignment: <code>Assignment7_SquareUp.html</code>. This guide is for your reference only &mdash; do not share with students.</p>
+
+</div>
+</body>
+</html>
