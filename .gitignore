@@ -18,3 +18,25 @@ math/ATRoster.csv
 
 # Student assessment submissions with grades
 JohnMuir/reference/ForGrade_*.pdf
+
+# Allen Temple — sensitive / internal files
+# Only allenTemple/registration/ and allenTemple/emails/ should be committed
+# Everything else contains PII, financials, contracts, or internal docs
+allenTemple/Correspondance/
+allenTemple/Marketing/
+allenTemple/preprogramDocs/
+allenTemple/atbc_images/
+allenTemple/speed_math/
+allenTemple/strategic_analysis.md
+allenTemple/basketball_iq_lab_outreach_scripts.md
+allenTemple/attendance_visual.py
+allenTemple/attendance_progress.*
+allenTemple/leadershipInstTrans.txt
+allenTemple/HormoziSalesGuide.pdf
+allenTemple/ATBCProgramSnapShot.pptx
+allenTemple/*.pdf
+
+# Credentials (should never be committed anywhere)
+.env
+*.env
+credentials*

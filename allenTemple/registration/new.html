@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Family Registration — Basketball IQ Lab Phase 2</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f4f4f4; color: #333; }
+
+  .hero {
+    background: #1a1a2e;
+    padding: 40px 20px 30px;
+    text-align: center;
+  }
+  .hero h1 { color: #fff; font-size: 24px; letter-spacing: 1px; margin-bottom: 6px; }
+  .hero .accent { color: #e94560; font-size: 14px; font-weight: bold; letter-spacing: 2px; }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 30px 20px 50px; }
+
+  form { background: #fff; border-radius: 10px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+  h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+  h2:not(:first-child) { margin-top: 30px; }
+
+  label { display: block; font-size: 14px; font-weight: bold; color: #1a1a2e; margin-bottom: 5px; margin-top: 18px; }
+  label:first-of-type { margin-top: 0; }
+  .hint { font-size: 12px; color: #888; font-weight: normal; }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fafafa;
+    transition: border 0.2s;
+  }
+  input:focus, select:focus { border-color: #e94560; outline: none; background: #fff; }
+
+  .row { display: flex; gap: 15px; }
+  .row > div { flex: 1; }
+
+  .radio-group, .check-group { margin-top: 8px; }
+  .radio-group label, .check-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    font-size: 14px;
+    margin-top: 8px;
+    cursor: pointer;
+    color: #444;
+  }
+  .radio-group input, .check-group input { margin-right: 10px; flex-shrink: 0; }
+
+  .btn {
+    display: block;
+    width: 100%;
+    background: #e94560;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #c73650; }
+
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 13px;
+    color: #999;
+  }
+  .footer a { color: #e94560; text-decoration: none; }
+
+  .required::after { content: " *"; color: #e94560; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>NEW FAMILY REGISTRATION</h1>
+  <div class="accent">BASKETBALL IQ LAB — PHASE 2</div>
+</div>
+
+<div class="container">
+<form id="registration-form">
+
+  <!-- Child info -->
+  <h2>Child Information</h2>
+
+  <div class="row">
+    <div>
+      <label class="required">First Name</label>
+      <input type="text" name="child_first" required>
+    </div>
+    <div>
+      <label class="required">Last Name</label>
+      <input type="text" name="child_last" required>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label class="required">Gender</label>
+      <select name="child_gender" required>
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+    </div>
+    <div>
+      <label class="required">Age</label>
+      <input type="text" name="child_age" required>
+    </div>
+  </div>
+
+  <label class="required">Date of Birth</label>
+  <input type="date" name="child_dob" required>
+
+  <!-- Program preferences -->
+  <h2>Program Preferences</h2>
+
+  <label class="required">Which portion of the program would your child like to participate in?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="program_portion" value="full" required> Basketball + STEM (Full Program)</label>
+    <label><input type="radio" name="program_portion" value="basketball"> Basketball Only</label>
+    <label><input type="radio" name="program_portion" value="stem"> STEM (Lego Robotics, Coding) and/or Homework Help Only</label>
+  </div>
+
+  <!-- Basketball background -->
+  <h2>Basketball Background</h2>
+
+  <label class="required">How long has your child played organized basketball?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="bball_years" value="new" required> New / just starting</label>
+    <label><input type="radio" name="bball_years" value="<1"> Less than 1 year</label>
+    <label><input type="radio" name="bball_years" value="1-2"> 1–2 years</label>
+    <label><input type="radio" name="bball_years" value="3+"> 3+ years</label>
+  </div>
+
+  <label class="required">Which best describes your child's relationship with basketball?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="bball_interest" value="favorite" required> Basketball is my child's favorite activity</label>
+    <label><input type="radio" name="bball_interest" value="enjoys"> My child enjoys basketball a lot</label>
+    <label><input type="radio" name="bball_interest" value="sometimes"> My child likes basketball sometimes</label>
+    <label><input type="radio" name="bball_interest" value="not_interested"> My child is not very interested in basketball</label>
+  </div>
+
+  <label>Has your child played on any of the following teams? <span class="hint">(Check all that apply)</span></label>
+  <div class="check-group">
+    <label><input type="checkbox" name="teams" value="school"> School team</label>
+    <label><input type="checkbox" name="teams" value="rec"> Recreation / YMCA / Parks &amp; Rec</label>
+    <label><input type="checkbox" name="teams" value="aau"> Club / AAU</label>
+    <label><input type="checkbox" name="teams" value="none"> Not yet</label>
+  </div>
+
+  <!-- Academic profile -->
+  <h2>Academic Profile</h2>
+
+  <label class="required">How does your child feel about schoolwork (math, reading, homework)?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="schoolwork" value="loves" required> Loves it</label>
+    <label><input type="radio" name="schoolwork" value="okay"> It's okay</label>
+    <label><input type="radio" name="schoolwork" value="struggles"> Struggles but tries</label>
+    <label><input type="radio" name="schoolwork" value="dislikes"> Strongly dislikes it</label>
+  </div>
+
+  <label>Has your child participated in any of the following? <span class="hint">(Check all that apply)</span></label>
+  <div class="check-group">
+    <label><input type="checkbox" name="stem_experience" value="robotics"> Robotics or LEGO programs</label>
+    <label><input type="checkbox" name="stem_experience" value="coding"> Coding (Scratch, games, apps)</label>
+    <label><input type="checkbox" name="stem_experience" value="math_comp"> Math Competitions or other enrichment programs</label>
+    <label><input type="checkbox" name="stem_experience" value="science"> Science clubs or camps</label>
+    <label><input type="checkbox" name="stem_experience" value="none"> None of the above</label>
+  </div>
+
+  <label class="required">Which statement best fits your child?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="child_profile" value="builder" required> Loves building, coding, or figuring things out</label>
+    <label><input type="radio" name="child_profile" value="curious"> Curious but needs encouragement</label>
+    <label><input type="radio" name="child_profile" value="sports_first"> Prefers sports and movement over academics</label>
+    <label><input type="radio" name="child_profile" value="avoids"> Avoids academics whenever possible</label>
+  </div>
+
+  <!-- Motivation & temperament -->
+  <h2>Motivation &amp; Temperament</h2>
+
+  <label class="required">Why do you think your child wants to join this program?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="motivation" value="basketball" required> To improve basketball skills</label>
+    <label><input type="radio" name="motivation" value="friends"> To play with friends</label>
+    <label><input type="radio" name="motivation" value="academics"> For homework help or academic support</label>
+    <label><input type="radio" name="motivation" value="stem"> For robotics, coding, or STEM</label>
+    <label><input type="radio" name="motivation" value="parent"> Because a parent encouraged it</label>
+  </div>
+
+  <label class="required">How does your child usually respond when something is challenging?</label>
+  <div class="radio-group">
+    <label><input type="radio" name="challenge_response" value="pushes_through" required> Pushes through and keeps trying</label>
+    <label><input type="radio" name="challenge_response" value="frustrated"> Gets frustrated but responds to coaching</label>
+    <label><input type="radio" name="challenge_response" value="shuts_down"> Shuts down or disengages</label>
+    <label><input type="radio" name="challenge_response" value="avoids"> Avoids the activity</label>
+  </div>
+
+  <!-- Parent info -->
+  <h2>Parent / Guardian</h2>
+
+  <div class="row">
+    <div>
+      <label class="required">Full Name</label>
+      <input type="text" name="parent_name" required>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label class="required">Email</label>
+      <input type="email" name="parent_email" required>
+    </div>
+    <div>
+      <label class="required">Phone</label>
+      <input type="tel" name="parent_phone" required>
+    </div>
+  </div>
+
+  <button type="submit" class="btn">Continue to Payment — $25</button>
+
+</form>
+</div>
+
+<div class="footer">
+  <p>Science on the Court &nbsp;|&nbsp; <a href="mailto:dbohler@scienceonthecourt.com">dbohler@scienceonthecourt.com</a> &nbsp;|&nbsp; 510-544-8910</p>
+</div>
+
+<script>
+document.getElementById('registration-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Collect form data
+  var form = e.target;
+  var data = new FormData(form);
+  var entries = {};
+  data.forEach(function(value, key) {
+    if (entries[key]) {
+      // Handle checkboxes with multiple values
+      if (!Array.isArray(entries[key])) entries[key] = [entries[key]];
+      entries[key].push(value);
+    } else {
+      entries[key] = value;
+    }
+  });
+
+  // Store in localStorage so confirmation page can reference it
+  localStorage.setItem('sotc_registration', JSON.stringify(entries));
+
+  // Send to Google Form or email endpoint (future enhancement)
+  // For now, redirect to Stripe payment
+  window.location.href = 'https://buy.stripe.com/dRm5kDalW0q8ciq7us3AY02?prefilled_email=' + encodeURIComponent(entries.parent_email);
+});
+</script>
+
+</body>
+</html>

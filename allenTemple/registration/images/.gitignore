@@ -1,0 +1,7 @@
+# Keep only web-ready images, ignore source videos and raw photos
+*.MOV
+*.mov
+*.mp4
+frames/
+IMG_*.jpeg
+email_*.jpeg

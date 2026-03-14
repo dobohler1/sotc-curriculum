@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basketball IQ Lab — Phase 2 Registration</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f4f4f4; color: #333; }
+
+  /* Hero with background image */
+  .hero {
+    position: relative;
+    background: url('images/hero_basketball.jpeg') center center / cover no-repeat;
+    padding: 80px 20px 70px;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 46, 0.78);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero h1 { color: #fff; font-size: 32px; letter-spacing: 1px; margin-bottom: 8px; }
+  .hero .accent { color: #e94560; font-size: 15px; font-weight: bold; letter-spacing: 2px; }
+  .hero .subtitle { color: #ddd; font-size: 17px; margin-top: 15px; }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 30px 20px 50px; }
+
+  /* Photo strip */
+  .photo-strip {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .photo-strip img {
+    flex: 1;
+    width: 33.33%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .card h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 6px; }
+  .card .tag {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 15px;
+  }
+  .card p { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 15px; }
+
+  .btn {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 14px 36px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #c73650; }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid #1a1a2e;
+    color: #1a1a2e;
+  }
+  .btn-outline:hover { background: #1a1a2e; color: #fff; }
+
+  /* Testimonials */
+  .testimonials {
+    margin-bottom: 25px;
+  }
+  .testimonial {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 25px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    font-style: italic;
+    border-left: 4px solid #e94560;
+  }
+  .testimonial .attribution {
+    font-style: normal;
+    font-weight: bold;
+    color: #1a1a2e;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .details {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .details h3 { font-size: 18px; color: #1a1a2e; margin-bottom: 15px; }
+  .details table { width: 100%; }
+  .details td { padding: 8px 0; font-size: 14px; vertical-align: top; border-bottom: 1px solid #f0f0f0; }
+  .details td:first-child { font-weight: bold; color: #1a1a2e; width: 110px; }
+
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 13px;
+    color: #999;
+  }
+  .footer a { color: #e94560; text-decoration: none; }
+
+  @media (max-width: 500px) {
+    .hero { padding: 60px 15px 50px; }
+    .hero h1 { font-size: 26px; }
+    .photo-strip img { height: 140px; }
+    .card, .details { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>BASKETBALL IQ LAB</h1>
+  <div class="accent">PHASE 2 — ALLEN TEMPLE</div>
+  <p class="subtitle">April 14 – May 28 &nbsp;|&nbsp; $25 for 7 weeks</p>
+</div>
+
+<div class="container">
+
+  <!-- Photo strip -->
+  <div class="photo-strip">
+    <img src="images/action_drills.jpeg" alt="Basketball drills at Allen Temple">
+    <img src="images/celebration.jpeg" alt="Student celebrating on the court">
+    <img src="images/math_work.jpeg" alt="Student doing math work">
+  </div>
+
+  <!-- Returning families -->
+  <div class="card" style="text-align:center;">
+    <span class="tag">RETURNING FAMILIES</span>
+    <h2>Welcome Back</h2>
+    <p>We already have your info on file. Just pay the $25 registration fee and you're locked in for Phase 2.</p>
+    <a href="https://buy.stripe.com/dRm5kDalW0q8ciq7us3AY02" class="btn">Pay $25 — Register for Phase 2</a>
+  </div>
+
+  <!-- New families -->
+  <div class="card" style="text-align:center;">
+    <span class="tag" style="background:#1a1a2e;">NEW FAMILIES</span>
+    <h2>Join the Program</h2>
+    <p>New to Basketball IQ Lab? Fill out our quick placement form and pay the $25 fee to secure your spot.</p>
+    <a href="new.html" class="btn btn-outline">New Family Registration</a>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="testimonials">
+    <div class="testimonial">
+      "My son has been playing in AAU for four years, and on the first day, Coach Ryant pointed out that he lacked the fundamental passing, footwork, and defense that would really cap his progress later on. I'm so glad I found such a thorough group to train with."
+      <div class="attribution">— Program Parent</div>
+    </div>
+    <div class="testimonial">
+      "I brought my boys, who were 7, to join this group, and it was the perfect pace for them to learn in. There were several coaches who were very knowledgeable, but most of all, they had a lot of fun."
+      <div class="attribution">— Program Parent</div>
+    </div>
+    <div class="testimonial">
+      "My daughter had a little bit of experience with basketball, and our family had just gone through a challenging time. This was a great place to bring her to meet other girls, get help with her school work, and improve her game."
+      <div class="attribution">— Program Parent</div>
+    </div>
+  </div>
+
+  <!-- Program details -->
+  <div class="details">
+    <h3>Program Details</h3>
+    <table>
+      <tr><td>Dates</td><td>April 14 – May 28, 2026</td></tr>
+      <tr><td>Days</td><td>Tuesdays &amp; Thursdays</td></tr>
+      <tr><td>Time</td><td>5:00–6:00 PM — Homework Help &amp; STEM Lab (Math, Reading)<br>6:00–8:00 PM — Basketball and/or Robotics Practice</td></tr>
+      <tr><td>Location</td><td>Allen Temple Baptist Church<br>8501 International Blvd, Oakland, CA 94621</td></tr>
+      <tr><td>Ages</td><td>7–12 (Boys &amp; Girls)</td></tr>
+      <tr><td>Cost</td><td><strong>$25</strong> for the full 7-week session</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Science on the Court &nbsp;|&nbsp; <a href="mailto:dbohler@scienceonthecourt.com">dbohler@scienceonthecourt.com</a> &nbsp;|&nbsp; 510-544-8910</p>
+</div>
+
+</body>
+</html>
