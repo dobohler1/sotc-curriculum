@@ -25,8 +25,12 @@ This file contains reference materials, platform details, curriculum inventory, 
 |------|--------|---------|
 | `Session1_CodeClinic.html` | 8 | Type Program BLUE/GOLD, common fixes table, port mapping, submit to GC |
 | `Session2_ProveIt.html` | 9 | Bug hunt warm-up (3 bugs), work time, live demo, 0-3 scoring rubric, submit |
-| `Session3_SensorRecon.html` | 13 | CAN vs CAN'T framing, distance + color sensors, `while True`/`break`, sensor troubleshooting |
-| `Session4_TheGauntlet.html` | 14 | Full toolkit review, obstacle course layout, `if/elif/else`, starter code, tuning guide, course runs |
+| `Session7a_SquareUp.html` | 12 | Precision driving challenge: 4ft square, starter code (one side + one turn), two tuning parameters, `right_blinker()` function with 5x5 matrix visualization, table tasks (Red/Yellow/Green), tuning tips |
+| `Session7b_SquareUpRace.html` | 8 | Race day: course diagram, rules (clean run vs eliminated), 10-min tuning, race procedure, live leaderboard, submit |
+| `Session8_SensorRecon.html` | 13 | CAN vs CAN'T framing, distance + color sensors, `while True`/`break`, sensor troubleshooting |
+| `Session9_TheGauntlet.html` | 14 | Full toolkit review, obstacle course layout, `if/elif/else`, starter code, tuning guide, course runs |
+| `Session10a_SumoBot.html` | 15 | Robot sumo intro, physics (center of mass, torque vs speed, gear ratios), 3 strategies (Bull Rush/Searcher/Edge Dancer), ring diagram, rules, table tasks, code walkthrough (search-detect-charge loop), test matches |
+| `Session10b_SumoBotTournament.html` | 16 | Tournament day: final tuning, quick rules, bracket reveal, match template, countdown slides, FIGHT slide, between-rounds analysis, semifinals, championship, analysis discussion, awards (Champion/Best Design/Best Strategy/Most Improved), reflection |
 
 **Assignments** (`assignments/`)
 
@@ -38,15 +42,22 @@ This file contains reference materials, platform details, curriculum inventory, 
 | `Assignment5_Template.html` | — | Student template for Assignment 5 |
 | `Assignment6_ShowcaseRoutine.html` | 100 | Green Table only. 6 requirements: 4 movements, 2 sounds, light matrix, `for` loop, custom function, return-to-start. Detailed scoring rubric (20/10/10/15/15/20/10). |
 | `Assignment6_Template.html` | — | Student template for Assignment 6 |
-| `Assignment7_SensorRecon.html` | 100 | Distance sensor obstacle detection + avoidance. 4 requirements. Reference code provided with "YOUR CODE BELOW" marker. Includes useful commands table and reflection questions. |
-| `Assignment8_TheGauntlet.html` | 100 | Autonomous obstacle course. 5 requirements. Full starter code + tuning guide table. 4-part submission: code, performance, changes made, "if you had more time." |
+| `Assignment7_SquareUp.html` | 100 | Drive a 4ft square with right blinker and beep. 5 requirements (complete square, blinker, beep, stay in lane, tuned for course). Scoring rubric (20/15/15/10/15/15/10). Starter code with `right_blinker()` function. 3-part submission: code, race results, what you tuned. |
+| `Assignment8_SensorRecon.html` | 100 | Distance sensor obstacle detection + avoidance. 4 requirements. Reference code provided with "YOUR CODE BELOW" marker. Includes useful commands table and reflection questions. |
+| `Assignment9_TheGauntlet.html` | 100 | Autonomous obstacle course. 5 requirements. Full starter code + tuning guide table. 4-part submission: code, performance, changes made, "if you had more time." |
+| `Assignment10_SumoBot_Worksheet.html` | 100 | Spans both SumoBot sessions. 6 sections: design & build (strategy, sketch, physics questions), code (parameters table, code changes), test matches (4-match log), tournament bracket, analysis (what won and why), reflection (self-rating 1-5 on pushing power/speed/sensor/strategy/overall). |
+| `SumoBot_RedStarter.py` | — | Complete working sumo code. Students adjust 3 parameters: ATTACK_SPEED, SEARCH_SPEED, DETECT_DISTANCE. |
+| `SumoBot_YellowSkeleton.py` | — | Structure with TODOs. Students write sensor reading and attack/search logic. Countdown provided. |
+| `SumoBot_GreenPrompts.py` | — | Challenge prompts only. 6 challenges: countdown, search & charge, edge detection, multi-distance strategy, feinting, victory celebration. |
 
 **Instructor Materials** (`instructor/`)
 
 | File | Content |
 |------|---------|
 | `CoachG_PrepGuide_Sessions1-2.html` | Minute-by-minute timing, student groupings with names, common pitfalls, scripted callouts, demo procedures |
-| `CoachG_PrepGuide_Sessions3-4.html` | Sensor setup, hardware verification checklist, student-specific assignments, challenge extensions |
+| `CoachG_PrepGuide_Sessions3-4.html` | Sensor setup, hardware verification checklist, student-specific assignments, challenge extensions. Note: internal references still say Sessions 3-4 (pre-renumbering). |
+| `CoachG_PrepGuide_Sessions7a-7b.html` | Square Up instructor guide. Course taping specs (4ft×4ft, 1ft lanes), Session 7a minute-by-minute (build day), Session 7b race procedure, circulation priority, 8-item troubleshooting table, scoring sheet for all 14 students, tuning cheat sheet. |
+| `CoachG_PrepGuide_Sessions10a-10b.html` | SumoBot instructor guide. Ring setup (3ft diameter), Session 10a minute-by-minute (physics demo, build, code, test matches), Session 10b tournament procedure (double-elimination bracket, match management, awards), emergency fixes table, per-table guidance. |
 | `ReferencePrograms_BlueGold.html` | Clean printable reference: Program BLUE (drive forward) and Program GOLD (beep & spin) with port mapping table |
 
 **Data & Admin** (`data/`)
@@ -71,13 +82,16 @@ This file contains reference materials, platform details, curriculum inventory, 
 | File | Content |
 |------|---------|
 | `GeminiCurriculumConversation.txt` | 3,354 lines. Multi-week conversation with Gemini AI: curriculum design, student work analysis, individual grading, "Robo-Athlete Academy" framing, detailed session planning, staffing gap analysis. Key decisions made here: Blue/Gold dual-code approach, basketball exit incentive, KPP assessment framework, role-based engagement (Markies as Tech Inspector, Vincent's Referee Bot). |
+| `SumoBot_Spec.md` | Full spec for SumoBot Challenge unit. Problem statement, acceptance criteria, concept introduction (physics demo: center of mass + torque + gear ratios), constraint architecture, session decomposition (10a: Build & Program, 10b: Tournament), materials list, test cases, sumo rules (3-sec countdown, 60-sec limit, best of 3, double-elimination). |
 
 #### JohnMuir Curriculum Observations
 
 **Progression:**
 - Session 1 → Session 2: Smooth. Type code → explain code. Low conceptual jump.
-- Session 2 → Session 3: Steep. Explain one line → sensor loops, continuous driving, conditionals, `break`. Given that most students were still at Developing or below, this likely hit hard — compounded by classroom management.
-- Session 3 → Session 4: Moderate. Sensor detection → full obstacle course. Builds naturally if Session 3 landed.
+- Session 2 → Sessions 7a-7b (Square Up): Bridge unit. Precision driving (4ft square), introduces `light_matrix.set_pixel()` for turn signals, reinforces `motor_pair.move_for_time()`, builds iterate-test-iterate habit. Competition (fastest clean lap) motivates tuning.
+- Sessions 7a-7b → Session 8 (Sensor Recon): Moderate jump. Students comfortable with motor control now add `while True:` loops, `break`, and distance sensor. The Square Up bridge makes this more manageable than going directly from Session 2.
+- Session 8 → Session 9 (The Gauntlet): Moderate. Sensor detection → full obstacle course with `if/elif/else` and custom functions. Builds naturally if Session 8 landed.
+- Session 9 → Sessions 10a-10b (SumoBot): Capstone. Applies everything: motor control, distance sensors, while loops, conditionals, custom functions. Adds physics concepts (center of mass, torque, gear ratios) and physical robot modification. Double-elimination tournament.
 
 **Strengths:**
 - Consistent dark-theme visual design across all slide decks
@@ -92,10 +106,11 @@ This file contains reference materials, platform details, curriculum inventory, 
 **Issues to address if reusing:**
 - **Student names hardcoded in all slides.** Table assignments reference specific students (Angelo, Prince, Vincent, etc.). Every slide deck needs name updates for a new cohort.
 - **Assignment numbering starts at 4.** Assignments 1-3 presumably existed in a prior format or were word-block era. Confusing for students entering mid-stream.
-- **No student templates for Assignments 7 and 8.** Assignments 4-6 have separate template files; 7-8 embed answer boxes directly. Format inconsistency.
+- **No student templates for Assignments 7-9.** Assignments 4-6 have separate template files; 7-9 embed answer boxes directly. Format inconsistency.
 - **Port assumptions vary.** Slides use ports 0,1 (A,B) for motors and port.F for distance sensor. Teacher report noted students using C/D. The port check slide in Session 1 addresses this, but it remains a friction point.
-- **Session 3-4 assume Sessions 1-2 landed.** Starter code in later sessions builds on code students should have mastered. With only 3 proficient students at mid-program, most were likely still stuck on basic syntax when sensors were introduced.
+- **Sessions 8-9 assume Square Up landed.** The bridge unit (Sessions 7a-7b) was added specifically to address the steep jump from basic code to sensors. If students still struggle with `motor_pair.move_for_time()` after Square Up, they'll hit a wall at Session 8.
 - **Assignment 6 (Showcase Routine) is effectively unreachable** for anyone outside Green Table. Requirements include `for` loops and custom functions — concepts not yet taught in the slides. Only appropriate for students with prior experience.
+- **CoachG_PrepGuide_Sessions3-4.html still uses old numbering.** Internal references say Sessions 3-4 and Assignments 7-8 (pre-renumbering). Should be updated to Sessions 8-9 and Assignments 8-9 if the guide is shared again.
 
 ---
 
