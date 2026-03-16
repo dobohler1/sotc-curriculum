@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SumoBot Challenge — Session 10a: Build & Program</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 56px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+  h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 28px; font-weight: 600; margin-bottom: 12px; color: #8ecae6; }
+  p, li { font-size: 26px; line-height: 1.5; }
+  ul { margin-left: 30px; }
+  li { margin: 10px 0; }
+
+  .subtitle { font-size: 28px; color: #8ecae6; font-weight: 400; margin-bottom: 30px; }
+  .big-goal { font-size: 38px; color: #ffd60a; font-weight: 700; text-align: center; margin: 40px 0; }
+
+  /* Code blocks */
+  pre {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 20px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  .kw { color: #ff6b9d; }
+  .fn { color: #8ecae6; }
+  .str { color: #a8db8f; }
+  .num { color: #ffd60a; }
+  .cm { color: #6a7a8a; }
+
+  /* Table groups */
+  .group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .group-card {
+    border-radius: 12px;
+    padding: 24px;
+    border: 3px solid;
+  }
+  .group-red { background: #2a1015; border-color: #e74c3c; }
+  .group-red h3 { color: #ff6b6b; }
+  .group-yellow { background: #2a2510; border-color: #f1c40f; }
+  .group-yellow h3 { color: #ffd60a; }
+  .group-green { background: #102a15; border-color: #2ecc71; }
+  .group-green h3 { color: #69db7c; }
+
+  .group-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .group-card .names { font-size: 20px; color: #b0bdd0; margin-bottom: 10px; }
+  .group-card .task { font-size: 19px; font-weight: 600; }
+
+  /* Concept cards */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .concept-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .concept-card h3 { font-size: 22px; margin-bottom: 10px; }
+  .concept-card p { font-size: 22px; }
+  .concept-card code {
+    background: #0d1b2a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 18px;
+    color: #ffd60a;
+  }
+
+  /* Strategy cards */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .strategy-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+  .strategy-card h3 { font-size: 26px; margin-bottom: 12px; }
+  .strategy-card p { font-size: 20px; color: #b0bdd0; }
+  .strategy-icon { font-size: 48px; margin-bottom: 14px; }
+
+  /* Question box */
+  .question-box {
+    background: #1b2838;
+    border: 3px solid #ffd60a;
+    border-radius: 12px;
+    padding: 30px 36px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .question-box p {
+    font-size: 30px;
+    color: #ffd60a;
+    font-weight: 600;
+  }
+  .question-box .alt {
+    font-size: 22px;
+    color: #8ecae6;
+    margin-top: 10px;
+    font-weight: 400;
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin-left: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    padding-left: 50px;
+    position: relative;
+    margin: 16px 0;
+    font-size: 26px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 36px; height: 36px;
+    background: #ffd60a;
+    color: #0d1b2a;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ring diagram */
+  .ring-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+  }
+  .ring {
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    background: #1b2838;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ring-border {
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 4px dashed #ffd60a;
+  }
+  .ring-label {
+    font-size: 16px;
+    color: #ffd60a;
+    position: absolute;
+  }
+  .ring-bot {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    position: absolute;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  /* Flowchart */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .flow-box {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 260px;
+  }
+  .flow-box.start { border-color: #69db7c; color: #69db7c; }
+  .flow-box.action { border-color: #8ecae6; color: #8ecae6; }
+  .flow-box.decision { border-color: #ffd60a; color: #ffd60a; border-radius: 0; transform: rotate(0deg); }
+  .flow-box.charge { border-color: #ff6b6b; color: #ff6b6b; }
+  .flow-arrow { color: #4a5568; font-size: 24px; }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .flow-label { font-size: 18px; color: #6a7a8a; }
+
+  /* Physics diagram */
+  .physics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 24px 0;
+  }
+  .physics-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+  .physics-card h3 { font-size: 24px; margin-bottom: 14px; }
+  .physics-card p { font-size: 20px; color: #b0bdd0; }
+  .physics-visual {
+    font-size: 16px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    color: #8ecae6;
+    margin: 14px 0;
+    line-height: 1.4;
+    white-space: pre;
+  }
+
+  /* Rules list */
+  .rules-list {
+    list-style: none;
+    margin-left: 0;
+  }
+  .rules-list li {
+    padding: 12px 20px;
+    margin: 8px 0;
+    background: #1b2838;
+    border-left: 4px solid #ffd60a;
+    border-radius: 0 8px 8px 0;
+    font-size: 24px;
+  }
+
+  /* Gear diagram */
+  .gear-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  .gear-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .gear-card h3 { margin-bottom: 10px; }
+  .gear-card p { font-size: 20px; color: #b0bdd0; }
+  .gear-visual {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 18px;
+    color: #8ecae6;
+    margin: 12px 0;
+    white-space: pre;
+    line-height: 1.3;
+  }
+
+  /* Spec box */
+  .spec-box {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 16px 0;
+    font-size: 22px;
+    font-style: italic;
+    color: #b0bdd0;
+    border-left: 4px solid #ffd60a;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+    color: #4a5568;
+    z-index: 10;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: #ffd60a;
+    transition: width 0.3s;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide active" id="s1">
+  <div style="text-align:center;">
+    <h1 style="font-size:72px; color:#ffd60a;">SumoBot Challenge</h1>
+    <p class="subtitle" style="font-size:36px; margin-top:10px;">Session 10a: Build &amp; Program</p>
+    <p style="font-size:24px; color:#6a7a8a; margin-top:40px;">John Muir SOTC</p>
+  </div>
+</div>
+
+<!-- SLIDE 2: What Is Robot Sumo? -->
+<div class="slide" id="s2">
+  <h2>What Is Robot Sumo?</h2>
+  <p class="subtitle">Two robots. One ring. One walks away.</p>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3 style="color:#ff6b6b;">The Setup</h3>
+      <p>Two robots start in a ring, facing each other.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#ffd60a;">The Goal</h3>
+      <p>Push your opponent out of the ring.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#69db7c;">Fully Autonomous</h3>
+      <p>No remote control. No joystick. The robot thinks for itself.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#8ecae6;">Your Job</h3>
+      <p>Write the code <em>before</em> the match. Once it starts, you can't touch it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: The Physics of Sumo -->
+<div class="slide" id="s3">
+  <h2>The Physics of Sumo</h2>
+  <p class="subtitle">Why some robots are harder to push than others</p>
+  <div class="physics-grid">
+    <div class="physics-card">
+      <h3 style="color:#ffd60a;">Center of Mass</h3>
+      <div class="physics-visual">
+    HIGH center of mass:
+        [HUB]        &larr; Easy to tip
+       /    \
+      O      O
+
+    LOW center of mass:
+      O [HUB] O      &larr; Hard to push
+      ========</div>
+      <p><strong style="color:#ffd60a;">Lower = harder to push.</strong><br>Get your hub close to the ground.</p>
+    </div>
+    <div class="physics-card">
+      <h3 style="color:#8ecae6;">Wide Stance</h3>
+      <div class="physics-visual">
+    Narrow stance:
+        [HUB]        &larr; Tips easily
+        O  O
+
+    Wide stance:
+        [HUB]        &larr; Stable!
+     O        O</div>
+      <p><strong style="color:#8ecae6;">Wider = more stable.</strong><br>Spread your wheels apart.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Torque vs Speed -->
+<div class="slide" id="s4">
+  <h2>Torque vs Speed</h2>
+  <p class="subtitle">Gear ratios: the fundamental trade-off</p>
+  <div class="gear-grid">
+    <div class="gear-card">
+      <h3 style="color:#ff6b6b;">More Pushing Power</h3>
+      <div class="gear-visual">
+  Small gear &rarr; Large gear
+
+    (o) &rarr;&rarr;&rarr; (   O   )
+
+  Motor spins fast,
+  wheel spins slow
+  = MORE TORQUE</div>
+      <p>Slower but <strong style="color:#ff6b6b;">much harder to push</strong>.</p>
+    </div>
+    <div class="gear-card">
+      <h3 style="color:#8ecae6;">More Speed</h3>
+      <div class="gear-visual">
+  Large gear &rarr; Small gear
+
+  (   O   ) &rarr;&rarr;&rarr; (o)
+
+  Motor spins slow,
+  wheel spins fast
+  = MORE SPEED</div>
+      <p>Faster but <strong style="color:#8ecae6;">less pushing force</strong>.</p>
+    </div>
+  </div>
+  <div class="question-box">
+    <p>For sumo: what do you want?</p>
+    <p class="alt">It depends on your strategy.</p>
+  </div>
+</div>
+
+<!-- SLIDE 5: Three Sumo Strategies -->
+<div class="slide" id="s5">
+  <h2>Three Sumo Strategies</h2>
+  <div class="strategy-grid">
+    <div class="strategy-card" style="border-color:#ff6b6b;">
+      <div class="strategy-icon" style="color:#ff6b6b;">&#9658;&#9658;</div>
+      <h3 style="color:#ff6b6b;">Bull Rush</h3>
+      <p>Detect the opponent and <strong>charge at full speed</strong>. Pure aggression. Hit hard, push fast.</p>
+      <p style="margin-top:12px; color:#ff6b6b; font-size:18px;">Needs: speed + strong front</p>
+    </div>
+    <div class="strategy-card" style="border-color:#ffd60a;">
+      <div class="strategy-icon" style="color:#ffd60a;">&#8635;</div>
+      <h3 style="color:#ffd60a;">Searcher</h3>
+      <p><strong>Spin in place</strong> to scan for the opponent. When detected, charge. Smart and methodical.</p>
+      <p style="margin-top:12px; color:#ffd60a; font-size:18px;">Needs: good sensor + fast reaction</p>
+    </div>
+    <div class="strategy-card" style="border-color:#69db7c;">
+      <div class="strategy-icon" style="color:#69db7c;">&#9678;</div>
+      <h3 style="color:#69db7c;">Edge Dancer</h3>
+      <p><strong>Stay near center</strong>. Use edge detection to avoid falling out. Let the opponent come to you.</p>
+      <p style="margin-top:12px; color:#69db7c; font-size:18px;">Needs: color sensor + patience</p>
+    </div>
+  </div>
+  <div class="question-box">
+    <p>Each table: which strategy will you try?</p>
+    <p class="alt">You can combine them. You can invent your own.</p>
+  </div>
+</div>
+
+<!-- SLIDE 6: The Ring -->
+<div class="slide" id="s6">
+  <h2>The Ring</h2>
+  <p class="subtitle">Know the battlefield</p>
+  <div style="display:flex; gap:50px; align-items:center; justify-content:center;">
+    <div class="ring-container">
+      <div class="ring">
+        <div class="ring-border"></div>
+        <div class="ring-bot" style="background:#e74c3c; top:110px; left:105px;">BOT</div>
+        <div class="ring-bot" style="background:#3498db; top:150px; left:155px;">BOT</div>
+        <div class="ring-label" style="bottom:-30px;">3 ft diameter</div>
+        <div class="ring-label" style="top:50%; left:-90px; transform:translateY(-50%);">1.5 ft<br>radius</div>
+        <div style="position:absolute; top:90px; left:50%; transform:translateX(-50%); width:60px; height:2px; background:#ffd60a;"></div>
+        <div style="position:absolute; top:170px; left:50%; transform:translateX(-50%); width:60px; height:2px; background:#ffd60a;"></div>
+        <div class="ring-label" style="right:-110px; top:125px; font-size:14px;">~10 in<br>apart</div>
+      </div>
+    </div>
+    <div>
+      <ul style="list-style:none; margin-left:0;">
+        <li style="margin:14px 0; font-size:24px;"><span style="color:#ffd60a; font-weight:700;">Diameter:</span> 3 feet (1.5 ft radius)</li>
+        <li style="margin:14px 0; font-size:24px;"><span style="color:#ffd60a; font-weight:700;">Border:</span> White tape on dark floor</li>
+        <li style="margin:14px 0; font-size:24px;"><span style="color:#ffd60a; font-weight:700;">Start lines:</span> ~10 inches apart</li>
+        <li style="margin:14px 0; font-size:24px;"><span style="color:#ffd60a; font-weight:700;">Win:</span> Push opponent out</li>
+        <li style="margin:14px 0; font-size:24px;"><span style="color:#ffd60a; font-weight:700;">Time limit:</span> 60 seconds</li>
+        <li style="margin:14px 0; font-size:24px; color:#8ecae6;">If time runs out: closest to center wins</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: The Rules -->
+<div class="slide" id="s7">
+  <h2>The Rules</h2>
+  <ul class="rules-list">
+    <li><strong style="color:#ffd60a;">3-second countdown</strong> before robots can move</li>
+    <li><strong style="color:#ffd60a;">Fully autonomous</strong> &mdash; no remote control, no touching</li>
+    <li><strong style="color:#ffd60a;">Hands off</strong> after you press Start</li>
+    <li><strong style="color:#ffd60a;">Best of 3 rounds</strong> per match</li>
+    <li><strong style="color:#ffd60a;">60-second time limit</strong> per round</li>
+    <li><strong style="color:#ffd60a;">Double-elimination bracket</strong> in Session 10b</li>
+  </ul>
+  <p style="margin-top:30px; color:#8ecae6; text-align:center; font-size:22px;">Today is practice. Session 10b is the real tournament.</p>
+</div>
+
+<!-- SLIDE 8: Write Your Spec -->
+<div class="slide" id="s8">
+  <h2>Write Your Spec</h2>
+  <p class="subtitle">Before you build, write your acceptance criteria</p>
+  <p style="font-size:24px; margin-bottom:16px;">Describe what your robot <strong>will do</strong> in plain English. Be specific.</p>
+  <div class="spec-box">
+    <strong style="color:#ffd60a; font-style:normal;">Example:</strong> "My robot will spin to search for an opponent. When it detects something within 30cm, it will charge at full speed. I will lower the hub to make it harder to push."
+  </div>
+  <div style="display:flex; gap:24px; margin-top:20px;">
+    <div style="flex:1; background:#2a1015; border:2px solid #e74c3c; border-radius:10px; padding:20px;">
+      <h3 style="color:#ff6b6b; font-size:22px;">Red Table</h3>
+      <p style="font-size:20px; color:#b0bdd0;">Write <strong>2 sentences minimum</strong> describing your robot's strategy.</p>
+    </div>
+    <div style="flex:1; background:#2a2510; border:2px solid #f1c40f; border-radius:10px; padding:20px;">
+      <h3 style="color:#ffd60a; font-size:22px;">Yellow &amp; Green</h3>
+      <p style="font-size:20px; color:#b0bdd0;">Write <strong>3 sentences minimum</strong>. Include at least one specific number (speed, distance, etc).</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Design Your SumoBot -->
+<div class="slide" id="s9">
+  <h2>Design Your SumoBot</h2>
+  <p class="subtitle">Start with your existing driving base. Modify it for sumo.</p>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3 style="color:#ff6b6b;">Front Pusher</h3>
+      <p>Add a wedge or flat plate to the front. Scoop under your opponent.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#ffd60a;">Lower the Hub</h3>
+      <p>Move the hub closer to the ground. Low center of mass = harder to push.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#8ecae6;">Widen the Wheelbase</h3>
+      <p>Spread your wheels apart for better stability. Don't get tipped.</p>
+    </div>
+    <div class="concept-card">
+      <h3 style="color:#69db7c;">Sensor Placement</h3>
+      <p>Distance sensor faces forward. It needs a clear line of sight to the opponent.</p>
+    </div>
+  </div>
+  <p style="text-align:center; color:#ffd60a; font-size:24px; margin-top:16px; font-weight:600;">Experiment with gear ratios. Sketch your design on the worksheet.</p>
+</div>
+
+<!-- SLIDE 10: Your Tables -->
+<div class="slide" id="s10">
+  <h2>Your Tables</h2>
+  <div class="group-grid">
+    <div class="group-card group-red">
+      <h3>RED TABLE</h3>
+      <div class="names">Angelo, Prince, Kazi, Kenneth, Markies, Xavier</div>
+      <div class="task">Open <strong>SumoBot_RedStarter.py</strong> from Google Classroom. Get it running. Adjust the 3 numbers at the top: <code style="color:#ffd60a; background:#0d1b2a; padding:2px 6px; border-radius:4px;">ATTACK_SPEED</code>, <code style="color:#ffd60a; background:#0d1b2a; padding:2px 6px; border-radius:4px;">SEARCH_SPEED</code>, <code style="color:#ffd60a; background:#0d1b2a; padding:2px 6px; border-radius:4px;">DETECT_DISTANCE</code>.</div>
+    </div>
+    <div class="group-card group-yellow">
+      <h3>YELLOW TABLE</h3>
+      <div class="names">Alex, An, Jeremiah, Hector</div>
+      <div class="task">Open <strong>SumoBot_YellowSkeleton.py</strong>. Read the TODOs. Write the search and attack logic yourself. Test with your hand in front of the sensor.</div>
+    </div>
+    <div class="group-card group-green">
+      <h3>GREEN TABLE</h3>
+      <div class="names">Vincent, Winston</div>
+      <div class="task">Write your sumo code from scratch. Add at least one advanced feature: edge detection (color sensor), multi-distance strategy, or feinting. See the challenge prompts in Google Classroom.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: How the Code Works -->
+<div class="slide" id="s11">
+  <h2>How the Code Works</h2>
+  <p class="subtitle">The sumo logic loop</p>
+  <div class="flow">
+    <div class="flow-box start">START</div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-box action">3-second countdown</div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-box action">SEARCH &mdash; spin slowly</div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-box decision">OPPONENT DETECTED?</div>
+    <div class="flow-row">
+      <div>
+        <div class="flow-label">Yes &#9658;</div>
+      </div>
+      <div class="flow-box charge">CHARGE &mdash; full speed forward!</div>
+    </div>
+    <div class="flow-row">
+      <div>
+        <div class="flow-label">No &#9658;</div>
+      </div>
+      <div class="flow-box action">Keep searching...</div>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-box" style="border-color:#ffd60a; color:#ffd60a; font-size:18px;">Loop forever &mdash; search, detect, charge, repeat</div>
+  </div>
+</div>
+
+<!-- SLIDE 12: The Key Code Pattern -->
+<div class="slide" id="s12">
+  <h2>The Key Code Pattern</h2>
+  <p class="subtitle">This is the core of every sumo bot</p>
+  <pre>
+<span class="kw">while</span> <span class="num">True</span>:
+    dist = <span class="fn">distance_sensor.distance</span>(<span class="num">3</span>)  <span class="cm"># Port D</span>
+
+    <span class="kw">if</span> dist != <span class="num">-1</span> <span class="kw">and</span> dist &lt; DETECT_DISTANCE:
+        <span class="cm"># CHARGE!</span>
+        <span class="fn">motor_pair.move</span>(motor_pair.PAIR_1, <span class="num">0</span>,
+            velocity=ATTACK_SPEED)
+
+    <span class="kw">else</span>:
+        <span class="cm"># SEARCH &mdash; spin to find opponent</span>
+        <span class="fn">motor_pair.move</span>(motor_pair.PAIR_1, <span class="num">100</span>,
+            velocity=SEARCH_SPEED)
+
+    <span class="kw">await</span> <span class="fn">runloop.sleep_ms</span>(<span class="num">50</span>)</pre>
+  <p style="text-align:center; color:#8ecae6; font-size:20px; margin-top:10px;">
+    <code style="color:#ffd60a; background:#1b2838; padding:3px 8px; border-radius:4px;">DETECT_DISTANCE</code> = how close before you charge &nbsp;&bull;&nbsp;
+    <code style="color:#ffd60a; background:#1b2838; padding:3px 8px; border-radius:4px;">ATTACK_SPEED</code> = charge speed &nbsp;&bull;&nbsp;
+    <code style="color:#ffd60a; background:#1b2838; padding:3px 8px; border-radius:4px;">SEARCH_SPEED</code> = spin speed
+  </p>
+</div>
+
+<!-- SLIDE 13: Test Matches -->
+<div class="slide" id="s13">
+  <h2>Test Matches <span style="color:#6a7a8a; font-size:24px;">(15 min)</span></h2>
+  <div class="big-goal">Time to fight!</div>
+  <p style="text-align:center; font-size:26px; margin-bottom:30px;">Informal test matches in the ring.</p>
+  <div style="display:flex; gap:24px; justify-content:center;">
+    <div class="concept-card" style="flex:1; max-width:280px; text-align:center;">
+      <h3 style="color:#ff6b6b;">After Each Match</h3>
+      <p>What worked?<br>What didn't?</p>
+    </div>
+    <div class="concept-card" style="flex:1; max-width:280px; text-align:center;">
+      <h3 style="color:#ffd60a;">Tune</h3>
+      <p>Change your parameters.<br>Adjust your strategy.</p>
+    </div>
+    <div class="concept-card" style="flex:1; max-width:280px; text-align:center;">
+      <h3 style="color:#69db7c;">Iterate</h3>
+      <p>Test, adjust, test, adjust.<br>That's engineering.</p>
+    </div>
+  </div>
+  <div class="question-box" style="margin-top:30px;">
+    <p>You have 15 minutes. Use them.</p>
+  </div>
+</div>
+
+<!-- SLIDE 14: Submit & Name Your Bot -->
+<div class="slide" id="s14">
+  <h2>Submit &amp; Name Your Bot</h2>
+  <ol class="steps">
+    <li>Submit your code to <strong style="color:#ffd60a;">Google Classroom</strong></li>
+    <li><strong style="color:#ffd60a;">Name your sumobot</strong> &mdash; it needs a name for the bracket</li>
+    <li>Write the name on your worksheet</li>
+  </ol>
+  <div class="question-box" style="margin-top:40px;">
+    <p>Session 10b: TOURNAMENT DAY</p>
+    <p class="alt">Your bot needs a name. Make it good.</p>
+  </div>
+</div>
+
+<!-- SLIDE 15: Closing -->
+<div class="slide" id="s15">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:52px;">Next Session: Tournament Day</h1>
+    <p class="subtitle" style="font-size:30px; margin-top:20px;">Double-elimination bracket. Every robot fights.</p>
+    <p style="font-size:32px; margin-top:50px; color:#fff; font-weight:600;">May the best bot win.</p>
+    <p style="font-size:20px; margin-top:40px; color:#6a7a8a;">John Muir SOTC</p>
+  </div>
+</div>
+
+<div class="nav">
+  <span id="slideNum">1</span> / <span id="totalSlides">15</span> &nbsp; &larr; &rarr; to navigate
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = current + 1;
+    document.getElementById('totalSlides').textContent = slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  show(0);
+</script>
+</body>
+</html>

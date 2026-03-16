@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 10b — SumoBot Tournament Day</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 56px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+  h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 28px; font-weight: 600; margin-bottom: 12px; color: #8ecae6; }
+  p, li { font-size: 26px; line-height: 1.5; }
+  ul { margin-left: 30px; }
+  li { margin: 10px 0; }
+
+  .subtitle { font-size: 28px; color: #8ecae6; font-weight: 400; margin-bottom: 30px; }
+  .big-goal { font-size: 38px; color: #ffd60a; font-weight: 700; text-align: center; margin: 40px 0; }
+  .highlight { color: #ffd60a; }
+  .cyan { color: #8ecae6; }
+  .pink { color: #ff6b9d; }
+  .green { color: #69db7c; }
+
+  /* Rules list */
+  .rules-list {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+  }
+  .rules-list li {
+    padding: 12px 20px;
+    margin: 6px 0;
+    background: #1b2838;
+    border-radius: 10px;
+    border-left: 4px solid #ffd60a;
+    font-size: 24px;
+  }
+  .rules-list li strong { color: #ffd60a; }
+
+  /* Bracket placeholder */
+  .bracket-area {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 16px;
+    padding: 40px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .bracket-area h3 {
+    font-size: 32px;
+    color: #ffd60a;
+    margin-bottom: 16px;
+  }
+  .bracket-area p {
+    font-size: 22px;
+    color: #8ecae6;
+  }
+
+  /* Match card */
+  .match-card {
+    background: #1b2838;
+    border: 3px solid #ffd60a;
+    border-radius: 16px;
+    padding: 40px;
+    margin: 24px auto;
+    max-width: 650px;
+    text-align: center;
+  }
+  .match-vs {
+    font-size: 64px;
+    font-weight: 800;
+    color: #ffd60a;
+    margin: 16px 0;
+  }
+  .match-names {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .match-names .left { color: #ff6b6b; }
+  .match-names .right { color: #8ecae6; }
+
+  /* Award cards */
+  .award-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 30px 0;
+  }
+  .award-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .award-icon { font-size: 48px; margin-bottom: 10px; }
+  .award-name { font-size: 20px; font-weight: 700; color: #ffd60a; margin-bottom: 6px; }
+  .award-desc { font-size: 15px; color: #8ecae6; }
+
+  /* Discussion cards */
+  .discuss-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .discuss-card {
+    background: #1b2838;
+    border: 2px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .discuss-card h3 { font-size: 22px; margin-bottom: 10px; }
+  .discuss-card p { font-size: 21px; color: #b0bdd0; }
+
+  /* Countdown */
+  .countdown {
+    font-size: 200px;
+    font-weight: 800;
+    text-align: center;
+    color: #ffd60a;
+    text-shadow: 0 0 60px rgba(255, 214, 10, 0.3);
+  }
+  .countdown-sub {
+    text-align: center;
+    font-size: 28px;
+    color: #8ecae6;
+    margin-top: 20px;
+  }
+
+  /* Quick rules */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .quick-card {
+    background: #1b2838;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    border: 2px solid #2a3f5f;
+  }
+  .quick-card .big { font-size: 40px; font-weight: 800; color: #ffd60a; }
+  .quick-card .label { font-size: 16px; color: #8ecae6; margin-top: 6px; }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+    color: #4a5568;
+    z-index: 10;
+  }
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: #ffd60a;
+    transition: width 0.3s;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide active" id="s1">
+  <div style="text-align:center;">
+    <p class="subtitle">SumoBot Challenge</p>
+    <h1 style="font-size:72px;"><span class="highlight">Tournament Day</span></h1>
+    <p style="font-size:30px; margin-top:20px; color:#8ecae6;">Session 10b Session 10b Session 2 &mdash; Double Eliminationmdash; Double Eliminationmdash; Double Elimination</p>
+    <p style="font-size:22px; margin-top:40px; color:#4a5568;">John Muir &nbsp;|&nbsp; SOTC Robotics</p>
+  </div>
+</div>
+
+<!-- SLIDE 2: Final Tuning -->
+<div class="slide" id="s2">
+  <h2>Final Tuning <span style="font-size:24px; color:#6a7a8a;">(10 minutes)</span></h2>
+  <p class="subtitle">Last chance to adjust before the bracket starts.</p>
+  <ul class="rules-list">
+    <li><strong>You may:</strong> Change your 3 parameters (speed, search speed, detection distance)</li>
+    <li><strong>You may:</strong> Adjust physical modifications (tighten pusher, reposition sensor)</li>
+    <li><strong>You may:</strong> Run one practice match against a willing opponent</li>
+    <li><strong>You may NOT:</strong> Write brand-new code or change your core strategy</li>
+    <li><strong>You may NOT:</strong> Change motor ports or sensor ports</li>
+  </ul>
+  <p style="text-align:center; margin-top:30px; color:#ffd60a; font-size:24px; font-weight:600;">When the timer goes off, hands off the laptops.</p>
+</div>
+
+<!-- SLIDE 3: Quick Rules Reminder -->
+<div class="slide" id="s3">
+  <h2>Quick Rules</h2>
+  <div class="quick-grid">
+    <div class="quick-card">
+      <div class="big">3 sec</div>
+      <div class="label">Countdown before movement</div>
+    </div>
+    <div class="quick-card">
+      <div class="big">60 sec</div>
+      <div class="label">Time limit per round</div>
+    </div>
+    <div class="quick-card">
+      <div class="big">Best of 3</div>
+      <div class="label">Rounds per match</div>
+    </div>
+  </div>
+  <div class="quick-grid">
+    <div class="quick-card">
+      <div class="big" style="font-size:30px;">Autonomous</div>
+      <div class="label">No touching after play</div>
+    </div>
+    <div class="quick-card">
+      <div class="big" style="font-size:30px;">Push Out</div>
+      <div class="label">Whole robot outside = loss</div>
+    </div>
+    <div class="quick-card">
+      <div class="big" style="font-size:30px;">2 Losses</div>
+      <div class="label">Double elimination &mdash; you're out after 2</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Bracket Reveal -->
+<div class="slide" id="s4">
+  <h2>The Bracket</h2>
+  <p class="subtitle">Double elimination &mdash; lose twice and you're out.</p>
+  <div class="bracket-area">
+    <h3>WINNERS BRACKET</h3>
+    <p>First-round matchups drawn randomly.</p>
+    <p style="margin-top:12px; color:#6a7a8a;">Losers drop to the Losers Bracket &mdash; not eliminated yet.</p>
+    <p style="margin-top:20px; font-size:28px; color:#ffd60a; font-weight:700;">(Show bracket on whiteboard or printed sheet)</p>
+  </div>
+  <p style="text-align:center; color:#8ecae6; font-size:22px; margin-top:16px;">Record your matchups on your worksheet as we go.</p>
+</div>
+
+<!-- SLIDE 5: Match Template (reuse for each match) -->
+<div class="slide" id="s5">
+  <div style="text-align:center;">
+    <h2 style="color:#6a7a8a; font-size:24px; letter-spacing:3px; text-transform:uppercase;">Next Match</h2>
+    <div class="match-card">
+      <div class="match-names">
+        <span class="left">[Robot 1]</span>
+        <span class="match-vs">VS</span>
+        <span class="right">[Robot 2]</span>
+      </div>
+    </div>
+    <p style="font-size:22px; color:#6a7a8a; margin-top:20px;">Both drivers: place your robots on the starting lines.</p>
+    <p style="font-size:22px; color:#ffd60a; margin-top:10px;">Press Play on the count of three.</p>
+  </div>
+</div>
+
+<!-- SLIDE 6: Countdown 3 -->
+<div class="slide" id="s6">
+  <div class="countdown">3</div>
+  <p class="countdown-sub">Robots on the line. Hands ready.</p>
+</div>
+
+<!-- SLIDE 7: Countdown 2 -->
+<div class="slide" id="s7">
+  <div class="countdown">2</div>
+  <p class="countdown-sub">Drivers ready.</p>
+</div>
+
+<!-- SLIDE 8: Countdown 1 -->
+<div class="slide" id="s8">
+  <div class="countdown">1</div>
+  <p class="countdown-sub">Press Play&hellip;</p>
+</div>
+
+<!-- SLIDE 9: FIGHT -->
+<div class="slide" id="s9">
+  <div style="text-align:center;">
+    <div class="countdown" style="font-size:160px; color:#ff6b6b; text-shadow: 0 0 80px rgba(255,107,107,0.4);">FIGHT!</div>
+    <p class="countdown-sub" style="color:#ffd60a;">60 seconds on the clock. Hands off the robots.</p>
+  </div>
+</div>
+
+<!-- SLIDE 10: Between Matches -->
+<div class="slide" id="s10">
+  <div style="text-align:center;">
+    <h2>Between Rounds</h2>
+    <p style="font-size:28px; margin-top:30px;">While the next match sets up, think about:</p>
+    <div class="discuss-grid" style="max-width:700px; margin:30px auto;">
+      <div class="discuss-card">
+        <h3 style="color:#ffd60a;">What Worked?</h3>
+        <p>Which robot's strategy was more effective? Why?</p>
+      </div>
+      <div class="discuss-card">
+        <h3 style="color:#ff6b9d;">What Failed?</h3>
+        <p>Did a robot drive itself out? Lose track of the opponent? Get overpowered?</p>
+      </div>
+    </div>
+    <p style="font-size:22px; color:#6a7a8a; margin-top:20px;">Losers bracket players: you can make <strong style="color:#ffd60a;">one parameter change</strong> before your next match.</p>
+  </div>
+</div>
+
+<!-- SLIDE 11: Semifinals -->
+<div class="slide" id="s11">
+  <div style="text-align:center;">
+    <h1 style="font-size:48px; color:#8ecae6;">SEMIFINALS</h1>
+    <p style="font-size:28px; margin-top:24px;">Winners bracket final &amp; Losers bracket final</p>
+    <div class="match-card" style="margin-top:30px;">
+      <div class="match-names">
+        <span class="left">[Robot A]</span>
+        <span class="match-vs">VS</span>
+        <span class="right">[Robot B]</span>
+      </div>
+    </div>
+    <p style="font-size:22px; color:#6a7a8a; margin-top:20px;">Everyone watches. This is where it gets real.</p>
+  </div>
+</div>
+
+<!-- SLIDE 12: Championship -->
+<div class="slide" id="s12">
+  <div style="text-align:center;">
+    <p style="font-size:18px; letter-spacing:4px; color:#6a7a8a; text-transform:uppercase;">The Final Match</p>
+    <h1 style="font-size:64px; margin-top:16px;"><span class="highlight">CHAMPIONSHIP</span></h1>
+    <div class="match-card" style="margin-top:30px; border-color:#ff6b6b;">
+      <div class="match-names">
+        <span class="left">[Finalist 1]</span>
+        <span class="match-vs" style="color:#ff6b6b;">VS</span>
+        <span class="right">[Finalist 2]</span>
+      </div>
+    </div>
+    <p style="font-size:24px; color:#8ecae6; margin-top:24px;">Best of 3 rounds. Winner takes it all.</p>
+  </div>
+</div>
+
+<!-- SLIDE 13: Analysis -->
+<div class="slide" id="s13">
+  <h2>Why Did the Best Robot Win?</h2>
+  <p class="subtitle">Let's connect what happened to what we learned.</p>
+  <div class="discuss-grid">
+    <div class="discuss-card">
+      <h3 style="color:#ffd60a;">Center of Mass</h3>
+      <p>Which robots were hardest to push? Were they lower to the ground? Wider? Heavier in front?</p>
+    </div>
+    <div class="discuss-card">
+      <h3 style="color:#ff6b9d;">Torque vs Speed</h3>
+      <p>Did fast robots or strong robots win more? Did anyone change their gear ratio &mdash; and did it help?</p>
+    </div>
+    <div class="discuss-card">
+      <h3 style="color:#8ecae6;">Sensor Strategy</h3>
+      <p>Which detection distance worked best? Did any robot use edge detection to stay in the ring?</p>
+    </div>
+    <div class="discuss-card">
+      <h3 style="color:#69db7c;">Code Strategy</h3>
+      <p>Bull Rush vs Searcher vs Edge Dancer &mdash; which strategy won the most matches? Why?</p>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:20px; font-size:22px; color:#6a7a8a;">Fill in the Analysis section on your worksheet.</p>
+</div>
+
+<!-- SLIDE 14: Awards -->
+<div class="slide" id="s14">
+  <h2 style="text-align:center;">Awards</h2>
+  <div class="award-grid">
+    <div class="award-card">
+      <div class="award-icon">&#127942;</div>
+      <div class="award-name">Champion</div>
+      <div class="award-desc">Won the bracket.</div>
+    </div>
+    <div class="award-card">
+      <div class="award-icon">&#128295;</div>
+      <div class="award-name">Best Design</div>
+      <div class="award-desc">Most creative physical modification. (Class vote)</div>
+    </div>
+    <div class="award-card">
+      <div class="award-icon">&#129504;</div>
+      <div class="award-name">Best Strategy</div>
+      <div class="award-desc">Smartest code approach. (Coach pick)</div>
+    </div>
+    <div class="award-card">
+      <div class="award-icon">&#128200;</div>
+      <div class="award-name">Most Improved</div>
+      <div class="award-desc">Biggest jump from test matches to tournament. (Coach pick)</div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:30px;">
+    <p style="font-size:28px; color:#ffd60a; font-weight:700;">[Announce winners here]</p>
+  </div>
+</div>
+
+<!-- SLIDE 15: Reflection -->
+<div class="slide" id="s15">
+  <h2>Reflection</h2>
+  <p class="subtitle">Complete the reflection on your worksheet.</p>
+  <div style="max-width:700px; margin:20px auto;">
+    <p style="font-size:24px; margin:20px 0; color:#8ecae6;">What's one thing you learned about engineering design from this project?</p>
+    <p style="font-size:24px; margin:20px 0; color:#8ecae6;">If you could rebuild your sumobot from scratch, what would you change?</p>
+    <p style="font-size:24px; margin:20px 0; color:#8ecae6;">Rate your sumobot: Pushing Power / Speed / Sensor Detection / Code Strategy / Overall</p>
+  </div>
+  <p style="text-align:center; margin-top:30px; font-size:22px; color:#6a7a8a;">Submit your worksheet to Google Classroom when done.</p>
+</div>
+
+<!-- SLIDE 16: Closing -->
+<div class="slide" id="s16">
+  <div style="text-align:center;">
+    <h1 style="color:#ffd60a; font-size:64px;">Good Fights.</h1>
+    <p style="font-size:30px; margin-top:24px;">You designed a robot, wrote the code, and competed.</p>
+    <p style="font-size:28px; margin-top:16px; color:#8ecae6;">That's engineering.</p>
+    <p style="font-size:22px; margin-top:50px; color:#4a5568;">John Muir SOTC &mdash; Science on the Central Coast</p>
+  </div>
+</div>
+
+<div class="nav">
+  <span id="slideNum">1</span> / <span id="totalSlides">16</span> &nbsp; &larr; &rarr; to navigate
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = current + 1;
+    document.getElementById('totalSlides').textContent = slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  show(0);
+</script>
+</body>
+</html>

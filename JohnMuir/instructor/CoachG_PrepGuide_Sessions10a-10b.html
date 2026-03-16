@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach G — Sessions 10a–10b Prep Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 48px;
+  }
+  h1 { font-size: 28px; color: #1a2744; margin-bottom: 6px; }
+  .subtitle { font-size: 16px; color: #6a7a8a; margin-bottom: 30px; }
+  h2 {
+    font-size: 20px;
+    color: #1a2744;
+    margin: 32px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e6ec;
+  }
+  h3 { font-size: 16px; color: #3a4a64; margin: 20px 0 8px; }
+  p { font-size: 15px; margin: 8px 0; }
+  ul, ol { font-size: 15px; margin: 8px 0 8px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #1a2744;
+    color: #e8ecf0;
+    padding: 20px 24px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .callout {
+    border-left: 4px solid;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout-blue { border-color: #2e6b9e; background: #eef5fb; color: #1a3d5c; }
+  .callout-amber { border-color: #d4930d; background: #fef9ed; color: #6b4a06; }
+  .callout-red { border-color: #c0392b; background: #fdf0ef; color: #7a1f1a; }
+  .callout-green { border-color: #1a7742; background: #edf7f0; color: #0d3d20; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { background: #f0f2f5; text-align: left; padding: 10px 14px; font-weight: 600; color: #3a4a64; border-bottom: 2px solid #d0d6e0; }
+  td { padding: 9px 14px; border-bottom: 1px solid #eaecf0; vertical-align: top; }
+  hr { border: none; border-top: 1px solid #eaecf0; margin: 28px 0; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 32px; }
+    h2 { break-after: avoid; }
+    pre, table { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Coach G &mdash; Sessions 10a&ndash;10b Prep Guide</h1>
+  <p class="subtitle">SumoBot Challenge: Build &amp; Program (Session 10a) + Tournament Day (Session 10b) &mdash; Everything you need to run both sessions.</p>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <h2>1. Overview &mdash; What This Unit Is</h2>
+
+  <p>SumoBot is a two-session capstone unit. Students modify their robots for sumo wrestling, program autonomous search-and-attack behavior using distance sensors, and compete in a double-elimination tournament. This unit applies everything from prior sessions: motor control, sensor reading, while loops, if/elif/else, and custom functions.</p>
+
+  <table>
+    <tr><th>Session</th><th>Theme</th><th>What Students Do</th><th>Duration</th></tr>
+    <tr>
+      <td><strong>Session 10a:</strong> Build &amp; Program</td>
+      <td>Design + code</td>
+      <td>Physics demo, robot modifications, write/tune sumo code, test matches</td>
+      <td>~90 min</td>
+    </tr>
+    <tr>
+      <td><strong>Session 10b:</strong> Tournament Day</td>
+      <td>Competition</td>
+      <td>Final tuning, double-elimination bracket, analysis, awards</td>
+      <td>~90 min</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>Why this unit works:</strong> Competition is the engagement engine. Every student &mdash; even Red Table &mdash; has a fighting robot by the end of Session 10a. The differentiation is in code sophistication (Red: tune 3 parameters, Yellow: write sensor logic, Green: build from scratch with edge detection). But everyone competes in the same bracket. That's what makes it motivating.
+  </div>
+
+  <!-- ===================== GOOGLE CLASSROOM ===================== -->
+  <h2>2. Google Classroom &mdash; What to Post</h2>
+  <p>Post these in Google Classroom (<code>w4m3nvl6</code>) before Session 10a:</p>
+
+  <table>
+    <tr><th>Item</th><th>Type</th><th>Who</th></tr>
+    <tr><td><strong>Assignment 10:</strong> SumoBot Challenge</td><td>Assignment (100 pts)</td><td>All students</td></tr>
+    <tr><td><strong>SumoBot_RedStarter.py</strong></td><td>Material</td><td>Red Table</td></tr>
+    <tr><td><strong>SumoBot_YellowSkeleton.py</strong></td><td>Material</td><td>Yellow Table</td></tr>
+    <tr><td><strong>SumoBot_GreenPrompts.py</strong></td><td>Material</td><td>Green Table</td></tr>
+    <tr><td><strong>SumoBot Worksheet</strong></td><td>Material</td><td>All students</td></tr>
+  </table>
+
+  <p>Students submit their final code and completed worksheet at the end of Session 10b.</p>
+
+  <!-- ===================== PHYSICAL SETUP ===================== -->
+  <h2>3. Physical Setup &mdash; Do This Before Session 10a</h2>
+
+  <div class="callout callout-amber">
+    <strong>The ring must be ready before Session 10a starts.</strong> Students need it for test matches at minute 65. If you're building it during class, you lose testing time and momentum.
+  </div>
+
+  <h3>Ring Specifications</h3>
+  <ul>
+    <li><strong>Size:</strong> 3 ft diameter (1.5 ft radius) circle</li>
+    <li><strong>Material:</strong> White tape on dark floor, or dark poster board with white tape border</li>
+    <li><strong>Starting lines:</strong> Two colored tape marks inside the ring, ~10 inches apart, centered</li>
+    <li><strong>Location:</strong> On the floor (not a table), with clear space around it for spectators</li>
+  </ul>
+
+  <h3>Hardware Checklist</h3>
+  <table>
+    <tr><th>Item</th><th>Check</th></tr>
+    <tr><td>Distance sensor on every robot, Port D, facing forward</td><td>Write port on sticky note per robot</td></tr>
+    <tr><td>1&ndash;2 color sensors available for Green Table (Port E, facing down)</td><td>For edge detection challenge</td></tr>
+    <tr><td>Motors on Ports A (left) and B (right)</td><td>Same as prior sessions</td></tr>
+    <tr><td>Extra LEGO gears (various sizes), beams, plates for pushers/wedges</td><td>Set out on a shared table</td></tr>
+    <tr><td>All hubs charged</td><td></td></tr>
+    <tr><td>Timer ready on phone (60-second match timer)</td><td></td></tr>
+    <tr><td>Bracket template (printed or on whiteboard)</td><td>Double-elimination for 6&ndash;8 teams</td></tr>
+  </table>
+
+  <div class="callout callout-green">
+    <strong>Test the Red starter code on a real robot before class.</strong> Verify it searches and charges. If it doesn't work on your hardware, students will be dead in the water. Common issue: port numbers don't match &mdash; adjust the code to match your robots' actual port configuration.
+  </div>
+
+  <!-- ===================== TABLE STATUS ===================== -->
+  <h2>4. Where Each Table Stands</h2>
+
+  <p>SumoBot assumes students have completed Sessions 8&ndash;9 (Sensor Recon + The Gauntlet). They know distance sensors, <code>while True:</code> loops, <code>if/elif/else</code>, and custom functions.</p>
+
+  <table>
+    <tr><th>Table</th><th>Code They Receive</th><th>What They Do</th><th>Physical Mods</th></tr>
+    <tr>
+      <td><strong style="color:#c00;">Red</strong></td>
+      <td><code>SumoBot_RedStarter.py</code> &mdash; complete, working code</td>
+      <td>Adjust 3 parameters: <code>ATTACK_SPEED</code>, <code>SEARCH_SPEED</code>, <code>DETECT_DISTANCE</code></td>
+      <td>At least 1 mod (pusher OR lower center of mass)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#b8860b;">Yellow</strong></td>
+      <td><code>SumoBot_YellowSkeleton.py</code> &mdash; structure with TODOs</td>
+      <td>Write the sensor reading and attack/search logic themselves</td>
+      <td>2+ mods</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#080;">Green</strong></td>
+      <td><code>SumoBot_GreenPrompts.py</code> &mdash; challenge prompts only</td>
+      <td>Build from scratch. Edge detection, multi-distance strategy, feinting</td>
+      <td>Experiment with gear ratios for torque vs speed</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-red">
+    <strong>Red Table note:</strong> These students need the most help with physical builds. When they modify their robot, check that (1) the distance sensor is still facing forward and not blocked by their pusher, and (2) motor cables didn't come loose during modifications. These two issues will eat 10 minutes each if you don't catch them early.
+  </div>
+
+  <!-- ===================== SESSION 10a ===================== -->
+  <h2>5. Session 10a: Build &amp; Program &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Every team must have a working sumo robot by the test match phase (minute 65). Red Table has complete code &mdash; they just need to get it running and tune 3 numbers. If they're still debugging at minute 60, pull them aside and fix it yourself. A non-functional robot means no test matches, no competition buy-in, and a disengaged student in Session 10b.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session10a_SumoBot.html</code> in Chrome/Safari, go full screen (F11 or Cmd+Shift+F)</li>
+    <li>Ring taped and ready on the floor</li>
+    <li>Extra LEGO parts on a shared table</li>
+    <li>Code files posted in Google Classroom</li>
+    <li>Worksheets accessible (printed or digital)</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;10</td>
+      <td>1&ndash;5</td>
+      <td>Physics demo: center of mass (push contest), gear ratios (feel the difference), 3 sumo strategies.</td>
+      <td>Do the push contest with two volunteers. Show gear configurations on a demo robot. Ask each table: "Which strategy will you try?" This is not skippable &mdash; the physics concepts are a primary learning objective.</td>
+    </tr>
+    <tr>
+      <td>10&ndash;15</td>
+      <td>6&ndash;7</td>
+      <td>Show the ring. Explain rules. 3-second countdown, 60-second limit, fully autonomous, best of 3.</td>
+      <td>Be clear on "fully autonomous." "Once you press play, you cannot touch the robot. If it drives out of the ring, that's on your code."</td>
+    </tr>
+    <tr>
+      <td>15&ndash;20</td>
+      <td>8</td>
+      <td>Spec writing. Students write acceptance criteria on worksheet.</td>
+      <td>Walk the room. Help students be specific: "My robot will spin to search, then charge at 80% speed when it detects something within 30cm."</td>
+    </tr>
+    <tr>
+      <td>20&ndash;40</td>
+      <td>9</td>
+      <td>Build time (20 min). Students modify their driving base for sumo.</td>
+      <td>Circulate. Suggest modifications: front pusher, lower center of mass, wider wheelbase. Checkpoint at minute 30: "10 minutes left on build. Pusher first, aesthetics later."</td>
+    </tr>
+    <tr>
+      <td>40&ndash;65</td>
+      <td>10&ndash;12</td>
+      <td>Code time (25 min). Students open their table's file and write/tune code.</td>
+      <td>Direct by table. Red: walk through changing 3 parameters one at a time, test after each. Yellow: check TODOs are filled in correctly. Green: leave them alone unless stuck. See troubleshooting below.</td>
+    </tr>
+    <tr>
+      <td>65&ndash;80</td>
+      <td>13</td>
+      <td>Test matches (15 min). Informal bouts in the ring.</td>
+      <td>Pair up teams. Run 4&ndash;5 practice matches. After each: "What would you change?" Give 2 min to tweak between matches. Rotate opponents.</td>
+    </tr>
+    <tr>
+      <td>80&ndash;90</td>
+      <td>14&ndash;15</td>
+      <td>Submit code. Name their sumobot. Preview tournament.</td>
+      <td>"Save your code. DO NOT change anything before next session. Name your bot &mdash; it needs a name for the bracket."</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-blue">
+    <strong>Have students fill in the "My Parameters" table on the worksheet as they choose values.</strong> This slows them down and forces them to think about <em>why</em> they picked a number instead of just mashing random values. It also gives you diagnostic info &mdash; if a student's robot isn't working, check their parameter table first.
+  </div>
+
+  <h3>Session 10a Troubleshooting</h3>
+  <table>
+    <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+    <tr>
+      <td>Robot won't detect opponent</td>
+      <td>Wrong port or sensor blocked</td>
+      <td>Check sensor is on <strong>Port D</strong> (port number 3 in code). Make sure the front pusher isn't blocking the sensor's line of sight.</td>
+    </tr>
+    <tr>
+      <td>Robot drives out of ring immediately</td>
+      <td>Motors wired backward or speed too high</td>
+      <td>Swap A and B in <code>motor_pair.pair()</code>. Lower <code>ATTACK_SPEED</code> to 50&ndash;60, tune up from there.</td>
+    </tr>
+    <tr>
+      <td>Robot just spins and never charges</td>
+      <td><code>DETECT_DISTANCE</code> too low</td>
+      <td>Increase to 250&ndash;300mm. Also check sensor is physically facing forward.</td>
+    </tr>
+    <tr>
+      <td>Code crashes on start</td>
+      <td>Python syntax error</td>
+      <td>Check indentation (everything inside <code>while</code>/<code>if</code> must be indented), missing <code>await</code>, wrong port numbers.</td>
+    </tr>
+    <tr>
+      <td>Student finished Red code in 5 minutes</td>
+      <td>Not a problem &mdash; but redirect them</td>
+      <td>Add a beep when opponent is detected. Try different search/attack speed combos. Add a victory spin. If they're bored, challenge them with Yellow Table's TODO approach.</td>
+    </tr>
+    <tr>
+      <td>Green Table stuck on edge detection</td>
+      <td>Color sensor returns unfamiliar values</td>
+      <td>Have them print <code>color_sensor.color(4)</code> first to see the actual values. White is usually 9 or 10. Sensor must face down, within ~1 inch of the floor.</td>
+    </tr>
+    <tr>
+      <td>Students spend too long on robot aesthetics</td>
+      <td>Having fun, but not building for function</td>
+      <td>Redirect: "Does it push hard? That's what wins. You can make it look cool after it works."</td>
+    </tr>
+  </table>
+
+  <!-- ===================== SESSION 10b ===================== -->
+  <hr>
+  <h2>6. Session 10b: Tournament Day &mdash; Coach G's Playbook</h2>
+
+  <div class="callout callout-amber">
+    <strong>The single most important thing this session:</strong> Energy. This session lives or dies on your energy as the referee and commentator. Announce play-by-play. Build drama before each match. Make upsets a moment. The students will match your energy &mdash; if you're flat, they'll be on their phones. If you're hyped, they'll be on their feet.
+  </div>
+
+  <h3>Before Students Arrive</h3>
+  <ul>
+    <li>Open <code>Session10b_SumoBotTournament.html</code> in Chrome/Safari, go full screen</li>
+    <li>Ring is ready (should still be taped from Session 10a, or re-tape)</li>
+    <li>Draw the bracket on the whiteboard or have it printed</li>
+    <li>Timer ready (60-second match timer)</li>
+    <li>Robots and laptops on tables</li>
+  </ul>
+
+  <h3>Minute-by-Minute</h3>
+  <table>
+    <tr><th>Time</th><th>Slide</th><th>What Happens</th><th>Your Role</th></tr>
+    <tr>
+      <td>0&ndash;10</td>
+      <td>1&ndash;2</td>
+      <td>Final tuning. Last chance for parameter tweaks and physical adjustments.</td>
+      <td>"10 minutes. Parameter tweaks only &mdash; no new code, no rebuilds." Quick check on Red Table: does their code still run?</td>
+    </tr>
+    <tr>
+      <td>10&ndash;15</td>
+      <td>3&ndash;4</td>
+      <td>Quick rules reminder. Bracket reveal. Announce first-round matchups.</td>
+      <td>Explain double elimination: "Lose once, you go to losers bracket. Lose twice, you're out. Everyone gets at least 2 fights." Build anticipation.</td>
+    </tr>
+    <tr>
+      <td>15&ndash;55</td>
+      <td>5&ndash;10</td>
+      <td>Tournament matches (40 min). One match at a time, whole class watches.</td>
+      <td>See "Running the Tournament" section below. You are referee AND commentator. Keep it to ~3&ndash;4 min per match.</td>
+    </tr>
+    <tr>
+      <td>55&ndash;65</td>
+      <td>11&ndash;12</td>
+      <td>Semifinals and Championship. Build maximum hype.</td>
+      <td>Introduce the finalists. Let them talk about their robot. Best of 3 (or best of 5 if time allows). Take photos.</td>
+    </tr>
+    <tr>
+      <td>65&ndash;75</td>
+      <td>13</td>
+      <td>Analysis discussion. "Why did the winning robot win?"</td>
+      <td>Lead whole-class debrief: center of mass, torque, sensor strategy, code strategy. At least 3 students should be able to articulate a physics connection.</td>
+    </tr>
+    <tr>
+      <td>75&ndash;85</td>
+      <td>14&ndash;15</td>
+      <td>Awards and reflection. Students complete worksheet.</td>
+      <td>Announce: Champion, Best Design (class vote), Best Strategy (your pick), Most Improved (your pick). Students fill in reflection and self-rating.</td>
+    </tr>
+    <tr>
+      <td>85&ndash;90</td>
+      <td>16</td>
+      <td>Clean up. Robots stored or disassembled. Ring removed.</td>
+      <td>"You designed, built, coded, tested, and competed. That's real engineering."</td>
+    </tr>
+  </table>
+
+  <h3>Running the Tournament</h3>
+
+  <div class="callout callout-green">
+    <strong>One match at a time, whole class watches.</strong> This keeps energy up and prevents chaos. Have the NEXT two teams ready at ringside while the current match runs. You are the referee &mdash; your call is final.
+  </div>
+
+  <p><strong>Match procedure:</strong></p>
+  <ol>
+    <li>Announce the match: team names and robot names</li>
+    <li>Both drivers place robots on starting lines</li>
+    <li>Dramatic countdown: "3... 2... 1... SUMO!"</li>
+    <li>Both press play simultaneously. Hands off.</li>
+    <li>Call the play-by-play: "It's circling! Here comes the charge!"</li>
+    <li>Robot fully outside the ring = that round's loss</li>
+    <li>60 seconds with no pushout = closest to center wins the round</li>
+    <li>Robot stops moving (crash/disconnect) = forfeits after 10 seconds</li>
+    <li>Best of 3 rounds per match</li>
+    <li>Update bracket on board. Call next match.</li>
+  </ol>
+
+  <h3>Double-Elimination Bracket</h3>
+  <ul>
+    <li><strong>Winners bracket:</strong> Win and advance. Lose and drop to losers bracket.</li>
+    <li><strong>Losers bracket:</strong> Lose here and you're eliminated.</li>
+    <li><strong>Finals:</strong> Winners bracket champ vs. losers bracket champ. Losers bracket team must win 2 sets to take the title (they already have one loss).</li>
+    <li>For 6 teams: ~10 total matches. For 8 teams: ~14 total matches.</li>
+    <li>If running long, switch from best-of-3 to single rounds.</li>
+  </ul>
+
+  <div class="callout callout-blue">
+    <strong>Between matches:</strong> Ask the winner: "What's your secret?" Ask the loser: "Coming back stronger?" Let losers bracket players make <strong>one parameter change</strong> before their next match. This keeps eliminated-once students engaged.
+  </div>
+
+  <h3>Keeping Energy High</h3>
+  <ul>
+    <li>Announce play-by-play like a sports commentator</li>
+    <li>Let the crowd pick favorites and cheer</li>
+    <li>If a big upset happens, make it a moment: "THE UNDERDOG TAKES IT!"</li>
+    <li>Between matches, let the crowd trash-talk (friendly)</li>
+    <li>Take photos of the finals &mdash; parents love this</li>
+  </ul>
+
+  <!-- ===================== EMERGENCY FIXES ===================== -->
+  <hr>
+  <h2>7. Emergency Fixes &mdash; Tournament Day</h2>
+
+  <p>Quick reference for problems that come up during Session 10b when you can't spend 10 minutes debugging:</p>
+
+  <table>
+    <tr><th>Problem</th><th>60-Second Fix</th></tr>
+    <tr>
+      <td>Robot won't start</td>
+      <td>Check hub is on. Check USB/Bluetooth connection. Re-run the program. If all else fails, reload the starter code.</td>
+    </tr>
+    <tr>
+      <td>Two robots push forever &mdash; no winner</td>
+      <td>60-second time limit. Closest to center wins. If truly equal: "most aggressive" wins, or 30-second sudden death.</td>
+    </tr>
+    <tr>
+      <td>Robot drives straight out of ring</td>
+      <td>Motors backward. Swap A and B in <code>motor_pair.pair()</code>. 30-second fix.</td>
+    </tr>
+    <tr>
+      <td>Robot spins but never charges</td>
+      <td><code>DETECT_DISTANCE</code> too low. Change to 300. Re-run.</td>
+    </tr>
+    <tr>
+      <td>Student's code was deleted/lost</td>
+      <td>Re-download from Google Classroom. Or give them the Red starter code &mdash; a basic competitor is better than no competitor.</td>
+    </tr>
+  </table>
+
+  <!-- ===================== QUICK REFERENCE ===================== -->
+  <hr>
+  <h2>8. Quick Reference: Sumo Code</h2>
+
+  <p>The core sumo loop that all three table levels build toward:</p>
+
+  <pre>
+# The sumo brain: search, detect, charge
+while True:
+    dist = distance_sensor.distance(3)        # Port D
+
+    if dist != -1 and dist < DETECT_DISTANCE:
+        # OPPONENT DETECTED -- charge!
+        motor_pair.move(motor_pair.PAIR_1, 0, velocity=ATTACK_SPEED)
+    else:
+        # No opponent -- spin to search
+        motor_pair.move(motor_pair.PAIR_1, 100, velocity=SEARCH_SPEED)
+
+    await runloop.sleep_ms(50)</pre>
+
+  <h3>Key Parameters</h3>
+  <table>
+    <tr><th>Parameter</th><th>What It Does</th><th>Typical Range</th></tr>
+    <tr><td><code>ATTACK_SPEED</code></td><td>Charge speed when opponent detected</td><td>60&ndash;100 (higher = more aggressive but less control)</td></tr>
+    <tr><td><code>SEARCH_SPEED</code></td><td>Spin speed while scanning</td><td>20&ndash;40 (lower = more careful scan)</td></tr>
+    <tr><td><code>DETECT_DISTANCE</code></td><td>How far away to detect opponent (mm)</td><td>200&ndash;400mm (about 8&ndash;16 inches)</td></tr>
+  </table>
+
+  <h3>Green Table Extensions</h3>
+  <table>
+    <tr><th>Challenge</th><th>What It Adds</th></tr>
+    <tr><td>Edge detection</td><td>Color sensor reads white tape border &rarr; reverse immediately. Survival first.</td></tr>
+    <tr><td>Multi-distance strategy</td><td>Far = approach cautiously. Close = full charge. <code>if/elif/else</code> chain.</td></tr>
+    <tr><td>Feinting</td><td>Brief charge &rarr; quick reverse &rarr; full charge. Tricks opponent into overextending.</td></tr>
+    <tr><td>Victory detection</td><td>Count consecutive -1 readings. If opponent gone for ~3 sec, celebrate and stop.</td></tr>
+  </table>
+
+  <hr>
+
+  <p style="font-size:13px; color:#6a7a8a; font-style:italic; margin-top:24px;">Files for these sessions: <code>Session10a_SumoBot.html</code>, <code>Session10b_SumoBotTournament.html</code> (open in browser, go full screen). Assignment: <code>Assignment10_SumoBot_Worksheet.html</code>. Code files: <code>SumoBot_RedStarter.py</code>, <code>SumoBot_YellowSkeleton.py</code>, <code>SumoBot_GreenPrompts.py</code>. This guide is for your reference only &mdash; do not share with students.</p>
+
+</div>
+</body>
+</html>
