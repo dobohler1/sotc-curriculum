@@ -55,7 +55,7 @@ This file contains reference materials, platform details, curriculum inventory, 
 | File | Content |
 |------|---------|
 | `CoachG_PrepGuide_Sessions1-2.html` | Minute-by-minute timing, student groupings with names, common pitfalls, scripted callouts, demo procedures |
-| `CoachG_PrepGuide_Sessions3-4.html` | Sensor setup, hardware verification checklist, student-specific assignments, challenge extensions. Note: internal references still say Sessions 3-4 (pre-renumbering). |
+| `CoachG_PrepGuide_Sessions8-9.html` | Sensor Recon &amp; Gauntlet instructor guide. Sensor setup, hardware verification checklist, student-specific assignments, challenge extensions, scoring sheets. |
 | `CoachG_PrepGuide_Sessions7a-7b.html` | Square Up instructor guide. Course taping specs (4ft×4ft, 1ft lanes), Session 7a minute-by-minute (build day), Session 7b race procedure, circulation priority, 8-item troubleshooting table, scoring sheet for all 14 students, tuning cheat sheet. |
 | `CoachG_PrepGuide_Sessions10a-10b.html` | SumoBot instructor guide. Ring setup (3ft diameter), Session 10a minute-by-minute (physics demo, build, code, test matches), Session 10b tournament procedure (double-elimination bracket, match management, awards), emergency fixes table, per-table guidance. |
 | `ReferencePrograms_BlueGold.html` | Clean printable reference: Program BLUE (drive forward) and Program GOLD (beep & spin) with port mapping table |
@@ -110,7 +110,6 @@ This file contains reference materials, platform details, curriculum inventory, 
 - **Port assumptions vary.** Slides use ports 0,1 (A,B) for motors and port.F for distance sensor. Teacher report noted students using C/D. The port check slide in Session 1 addresses this, but it remains a friction point.
 - **Sessions 8-9 assume Square Up landed.** The bridge unit (Sessions 7a-7b) was added specifically to address the steep jump from basic code to sensors. If students still struggle with `motor_pair.move_for_time()` after Square Up, they'll hit a wall at Session 8.
 - **Assignment 6 (Showcase Routine) is effectively unreachable** for anyone outside Green Table. Requirements include `for` loops and custom functions — concepts not yet taught in the slides. Only appropriate for students with prior experience.
-- **CoachG_PrepGuide_Sessions3-4.html still uses old numbering.** Internal references say Sessions 3-4 and Assignments 7-8 (pre-renumbering). Should be updated to Sessions 8-9 and Assignments 8-9 if the guide is shared again.
 
 ---
 
