@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra 1 — Skills Drill</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+:root {
+  --blue:#4A7FE5; --green:#2A9E6B; --red:#D94F4F; --amber:#C07010;
+  --bg:#F5F4F0; --card:#FFFFFF; --text:#1a1a1a; --muted:#666;
+  --border:rgba(0,0,0,0.09);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);min-height:100vh;
+  display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;}
+#app{width:100%;max-width:640px;}
+.header{text-align:center;margin-bottom:16px;}
+.header h1{font-size:20px;font-weight:600;color:var(--text);}
+.header p{font-size:13px;color:var(--muted);margin-top:3px;}
+.progress-outer{background:rgba(0,0,0,0.08);border-radius:999px;height:6px;margin:10px 0;}
+.progress-inner{background:var(--blue);border-radius:999px;height:6px;transition:width 0.3s;}
+.q-counter{font-size:13px;color:var(--muted);text-align:center;margin-bottom:6px;}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;
+  border-radius:999px;background:#EEF2FF;color:#4A7FE5;margin-bottom:14px;}
+.weak-badge{background:#FFF4E5;color:#C07010;}
+.card{background:var(--card);border-radius:16px;padding:24px 22px;
+  border:0.5px solid var(--border);margin-bottom:16px;}
+.question{font-size:24px;text-align:center;padding:14px 0 18px;
+  min-height:75px;display:flex;align-items:center;justify-content:center;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cbtn{background:#F8F7F4;border:1.5px solid rgba(0,0,0,0.1);border-radius:12px;
+  padding:14px 10px;font-size:18px;cursor:pointer;min-height:68px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.12s,border-color 0.12s;-webkit-tap-highlight-color:transparent;
+  line-height:1.3;}
+.cbtn:active{background:#EEECEA;}
+.cbtn.correct{background:#EAF7F0;border-color:var(--green);color:var(--green);}
+.cbtn.wrong  {background:#FDEFEF;border-color:var(--red);  color:var(--red);}
+.cbtn.reveal {background:#EAF7F0;border-color:var(--green);color:var(--green);}
+.cbtn:disabled{cursor:default;}
+.feedback{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:13.5px;line-height:1.65;}
+.feedback.correct{background:#EAF7F0;color:#1A6644;}
+.feedback.wrong  {background:#FDEFEF;color:#8B2020;}
+.next-btn{width:100%;background:var(--blue);color:#fff;border:none;
+  border-radius:12px;padding:16px;font-size:17px;font-weight:500;
+  cursor:pointer;margin-top:12px;-webkit-tap-highlight-color:transparent;}
+.next-btn:active{opacity:.85;}
+
+/* Score screen */
+.score-card{background:var(--card);border-radius:16px;padding:32px 22px;
+  border:0.5px solid var(--border);margin-bottom:12px;}
+.score-big{font-size:64px;font-weight:700;color:var(--blue);line-height:1;}
+.score-sub{font-size:14px;color:var(--muted);margin-top:4px;}
+.score-msg{font-size:19px;font-weight:600;margin:14px 0 4px;color:var(--text);}
+.breakdown-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;}
+.breakdown-table th{text-align:left;padding:4px 6px;color:var(--muted);
+  font-weight:500;border-bottom:0.5px solid var(--border);}
+.breakdown-table td{padding:7px 6px;border-bottom:0.5px solid var(--border);}
+.bar-wrap{background:rgba(0,0,0,0.07);border-radius:4px;height:6px;
+  width:80px;display:inline-block;vertical-align:middle;}
+.bar-fill{height:6px;border-radius:4px;}
+.tag-weak{font-size:10px;padding:2px 6px;border-radius:999px;
+  background:#FFF4E5;color:#C07010;font-weight:500;margin-left:4px;}
+.tag-good{font-size:10px;padding:2px 6px;border-radius:999px;
+  background:#EAF7F0;color:#1A6644;font-weight:500;margin-left:4px;}
+.session-btn{width:100%;background:var(--blue);color:#fff;border:none;
+  border-radius:12px;padding:16px;font-size:17px;font-weight:500;
+  cursor:pointer;margin-top:16px;-webkit-tap-highlight-color:transparent;}
+.reset-btn{background:none;color:var(--muted);border:0.5px solid var(--border);
+  border-radius:12px;padding:11px 24px;font-size:14px;cursor:pointer;
+  margin-top:8px;width:100%;}
+.status-msg{font-size:12px;color:var(--muted);text-align:center;
+  margin-top:8px;min-height:18px;}
+.start-screen{background:var(--card);border-radius:16px;padding:36px 24px;
+  text-align:center;border:0.5px solid var(--border);}
+.start-screen h2{font-size:22px;font-weight:600;margin-bottom:8px;}
+.start-screen p{font-size:15px;color:var(--muted);margin-bottom:6px;line-height:1.6;}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0;}
+.pill{font-size:12px;padding:4px 12px;border-radius:999px;
+  background:#EEF2FF;color:#4A7FE5;font-weight:500;}
+.accuracy-row{display:flex;align-items:center;gap:8px;
+  font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--border);}
+.accuracy-label{flex:1;color:var(--text);}
+.accuracy-stat{color:var(--muted);min-width:50px;text-align:right;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- ── Scripts ─────────────────────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+//  ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
+// ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝
+// ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+// ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+// ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+//  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
+// ════════════════════════════════════════════════════════════════════════════
+
+const STUDENT_NAME  = "Ethan";          // shown in emails
+const REPORT_EMAIL  = "dbohler@scienceonthecourt.com";
+
+// Firebase — paste your firebaseConfig object here
+// Get it from: Firebase Console → Project Settings → Your Apps → SDK setup
+const FIREBASE_CONFIG = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT.firebaseapp.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+
+// EmailJS — sign up free at emailjs.com
+// Create a service (Gmail works), then create a template with these variables:
+//   {{student}}  {{date}}  {{session_num}}  {{score}}  {{pct}}
+//   {{breakdown}}  {{weakest}}  {{running_stats}}  {{next_focus}}
+const EMAILJS_CONFIG = {
+  publicKey:  "ipaVLQ_Dm6mxja_XA",
+  serviceId:  "service_q1l18a2",
+  templateId: "template_439vcb9"
+};
+
+// Firestore security rules to paste into Firebase Console → Firestore → Rules:
+// rules_version = '2';
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     match /sessions/{id}   { allow read, write: if true; }
+//     match /students/{id}   { allow read, write: if true; }
+//   }
+// }
+
+// ════════════════════════════════════════════════════════════════════════════
+//  QUESTION BANK  (45 questions, 6 concepts)
+// ════════════════════════════════════════════════════════════════════════════
+
+const Q = [
+// ── Concept 1: Like Radicals (9) ──────────────────────────────────────────
+{c:"Like Radicals",
+ q:"3\\sqrt{8}+\\sqrt{50}-\\sqrt{18}", a:"8\\sqrt{2}",
+ ch:["8\\sqrt{2}","4\\sqrt{2}","\\sqrt{40}","5\\sqrt{2}"],
+ h:"\\sqrt{8}=2\\sqrt{2},\\ \\sqrt{50}=5\\sqrt{2},\\ \\sqrt{18}=3\\sqrt{2}\\ \\Rightarrow\\ 6+5-3=8"},
+
+{c:"Like Radicals",
+ q:"2\\sqrt{27}-\\sqrt{48}+5\\sqrt{3}", a:"7\\sqrt{3}",
+ ch:["7\\sqrt{3}","3\\sqrt{3}","9\\sqrt{3}","2\\sqrt{3}"],
+ h:"\\sqrt{27}=3\\sqrt{3},\\ \\sqrt{48}=4\\sqrt{3}\\ \\Rightarrow\\ 6-4+5=7"},
+
+{c:"Like Radicals",
+ q:"\\sqrt{20}+3\\sqrt{45}-2\\sqrt{5}", a:"9\\sqrt{5}",
+ ch:["9\\sqrt{5}","11\\sqrt{5}","\\sqrt{70}","5\\sqrt{5}"],
+ h:"\\sqrt{20}=2\\sqrt{5},\\ \\sqrt{45}=3\\sqrt{5}\\ \\Rightarrow\\ 2+9-2=9"},
+
+{c:"Like Radicals",
+ q:"4\\sqrt{12}-\\sqrt{75}+11\\sqrt{3}", a:"14\\sqrt{3}",
+ ch:["14\\sqrt{3}","8\\sqrt{3}","3\\sqrt{3}","22\\sqrt{3}"],
+ h:"\\sqrt{12}=2\\sqrt{3},\\ \\sqrt{75}=5\\sqrt{3}\\ \\Rightarrow\\ 8-5+11=14"},
+
+{c:"Like Radicals",
+ q:"\\sqrt{32}+2\\sqrt{8}", a:"8\\sqrt{2}",
+ ch:["8\\sqrt{2}","6\\sqrt{2}","2\\sqrt{40}","10\\sqrt{2}"],
+ h:"\\sqrt{32}=4\\sqrt{2},\\ \\sqrt{8}=2\\sqrt{2}\\ \\Rightarrow\\ 4+4=8"},
+
+{c:"Like Radicals",
+ q:"5\\sqrt{3}-\\sqrt{12}+\\sqrt{27}", a:"6\\sqrt{3}",
+ ch:["6\\sqrt{3}","5\\sqrt{3}","4\\sqrt{3}","8\\sqrt{3}"],
+ h:"\\sqrt{12}=2\\sqrt{3},\\ \\sqrt{27}=3\\sqrt{3}\\ \\Rightarrow\\ 5-2+3=6"},
+
+{c:"Like Radicals",
+ q:"3\\sqrt{50}-2\\sqrt{18}", a:"9\\sqrt{2}",
+ ch:["9\\sqrt{2}","\\sqrt{32}","21\\sqrt{2}","3\\sqrt{32}"],
+ h:"\\sqrt{50}=5\\sqrt{2},\\ \\sqrt{18}=3\\sqrt{2}\\ \\Rightarrow\\ 15-6=9"},
+
+{c:"Like Radicals",
+ q:"\\sqrt{45}+\\sqrt{80}-3\\sqrt{5}", a:"4\\sqrt{5}",
+ ch:["4\\sqrt{5}","2\\sqrt{5}","8\\sqrt{5}","\\sqrt{125}"],
+ h:"\\sqrt{45}=3\\sqrt{5},\\ \\sqrt{80}=4\\sqrt{5}\\ \\Rightarrow\\ 3+4-3=4"},
+
+{c:"Like Radicals",
+ q:"2\\sqrt{50}-3\\sqrt{8}+\\sqrt{18}", a:"7\\sqrt{2}",
+ ch:["7\\sqrt{2}","4\\sqrt{2}","\\sqrt{60}","13\\sqrt{2}"],
+ h:"\\sqrt{50}=5\\sqrt{2},\\ \\sqrt{8}=2\\sqrt{2},\\ \\sqrt{18}=3\\sqrt{2}\\ \\Rightarrow\\ 10-6+3=7"},
+
+// ── Concept 2: Variable Fractions (8) ──────────────────────────────────────
+{c:"Variable Fractions",
+ q:"\\dfrac{8x^5}{12x^2}", a:"\\frac{2x^3}{3}",
+ ch:["\\frac{2x^3}{3}","\\frac{2x^7}{3}","\\frac{2}{3x^3}","\\frac{8x^3}{12}"],
+ h:"\\frac{8}{12}=\\frac{2}{3},\\ x^{5-2}=x^3"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{-15a^4}{10a^7}", a:"\\frac{-3}{2a^3}",
+ ch:["\\frac{-3}{2a^3}","\\frac{-3a^3}{2}","\\frac{-3a^{11}}{2}","\\frac{-3}{2a^{11}}"],
+ h:"\\frac{-15}{10}=\\frac{-3}{2},\\ a^{4-7}=a^{-3}\\ \\Rightarrow\\ move\\ to\\ denominator"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{24x^3y^2}{36x^5y}", a:"\\frac{2y}{3x^2}",
+ ch:["\\frac{2y}{3x^2}","\\frac{2x^2y}{3}","\\frac{2y^2}{3x^2}","\\frac{2}{3x^2y}"],
+ h:"\\frac{24}{36}=\\frac{2}{3},\\ x^{3-5}=x^{-2},\\ y^{2-1}=y^1"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{6m^4n^3}{9m^2n}", a:"\\frac{2m^2n^2}{3}",
+ ch:["\\frac{2m^2n^2}{3}","\\frac{2m^6n^4}{3}","\\frac{2m^2}{3}","\\frac{2n^2}{3m^2}"],
+ h:"\\frac{6}{9}=\\frac{2}{3},\\ m^{4-2}=m^2,\\ n^{3-1}=n^2"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{-20x^3}{15x^5}", a:"\\frac{-4}{3x^2}",
+ ch:["\\frac{-4}{3x^2}","\\frac{-4x^2}{3}","\\frac{-4}{3x^8}","\\frac{4}{3x^2}"],
+ h:"\\frac{-20}{15}=\\frac{-4}{3},\\ x^{3-5}=x^{-2}"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{12a^2b^3}{18a^5b}", a:"\\frac{2b^2}{3a^3}",
+ ch:["\\frac{2b^2}{3a^3}","\\frac{2a^3b^2}{3}","\\frac{2b^2}{3}","\\frac{2b^3}{3a^2}"],
+ h:"\\frac{12}{18}=\\frac{2}{3},\\ a^{2-5}=a^{-3},\\ b^{3-1}=b^2"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{30p^6q^2}{45p^2q^4}", a:"\\frac{2p^4}{3q^2}",
+ ch:["\\frac{2p^4}{3q^2}","\\frac{2p^4q^2}{3}","\\frac{2p^8}{3q^6}","\\frac{2p^3}{q}"],
+ h:"\\frac{30}{45}=\\frac{2}{3},\\ p^{6-2}=p^4,\\ q^{2-4}=q^{-2}"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{18x^4y^3}{24x^2y^5}", a:"\\frac{3x^2}{4y^2}",
+ ch:["\\frac{3x^2}{4y^2}","\\frac{3x^2y^2}{4}","\\frac{3x^6y^8}{4}","\\frac{3}{4x^2y^2}"],
+ h:"\\frac{18}{24}=\\frac{3}{4},\\ x^{4-2}=x^2,\\ y^{3-5}=y^{-2}"},
+
+// ── Concept 3: Add Exponents (7) ───────────────────────────────────────────
+{c:"Add Exponents",
+ q:"x^3\\cdot x^5", a:"x^8",
+ ch:["x^8","x^{15}","x^2","2x^8"],
+ h:"Same\\ base:\\ ADD\\ exponents.\\ 3+5=8"},
+
+{c:"Add Exponents",
+ q:"2^{1/2}\\cdot 2^3", a:"2^{7/2}",
+ ch:["2^{7/2}","2^{5/2}","2^{3/2}","4^{7/2}"],
+ h:"\\tfrac{1}{2}+3=\\tfrac{7}{2}.\\ \\ 2^{5/2}\\ would\\ mean\\ you\\ subtracted!"},
+
+{c:"Add Exponents",
+ q:"\\left(\\tfrac{1}{5}\\right)^{\\!2}\\cdot 5^6", a:"625",
+ ch:["625","390{,}625","\\tfrac{1}{625}","125"],
+ h:"\\left(\\tfrac{1}{5}\\right)^2=5^{-2};\\ 5^{-2}\\cdot 5^6=5^4=625"},
+
+{c:"Add Exponents",
+ q:"3^{2/3}\\cdot 3^4", a:"3^{14/3}",
+ ch:["3^{14/3}","3^{10/3}","3^{8/3}","3^2"],
+ h:"\\tfrac{2}{3}+\\tfrac{12}{3}=\\tfrac{14}{3}.\\ \\ 3^{10/3}\\ means\\ you\\ subtracted!"},
+
+{c:"Add Exponents",
+ q:"a^4\\cdot a^{1/2}", a:"a^{9/2}",
+ ch:["a^{9/2}","a^{7/2}","a^2","a^{4/2}"],
+ h:"4+\\tfrac{1}{2}=\\tfrac{9}{2}.\\ \\ a^{7/2}\\ means\\ you\\ subtracted!"},
+
+{c:"Add Exponents",
+ q:"5^{3/4}\\cdot 5^{1/4}", a:"5",
+ ch:["5","5^{3/16}","5^{1/2}","25"],
+ h:"\\tfrac{3}{4}+\\tfrac{1}{4}=1,\\ so\\ 5^1=5"},
+
+{c:"Add Exponents",
+ q:"y^2\\cdot y^3\\cdot y", a:"y^6",
+ ch:["y^6","y^5","3y^6","y^{23}"],
+ h:"2+3+1=6"},
+
+// ── Concept 4: Negative Exponents (7) ──────────────────────────────────────
+{c:"Neg. Exponents",
+ q:"3^{-3}", a:"\\tfrac{1}{27}",
+ ch:["\\tfrac{1}{27}","-27","-9","\\tfrac{1}{9}"],
+ h:"x^{-n}=\\tfrac{1}{x^n}.\\ \\ NOT\\ negative!"},
+
+{c:"Neg. Exponents",
+ q:"25\\cdot 5^{-2}", a:"1",
+ ch:["1","-625","625","5"],
+ h:"5^{-2}=\\tfrac{1}{25},\\ \\textbf{not}\\ {-25}.\\ \\ 25\\cdot\\tfrac{1}{25}=1"},
+
+{c:"Neg. Exponents",
+ q:"4^{-1}\\cdot 4^{-2}", a:"\\tfrac{1}{64}",
+ ch:["\\tfrac{1}{64}","-64","64","-\\tfrac{1}{64}"],
+ h:"4^{-1+(-2)}=4^{-3}=\\tfrac{1}{64}"},
+
+{c:"Neg. Exponents",
+ q:"2^{-4}", a:"\\tfrac{1}{16}",
+ ch:["\\tfrac{1}{16}","-16","-8","\\tfrac{1}{8}"],
+ h:"2^{-4}=\\tfrac{1}{2^4}=\\tfrac{1}{16}.\\ \\ NOT\\ -16!"},
+
+{c:"Neg. Exponents",
+ q:"x^{-3}\\cdot x^2", a:"\\tfrac{1}{x}",
+ ch:["\\tfrac{1}{x}","x^5","x^{-5}","-x"],
+ h:"-3+2=-1,\\ so\\ x^{-1}=\\tfrac{1}{x}"},
+
+{c:"Neg. Exponents",
+ q:"(3x)^{-2}", a:"\\tfrac{1}{9x^2}",
+ ch:["\\tfrac{1}{9x^2}","-9x^2","9x^2","-\\tfrac{1}{9x^2}"],
+ h:"(3x)^{-2}=\\tfrac{1}{(3x)^2}=\\tfrac{1}{9x^2}"},
+
+{c:"Neg. Exponents",
+ q:"\\dfrac{5^{-2}}{5^0}", a:"\\tfrac{1}{25}",
+ ch:["\\tfrac{1}{25}","-25","-\\tfrac{1}{25}","25"],
+ h:"5^{-2}=\\tfrac{1}{25}\\ (not\\ {-25}!).\\ \\ 5^0=1"},
+
+// ── Concept 5: (a−b)² (8) ──────────────────────────────────────────────────
+{c:"(a\u2212b)\u00b2",
+ q:"(x-4)^2", a:"x^2-8x+16",
+ ch:["x^2-8x+16","x^2-16","x^2+16","x^2-4x+16"],
+ h:"a^2-2ab+b^2.\\ \\ 2\\cdot x\\cdot 4=8x.\\ \\ x^2-16\\ drops\\ the\\ middle!"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(\\sqrt{3}-2)^2", a:"7-4\\sqrt{3}",
+ ch:["7-4\\sqrt{3}","7","1-4\\sqrt{3}","7+4\\sqrt{3}"],
+ h:"3-2(\\sqrt{3})(2)+4=7-4\\sqrt{3}.\\ \\ '7'\\ drops\\ the\\ middle!"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(\\sqrt{7}-\\sqrt{2})^2", a:"9-2\\sqrt{14}",
+ ch:["9-2\\sqrt{14}","9","5-2\\sqrt{14}","9+2\\sqrt{14}"],
+ h:"7-2\\sqrt{14}+2=9-2\\sqrt{14}"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(\\sqrt{5}-3)^2", a:"14-6\\sqrt{5}",
+ ch:["14-6\\sqrt{5}","14","2-6\\sqrt{5}","14+6\\sqrt{5}"],
+ h:"5-2(\\sqrt{5})(3)+9=14-6\\sqrt{5}"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(2\\sqrt{3}-\\sqrt{5})^2", a:"17-4\\sqrt{15}",
+ ch:["17-4\\sqrt{15}","17","7-4\\sqrt{15}","17+4\\sqrt{15}"],
+ h:"12-2(2\\sqrt{3})(\\sqrt{5})+5=17-4\\sqrt{15}"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(x-\\sqrt{2})^2", a:"x^2-2\\sqrt{2}\\,x+2",
+ ch:["x^2-2\\sqrt{2}\\,x+2","x^2+2","x^2-2","x^2+2\\sqrt{2}\\,x+2"],
+ h:"x^2-2x\\sqrt{2}+(\\sqrt{2})^2=x^2-2\\sqrt{2}\\,x+2"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(3-\\sqrt{6})^2", a:"15-6\\sqrt{6}",
+ ch:["15-6\\sqrt{6}","15","3-6\\sqrt{6}","15+6\\sqrt{6}"],
+ h:"9-2(3)(\\sqrt{6})+6=15-6\\sqrt{6}"},
+
+{c:"(a\u2212b)\u00b2",
+ q:"(2x-3)^2", a:"4x^2-12x+9",
+ ch:["4x^2-12x+9","4x^2-9","4x^2+9","4x^2-6x+9"],
+ h:"2(2x)(3)=12x,\\ not\\ 6x.\\ \\ 4x^2-9\\ drops\\ the\\ middle!"},
+
+// ── Concept 6: Factor First (6) ────────────────────────────────────────────
+{c:"Factor First",
+ q:"\\dfrac{24x^5}{16x^2}\\cdot\\left(x^{-1}\\right)^2", a:"\\tfrac{3x}{2}",
+ ch:["\\tfrac{3x}{2}","\\tfrac{3x^3}{2}","\\tfrac{3}{2x}","\\tfrac{3x^2}{2}"],
+ h:"\\tfrac{24}{16}=\\tfrac{3}{2};\\ x^{5-2}=x^3;\\ \\cdot x^{-2}\\Rightarrow x^{3-2}=x"},
+
+{c:"Factor First",
+ q:"\\dfrac{50a^{-2}}{20a^3}\\cdot\\left(\\dfrac{2}{a^{-2}}\\right)^{\\!2}", a:"\\tfrac{10}{a}",
+ ch:["\\tfrac{10}{a}","10a","\\tfrac{5}{2a}","\\tfrac{10}{a^3}"],
+ h:"\\tfrac{50}{20}=\\tfrac{5}{2};\\ a^{-5};\\ \\cdot\\,4a^4\\Rightarrow\\tfrac{5}{2}\\cdot 4\\cdot a^{-1}"},
+
+{c:"Factor First",
+ q:"\\dfrac{36y^3}{27y^6}\\cdot\\left(3y^{-1}\\right)^2", a:"\\tfrac{12}{y^5}",
+ ch:["\\tfrac{12}{y^5}","12y^5","\\tfrac{4}{3y^5}","\\tfrac{12}{y^3}"],
+ h:"\\tfrac{36}{27}=\\tfrac{4}{3};\\ y^{-3};\\ \\cdot\\,9y^{-2}\\Rightarrow 12y^{-5}"},
+
+{c:"Factor First",
+ q:"\\dfrac{81x^{-3}}{54x^4}\\cdot\\left(\\dfrac{2}{x^{-3}}\\right)^{\\!2}", a:"\\tfrac{6}{x}",
+ ch:["\\tfrac{6}{x}","6x","\\tfrac{3}{x}","\\tfrac{6}{x^2}"],
+ h:"\\tfrac{81}{54}=\\tfrac{3}{2};\\ x^{-7};\\ \\cdot\\,4x^6\\Rightarrow 6x^{-1}"},
+
+{c:"Factor First",
+ q:"\\dfrac{16m^4}{12m^2}\\cdot\\left(m^{-2}\\right)^3", a:"\\tfrac{4}{3m^4}",
+ ch:["\\tfrac{4}{3m^4}","\\tfrac{4m^4}{3}","\\tfrac{4m^2}{3}","\\tfrac{4}{3m^2}"],
+ h:"\\tfrac{16}{12}=\\tfrac{4}{3};\\ m^{2};\\ \\cdot\\,m^{-6}\\Rightarrow\\tfrac{4}{3}m^{-4}"},
+
+{c:"Factor First",
+ q:"\\dfrac{45p^{-1}}{30p^2}\\cdot\\left(3p^{-1}\\right)^2", a:"\\tfrac{27}{2p^5}",
+ ch:["\\tfrac{27}{2p^5}","\\tfrac{27p^5}{2}","\\tfrac{27}{2p^3}","\\tfrac{9}{2p^5}"],
+ h:"\\tfrac{45}{30}=\\tfrac{3}{2};\\ p^{-3};\\ \\cdot\\,9p^{-2}\\Rightarrow\\tfrac{27}{2}p^{-5}"}
+];
+
+const CONCEPTS = [...new Set(Q.map(q => q.c))];
+const SZ = 15; // questions per session
+const STUDENT_ID = "ethan";
+
+// ════════════════════════════════════════════════════════════════════════════
+//  FIREBASE INIT
+// ════════════════════════════════════════════════════════════════════════════
+
+const FB_ON = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
+let db = null;
+if (FB_ON) {
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+  } catch(e) { console.warn("Firebase init failed:", e); }
+}
+
+const EJ_ON = EMAILJS_CONFIG.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY";
+if (EJ_ON) {
+  try { emailjs.init(EMAILJS_CONFIG.publicKey); } catch(e) {}
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════════════════════
+
+const LS = "ethan_drill_v3";
+
+function defaultState() {
+  return {
+    conceptStats: {},   // {concept: {right, total}}
+    usedIds: [],        // question indices shown so far
+    sessionCount: 0
+  };
+}
+
+let ST = (() => {
+  try { const s = localStorage.getItem(LS); return s ? JSON.parse(s) : defaultState(); }
+  catch(e) { return defaultState(); }
+})();
+
+function save() {
+  try { localStorage.setItem(LS, JSON.stringify(ST)); } catch(e) {}
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  ADAPTIVE SESSION BUILDER
+// ════════════════════════════════════════════════════════════════════════════
+
+function conceptWeight(concept) {
+  const s = ST.conceptStats[concept];
+  if (!s || s.total === 0) return 0.7; // default medium-high priority
+  const acc = s.right / s.total;
+  return Math.max(0.15, 1 - acc); // weak = high weight, strong = low but never 0
+}
+
+function buildSession() {
+  // Reset used pool if we've exhausted all questions
+  if (ST.usedIds.length >= Q.length) ST.usedIds = [];
+
+  const available = Q.map((q, i) => ({q, i})).filter(x => !ST.usedIds.includes(x.i));
+
+  // Step 1: guarantee 1 question per concept from available pool
+  const session = [];
+  const usedThisSession = new Set();
+
+  CONCEPTS.forEach(c => {
+    const pool = available.filter(x => x.q.c === c && !usedThisSession.has(x.i));
+    if (pool.length === 0) return;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    session.push(pick.q);
+    usedThisSession.add(pick.i);
+  });
+
+  // Step 2: fill remaining slots via weighted sampling
+  const remaining = SZ - session.length;
+  const candidates = available.filter(x => !usedThisSession.has(x.i));
+
+  for (let slot = 0; slot < remaining && candidates.length > 0; slot++) {
+    const totalW = candidates.reduce((s, x) => s + conceptWeight(x.q.c), 0);
+    let r = Math.random() * totalW;
+    let chosen = 0;
+    for (let i = 0; i < candidates.length; i++) {
+      r -= conceptWeight(candidates[i].q.c);
+      if (r <= 0) { chosen = i; break; }
+    }
+    session.push(candidates[chosen].q);
+    usedThisSession.add(candidates[chosen].i);
+    candidates.splice(chosen, 1);
+  }
+
+  // Record used IDs
+  ST.usedIds.push(...Array.from(usedThisSession));
+  save();
+
+  return shuffle(session);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  UTILITIES
+// ════════════════════════════════════════════════════════════════════════════
+
+const k = s => { try { return katex.renderToString(s, {throwOnError:false}); } catch(e) { return s; } };
+const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+const pct = (r, t) => t > 0 ? Math.round(r/t*100) : 0;
+const barColor = p => p >= 75 ? "#2A9E6B" : p >= 50 ? "#4A7FE5" : "#D94F4F";
+
+function barHTML(p) {
+  return `<div class="bar-wrap"><div class="bar-fill" style="width:${p}%;background:${barColor(p)}"></div></div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  FIREBASE SAVE
+// ════════════════════════════════════════════════════════════════════════════
+
+async function saveToFirebase(sessionData) {
+  if (!db) return;
+  try {
+    // Save session record
+    await db.collection("sessions").add({
+      studentId: STUDENT_ID,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      ...sessionData
+    });
+    // Update running concept stats
+    await db.collection("students").doc(STUDENT_ID).set({
+      conceptStats: ST.conceptStats,
+      totalSessions: ST.sessionCount,
+      lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  } catch(e) { console.warn("Firebase save failed:", e); }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  EMAIL REPORT
+// ════════════════════════════════════════════════════════════════════════════
+
+function formatBreakdown(breakdown) {
+  return CONCEPTS.map(c => {
+    const s = breakdown[c] || {right:0, total:0};
+    const p = pct(s.right, s.total);
+    const bar = "█".repeat(Math.round(p/10)) + "░".repeat(10-Math.round(p/10));
+    const flag = p < 50 ? " ⚠️" : p === 100 ? " ✓" : "";
+    return `${c.padEnd(22)} ${bar} ${s.right}/${s.total} (${p}%)${flag}`;
+  }).join("\n");
+}
+
+function formatRunningStats() {
+  return CONCEPTS.map(c => {
+    const s = ST.conceptStats[c] || {right:0, total:0};
+    const p = pct(s.right, s.total);
+    return `${c.padEnd(22)} ${p}% (${s.right}/${s.total} overall)`;
+  }).join("\n");
+}
+
+async function sendReport(sessionData) {
+  if (!EJ_ON) return;
+  const { sessionNumber, score, breakdown } = sessionData;
+  const p = pct(score, SZ);
+  const weakest = CONCEPTS.reduce((a, c) => {
+    const sa = ST.conceptStats[a] || {right:0, total:1};
+    const sc = ST.conceptStats[c] || {right:0, total:1};
+    return pct(sc.right, sc.total) < pct(sa.right, sa.total) ? c : a;
+  }, CONCEPTS[0]);
+
+  const params = {
+    to_email:      REPORT_EMAIL,
+    student:       STUDENT_NAME,
+    date:          new Date().toLocaleDateString("en-US", {weekday:"long", year:"numeric", month:"long", day:"numeric"}),
+    session_num:   sessionNumber,
+    score:         `${score}/${SZ}`,
+    pct:           `${p}%`,
+    breakdown:     formatBreakdown(breakdown),
+    weakest:       weakest,
+    running_stats: formatRunningStats(),
+    next_focus:    weakest
+  };
+
+  try {
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, params);
+  } catch(e) { console.warn("Email failed:", e); }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  APP
+// ════════════════════════════════════════════════════════════════════════════
+
+const app = () => document.getElementById("app");
+let session = [], qi = 0, score = 0, answered = false, shuffChoices = [];
+let sessionBreakdown = {}; // {concept: {right, total}} for current session
+
+function startSession() {
+  session = buildSession();
+  qi = 0; score = 0; answered = false;
+  sessionBreakdown = {};
+  CONCEPTS.forEach(c => sessionBreakdown[c] = {right:0, total:0});
+  renderQ();
+}
+
+function renderQ() {
+  if (qi >= session.length) { renderScore(); return; }
+  const q = session[qi];
+  shuffChoices = shuffle(q.ch.map(c => ({l:c, ok:c===q.a})));
+  const p = Math.round((qi/SZ)*100);
+  const wt = conceptWeight(q.c);
+  const isWeak = wt > 0.5;
+
+  app().innerHTML = `
+    <div class="header">
+      <h1>Algebra 1 — Skills Drill</h1>
+      <p>Session ${ST.sessionCount + 1} &nbsp;·&nbsp; ${STUDENT_NAME}</p>
+    </div>
+    <div class="q-counter">${qi+1} of ${SZ}</div>
+    <div class="progress-outer"><div class="progress-inner" style="width:${p}%"></div></div>
+    <div class="card">
+      <span class="badge ${isWeak?'weak-badge':''}">${q.c}${isWeak?' ⚠️':''}</span>
+      <div class="question" id="qd"></div>
+      <div class="choices" id="cs"></div>
+      <div id="fb"></div>
+      <div id="nw"></div>
+    </div>`;
+
+  document.getElementById("qd").innerHTML = k(q.q);
+  const cs = document.getElementById("cs");
+  shuffChoices.forEach((c, i) => {
+    const btn = document.createElement("button");
+    btn.className = "cbtn";
+    btn.innerHTML = k(c.l);
+    btn.onclick = () => pick(i, c.ok, q);
+    cs.appendChild(btn);
+  });
+}
+
+function pick(idx, ok, q) {
+  if (answered) return;
+  answered = true;
+  if (ok) score++;
+
+  // Update breakdown
+  sessionBreakdown[q.c].total++;
+  if (ok) sessionBreakdown[q.c].right++;
+
+  // Update running concept stats
+  if (!ST.conceptStats[q.c]) ST.conceptStats[q.c] = {right:0, total:0};
+  ST.conceptStats[q.c].total++;
+  if (ok) ST.conceptStats[q.c].right++;
+  save();
+
+  document.querySelectorAll(".cbtn").forEach((b,i) => {
+    b.disabled = true;
+    if (i===idx) b.classList.add(ok?"correct":"wrong");
+    if (shuffChoices[i].ok && !ok) b.classList.add("reveal");
+  });
+  document.getElementById("fb").innerHTML =
+    `<div class="feedback ${ok?'correct':'wrong'}">
+       ${ok?"✓ Correct!":"✗ Not quite."}&ensp;${k(q.h)}
+     </div>`;
+  document.getElementById("nw").innerHTML =
+    `<button class="next-btn" onclick="adv()">
+       ${qi+1<SZ?"Next Question →":"See My Score"}
+     </button>`;
+}
+
+function adv() { qi++; answered=false; renderQ(); }
+
+async function renderScore() {
+  ST.sessionCount++;
+  save();
+
+  const p = pct(score, SZ);
+  const msg = p===100?"Perfect! 🎯" : p>=80?"Great work! 💪" : p>=60?"Getting there 📈" : "Keep going!";
+
+  // Find weakest in this session
+  let weakConcept = null, weakPct = 101;
+  CONCEPTS.forEach(c => {
+    const s = sessionBreakdown[c];
+    if (s.total > 0) {
+      const cp = pct(s.right, s.total);
+      if (cp < weakPct) { weakPct = cp; weakConcept = c; }
+    }
+  });
+
+  // Breakdown rows HTML
+  const rows = CONCEPTS.map(c => {
+    const s = sessionBreakdown[c];
+    if (s.total === 0) return "";
+    const cp = pct(s.right, s.total);
+    const tag = cp < 50 ? `<span class="tag-weak">needs work</span>` :
+                cp===100 ? `<span class="tag-good">solid</span>` : "";
+    return `<tr>
+      <td>${c}</td>
+      <td>${barHTML(cp)}</td>
+      <td style="color:${barColor(cp)};font-weight:500">${s.right}/${s.total}</td>
+      <td>${tag}</td>
+    </tr>`;
+  }).join("");
+
+  // Running stats
+  const runRows = CONCEPTS.map(c => {
+    const s = ST.conceptStats[c] || {right:0, total:0};
+    if (s.total === 0) return "";
+    const cp = pct(s.right, s.total);
+    return `<div class="accuracy-row">
+      <span class="accuracy-label">${c}</span>
+      ${barHTML(cp)}
+      <span class="accuracy-stat" style="color:${barColor(cp)}">${cp}%</span>
+    </div>`;
+  }).join("");
+
+  app().innerHTML = `
+    <div class="score-card">
+      <div class="score-big">${score}/${SZ}</div>
+      <div class="score-sub">Session ${ST.sessionCount} complete</div>
+      <div class="score-msg">${msg}</div>
+      <p style="font-size:13px;color:#888;margin-top:3px">${p}% correct</p>
+
+      <table class="breakdown-table">
+        <thead><tr>
+          <th>Concept</th><th>Score</th><th></th><th></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+
+      ${weakConcept ? `<p style="font-size:13px;color:#C07010;margin-top:12px">
+        ⚠️ Next session will prioritize: <strong>${weakConcept}</strong>
+      </p>` : ""}
+    </div>
+
+    <div class="score-card" style="margin-top:0">
+      <p style="font-size:13px;font-weight:500;color:var(--muted);margin-bottom:10px">
+        RUNNING ACCURACY — ALL SESSIONS
+      </p>
+      ${runRows}
+    </div>
+
+    <button class="session-btn" onclick="startSession()">Start Next Session →</button>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All Progress</button>
+    <div class="status-msg" id="status"></div>`;
+
+  // Save & send async
+  const sessionData = {
+    sessionNumber: ST.sessionCount,
+    score, total: SZ,
+    pct: p,
+    breakdown: sessionBreakdown
+  };
+  document.getElementById("status").textContent = FB_ON ? "Saving results…" : "";
+  await saveToFirebase(sessionData);
+  if (EJ_ON) {
+    document.getElementById("status").textContent = "Sending report…";
+    await sendReport(sessionData);
+    document.getElementById("status").textContent = `✓ Report sent to ${REPORT_EMAIL}`;
+  } else {
+    document.getElementById("status").textContent = FB_ON ? "✓ Saved to Firebase" : "";
+  }
+}
+
+function resetAll() {
+  ST = defaultState();
+  save();
+  showStart();
+}
+
+function showStart() {
+  // Compute current weaknesses for start screen
+  const weakConcepts = CONCEPTS
+    .filter(c => (ST.conceptStats[c]||{total:0}).total > 0)
+    .sort((a,b) => {
+      const sa=ST.conceptStats[a], sb=ST.conceptStats[b];
+      return pct(sa.right,sa.total) - pct(sb.right,sb.total);
+    }).slice(0,2);
+
+  app().innerHTML = `
+    <div class="start-screen">
+      <h2>Algebra 1 — Skills Drill</h2>
+      <p>${STUDENT_NAME} &nbsp;·&nbsp; Session ${ST.sessionCount+1}
+        &nbsp;·&nbsp; Adaptive difficulty</p>
+      <div class="pill-row">
+        ${CONCEPTS.map(c => {
+          const s = ST.conceptStats[c];
+          const isWeak = s && s.total>0 && pct(s.right,s.total)<50;
+          return `<span class="pill ${isWeak?'weak-badge':''}">${c}${isWeak?' ⚠️':''}</span>`;
+        }).join("")}
+      </div>
+      ${weakConcepts.length > 0
+        ? `<p style="font-size:13px;color:#C07010">
+             Next session will focus on: <strong>${weakConcepts.join(", ")}</strong>
+           </p>`
+        : ""}
+      <button class="session-btn" style="margin-top:20px" onclick="startSession()">
+        ${ST.sessionCount===0 ? "Start Session 1" : `Continue — Session ${ST.sessionCount+1}`}
+      </button>
+      ${ST.sessionCount>0 ? `<button class="reset-btn" onclick="resetAll()">↺ Reset All Progress</button>` : ""}
+    </div>`;
+}
+
+showStart();
+</script>
+</body>
+</html>
