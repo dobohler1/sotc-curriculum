@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help Us Plan What's Next — Science on the Court</title>
+<style>
+:root {
+  --navy:#1a1a2e; --navy-2:#2a2a44; --red:#e94560; --yellow:#ffd60a;
+  --bg:#F5F4F0; --card:#FFFFFF; --text:#1a1a1a; --muted:#6a7a8a;
+  --border:rgba(0,0,0,0.09); --green:#1a7742; --err:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  background:var(--bg);min-height:100vh;color:var(--text);line-height:1.5;
+  padding:20px 14px;}
+.wrap{max-width:640px;margin:0 auto;}
+.hero{background:var(--navy);color:#fff;border-radius:12px;padding:28px 24px;margin-bottom:16px;text-align:center;}
+.hero .kicker{font-size:12px;letter-spacing:2px;color:var(--red);text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+.hero h1{font-size:26px;line-height:1.25;margin-bottom:10px;font-weight:800;}
+.hero p{font-size:15px;color:#b0bdd0;}
+.card{background:var(--card);border-radius:12px;padding:22px 22px;margin-bottom:14px;border:1px solid var(--border);}
+.card h2{font-size:17px;color:var(--navy);margin-bottom:6px;border-bottom:2px solid #e2e6ec;padding-bottom:8px;}
+.card .helper{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.q{margin-bottom:16px;}
+.q:last-child{margin-bottom:0;}
+.q label{display:block;font-size:15px;font-weight:600;margin-bottom:8px;color:var(--text);}
+.q .sub{font-size:13px;color:var(--muted);font-weight:400;display:block;margin-top:2px;}
+.q input[type=text], .q input[type=email], .q textarea, .q select{width:100%;padding:11px 13px;font-size:15px;
+  border:1px solid #d0d6e0;border-radius:8px;background:#fafbfc;font-family:inherit;
+  -webkit-appearance:none;appearance:none;}
+.q textarea{resize:vertical;min-height:72px;}
+.q input:focus, .q textarea:focus, .q select:focus{outline:none;border-color:var(--red);background:#fff;}
+.choices{display:grid;grid-template-columns:1fr;gap:10px;}
+.choices label{display:block;padding:14px 16px;background:#fafbfc;border:1px solid #d0d6e0;
+  border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;text-align:left;
+  transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.choices label .choice-sub{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:4px;}
+.choices input{display:none;}
+.choices label:has(input:checked){background:var(--navy);border-color:var(--navy);color:#fff;}
+.choices label:has(input:checked) .choice-sub{color:#b0bdd0;}
+.weeks{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.weeks label{display:block;padding:11px 12px;background:#fafbfc;border:1px solid #d0d6e0;
+  border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;text-align:center;
+  transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.weeks input{display:none;}
+.weeks label:has(input:checked){background:var(--red);border-color:var(--red);color:#fff;}
+.conditional{display:none;margin-top:14px;padding:14px;background:#fafbfc;border-radius:8px;border-left:3px solid var(--red);}
+.conditional.show{display:block;}
+.submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;
+  padding:16px;font-size:17px;font-weight:700;cursor:pointer;margin-top:4px;
+  -webkit-tap-highlight-color:transparent;}
+.submit:active{opacity:.85;}
+.submit:disabled{opacity:.5;cursor:not-allowed;}
+#status{text-align:center;margin-top:12px;font-size:14px;min-height:20px;}
+#status.err{color:var(--err);}
+#status.ok{color:var(--green);}
+.thanks{display:none;text-align:center;padding:40px 24px;}
+.thanks.show{display:block;}
+.thanks h2{color:var(--navy);font-size:24px;margin-bottom:10px;border:none;padding:0;}
+.thanks p{color:var(--muted);font-size:15px;margin-bottom:8px;}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:14px 0 24px;}
+.required{color:var(--err);font-weight:700;}
+.notice{background:#fff8e1;border-left:4px solid var(--yellow);padding:14px 16px;border-radius:8px;margin-bottom:14px;font-size:14px;color:#5a4a00;line-height:1.5;}
+@media (max-width:480px){
+  .hero{padding:22px 18px;}
+  .hero h1{font-size:22px;}
+  .card{padding:18px 16px;}
+  .weeks{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <p class="kicker">Basketball IQ Lab — Allen Temple</p>
+  <h1>Help Us Plan What's Next</h1>
+  <p>2 minutes. Tell us what would work best for your family.</p>
+</div>
+
+<div class="notice">
+  <strong>Quick context:</strong> The Allen Temple gym is closed for voting through Tuesday, June 3, so we're putting class on hold for a few weeks. We have two ideas for what to do next — please tell us which works best for you, or share a different idea.
+</div>
+
+<form id="survey-form">
+
+  <!-- Family identification -->
+  <div class="card">
+    <h2>Your Family</h2>
+    <div class="q">
+      <label>Parent/guardian name <span class="required">*</span></label>
+      <input type="text" name="parent_name" required>
+    </div>
+    <div class="q">
+      <label>Email <span class="required">*</span></label>
+      <input type="email" name="parent_email" required>
+    </div>
+    <div class="q">
+      <label>Student name(s) <span class="required">*</span></label>
+      <span class="sub">If more than one, separate with commas.</span>
+      <input type="text" name="student_names" required>
+    </div>
+  </div>
+
+  <!-- The choice -->
+  <div class="card">
+    <h2>What would work best?</h2>
+    <p class="helper">Pick the option that fits your family. If neither does, tell us what would.</p>
+
+    <div class="q">
+      <div class="choices">
+        <label>
+          <input type="radio" name="preference" value="afterschool" required>
+          Resume after-school class on Thursday, June 5
+          <span class="choice-sub">8 weeks, two days a week — same Tuesday/Thursday schedule, same location, picks up right where we left off.</span>
+        </label>
+        <label>
+          <input type="radio" name="preference" value="summer_camp">
+          Run two weeks of day camp during the summer
+          <span class="choice-sub">Daytime hours instead of after-school. We'd pick two weeks based on what works for the most families.</span>
+        </label>
+        <label>
+          <input type="radio" name="preference" value="other">
+          Something else would work better for us
+          <span class="choice-sub">Tell us below.</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Conditional: summer camp details -->
+    <div class="conditional" id="cond-summer">
+      <div class="q">
+        <label>Which weeks would work best? <span class="required">*</span></label>
+        <span class="sub">Check all that work for your family.</span>
+        <div class="weeks" style="margin-top:8px;">
+          <label><input type="checkbox" name="weeks" value="june_15"><span>Week of June 15</span></label>
+          <label><input type="checkbox" name="weeks" value="june_29"><span>Week of June 29</span></label>
+          <label><input type="checkbox" name="weeks" value="july_13"><span>Week of July 13</span></label>
+          <label><input type="checkbox" name="weeks" value="july_20"><span>Week of July 20</span></label>
+        </div>
+      </div>
+      <div class="q">
+        <label>What hours would work best?</label>
+        <span class="sub">e.g., "9 AM – 12 PM" or "drop off at 8, pick up by 3."</span>
+        <input type="text" name="hours" placeholder="e.g., 9 AM – 12 PM">
+      </div>
+    </div>
+
+    <!-- Conditional: other -->
+    <div class="conditional" id="cond-other">
+      <div class="q">
+        <label>What would work better for your family? <span class="required">*</span></label>
+        <textarea name="other_idea" rows="3" placeholder="Tell us what you have in mind."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Open-ended -->
+  <div class="card">
+    <h2>Anything else we should know?</h2>
+    <p class="helper">Optional. Other ideas, scheduling constraints, or how we can help your family right now.</p>
+    <div class="q">
+      <textarea name="suggestions" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- Refund/T-shirt promise -->
+  <div class="notice">
+    <strong>About your $25:</strong> If our final plan doesn't work for your family, we'll mail you the program T-shirt your $25 covered, or refund you in full — whichever you prefer. No one loses out.
+  </div>
+
+  <button class="submit" type="submit" id="submit-btn">Send My Response</button>
+  <p id="status"></p>
+</form>
+
+<div class="thanks card" id="thanks">
+  <h2>Thank you!</h2>
+  <p>We've got your response. We'll tally everyone's input over the next few days and email you with our plan.</p>
+  <p style="margin-top:12px;">— Coach Dorian &amp; the Science on the Court team</p>
+</div>
+
+<p class="footer">Science on the Court &middot; <a href="https://www.scienceonthecourt.com" style="color:var(--muted);">scienceonthecourt.com</a></p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const REPORT_EMAIL = "dbohler@scienceonthecourt.com";
+const FORM_VERSION = "v1";
+const PROGRAM = "Allen Temple";
+
+// Google Sheet backend (Apps Script web app URL).
+// Paste the deploy URL from Apps Script > Deploy > New deployment > Web app.
+const SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzXA151mtmmNfbG8B4lErpGGpZMzP-ziqejZAA4yaKV5PJjM6o0ZpwdUUG8v6LsSWc-/exec";
+
+const EMAILJS_CONFIG = {
+  publicKey:  "ipaVLQ_Dm6mxja_XA",
+  serviceId:  "service_q1l18a2",
+  templateId: "template_439vcb9"
+};
+
+emailjs.init(EMAILJS_CONFIG.publicKey);
+
+// Show/hide conditional sections based on preference choice.
+const condSummer = document.getElementById("cond-summer");
+const condOther  = document.getElementById("cond-other");
+document.querySelectorAll('input[name="preference"]').forEach((r) => {
+  r.addEventListener("change", () => {
+    condSummer.classList.toggle("show", r.value === "summer_camp" && r.checked);
+    condOther .classList.toggle("show", r.value === "other"        && r.checked);
+  });
+});
+
+const form = document.getElementById("survey-form");
+const btn = document.getElementById("submit-btn");
+const status = document.getElementById("status");
+const thanks = document.getElementById("thanks");
+
+const PREF_LABEL = {
+  afterschool: "Resume after-school June 5 (8 weeks, 2x/week)",
+  summer_camp: "Two weeks of day camp during summer",
+  other:       "Something else",
+};
+
+const WEEK_LABEL = {
+  june_15: "Week of June 15",
+  june_29: "Week of June 29",
+  july_13: "Week of July 13",
+  july_20: "Week of July 20",
+};
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  btn.disabled = true;
+  status.className = "";
+  status.textContent = "Sending...";
+
+  const data = new FormData(form);
+  const get = (k) => (data.get(k) || "").toString().trim();
+
+  const preference = get("preference");
+  const weeks = data.getAll("weeks").map((w) => WEEK_LABEL[w] || w);
+  const weeksRaw = data.getAll("weeks").join(",");
+
+  // Conditional validation
+  if (preference === "summer_camp" && weeks.length === 0) {
+    status.className = "err";
+    status.textContent = "Please pick at least one week that would work.";
+    btn.disabled = false;
+    return;
+  }
+  if (preference === "other" && !get("other_idea")) {
+    status.className = "err";
+    status.textContent = "Please tell us what would work better.";
+    btn.disabled = false;
+    return;
+  }
+
+  const body = [
+    `Family: ${get("parent_name")} <${get("parent_email")}>`,
+    `Student(s): ${get("student_names")}`,
+    ``,
+    `Preference: ${PREF_LABEL[preference] || preference}`,
+    preference === "summer_camp" ? `Weeks that work: ${weeks.join(", ") || "—"}` : "",
+    preference === "summer_camp" ? `Hours: ${get("hours") || "—"}` : "",
+    preference === "other" ? `Their idea: ${get("other_idea")}` : "",
+    ``,
+    `Other suggestions:`,
+    get("suggestions") || "—",
+  ].filter(Boolean).join("\n");
+
+  // EmailJS notification (matches existing template fields)
+  const params = {
+    to_email: REPORT_EMAIL,
+    student: get("student_names"),
+    date: new Date().toISOString().slice(0,10),
+    session_num: "Survey",
+    score: PREF_LABEL[preference] || preference,
+    pct: "",
+    breakdown: body,
+    weakest: "",
+    running_stats: "",
+    next_focus: preference === "summer_camp"
+      ? `Weeks: ${weeks.join(", ")} | Hours: ${get("hours") || "—"}`
+      : (preference === "other" ? get("other_idea").slice(0,120) : ""),
+  };
+
+  // Structured payload for the Google Sheet
+  const sheetPayload = {
+    program:        PROGRAM,
+    form_version:   FORM_VERSION,
+    source_url:     window.location.href,
+    parent_name:    get("parent_name"),
+    parent_email:   get("parent_email"),
+    student_names:  get("student_names"),
+    preference:     preference,
+    preference_label: PREF_LABEL[preference] || preference,
+    weeks:          weeksRaw,
+    weeks_label:    weeks.join("; "),
+    hours:          get("hours"),
+    other_idea:     get("other_idea"),
+    suggestions:    get("suggestions"),
+  };
+
+  const emailPromise = emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, params);
+  const sheetPromise = SHEETS_WEBHOOK_URL.startsWith("http")
+    ? fetch(SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(sheetPayload),
+      }).catch((err) => console.warn("Sheet write failed (non-fatal):", err))
+    : Promise.resolve();
+
+  try {
+    await Promise.all([emailPromise, sheetPromise]);
+    form.style.display = "none";
+    document.querySelector(".notice").style.display = "none";
+    thanks.classList.add("show");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (err) {
+    status.className = "err";
+    status.textContent = "Couldn't send — please email " + REPORT_EMAIL + " directly. (" + (err.text || err.message || "error") + ")";
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
