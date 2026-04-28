@@ -104,14 +104,17 @@ def stripe_get(endpoint, params=None):
 
 def fetch_phase2_stripe_contacts():
     """
-    Pull Stripe customers created on/after PHASE2_START as Phase 2 buyers.
-    Returns list of {email, first_name, last_name}.
+    Pull Phase 2 buyers from Stripe Charges. Payment Links don't create
+    Customer records — the buyer email lives on the Charge's billing_details.
+    Filter to succeeded $25 charges (the Phase 2 program fee) since
+    PHASE2_START. De-dupe by email; one parent may have multiple kids
+    (and thus multiple charges).
     """
     if not STRIPE_KEY:
         print("  WARNING: STRIPE_API_KEY not set — skipping Stripe pull.")
         return []
 
-    contacts = []
+    by_email = {}
     starting_after = None
     while True:
         params = {
@@ -120,23 +123,27 @@ def fetch_phase2_stripe_contacts():
         }
         if starting_after:
             params['starting_after'] = starting_after
-        result = stripe_get('customers', params)
+        result = stripe_get('charges', params)
         if 'error' in result:
             print(f"  Stripe error: {result.get('body')}")
             break
-        for cust in result.get('data', []):
-            email = (cust.get('email') or '').strip().lower()
+        for ch in result.get('data', []):
+            if ch.get('status') != 'succeeded' or ch.get('amount') != 2500:
+                continue
+            bd = ch.get('billing_details') or {}
+            email = (bd.get('email') or ch.get('receipt_email') or '').strip().lower()
             if not email:
                 continue
-            name = (cust.get('name') or '').strip()
+            name = (bd.get('name') or '').strip()
             parts = name.split()
             first = parts[0] if parts else ''
             last  = ' '.join(parts[1:]) if len(parts) > 1 else ''
-            contacts.append({'email': email, 'first': first, 'last': last})
+            # Keep first-seen entry; ignore duplicate charges for same parent.
+            by_email.setdefault(email, {'email': email, 'first': first, 'last': last})
         if not result.get('has_more'):
             break
         starting_after = result['data'][-1]['id']
-    return contacts
+    return list(by_email.values())
 
 # ---------------------------------------------------------------------------
 # Roster reader (Squarespace export)
