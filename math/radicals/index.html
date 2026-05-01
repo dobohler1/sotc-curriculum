@@ -43,6 +43,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .feedback{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:13.5px;line-height:1.65;}
 .feedback.correct{background:#EAF7F0;color:#1A6644;}
 .feedback.wrong  {background:#FDEFEF;color:#8B2020;}
+.key-rule{margin-top:10px;padding:11px 13px;background:#FFF8E5;
+  border-left:3px solid #C07010;border-radius:6px;font-size:13px;
+  color:#7A4D00;line-height:1.55;}
+.key-rule .label{display:block;font-size:10.5px;font-weight:700;
+  letter-spacing:0.05em;color:#C07010;margin-bottom:4px;text-transform:uppercase;}
 .next-btn{width:100%;background:var(--blue);color:#fff;border:none;
   border-radius:12px;padding:16px;font-size:17px;font-weight:500;
   cursor:pointer;margin-top:12px;-webkit-tap-highlight-color:transparent;}
@@ -139,7 +144,7 @@ const EMAILJS_CONFIG = {
 // }
 
 // ════════════════════════════════════════════════════════════════════════════
-//  QUESTION BANK  (45 questions, 6 concepts)
+//  QUESTION BANK  (67 questions, 6 concepts)
 // ════════════════════════════════════════════════════════════════════════════
 
 const Q = [
@@ -189,46 +194,88 @@ const Q = [
  ch:["7\\sqrt{2}","4\\sqrt{2}","\\sqrt{60}","13\\sqrt{2}"],
  h:"\\sqrt{50}=5\\sqrt{2},\\ \\sqrt{8}=2\\sqrt{2},\\ \\sqrt{18}=3\\sqrt{2}\\ \\Rightarrow\\ 10-6+3=7"},
 
-// ── Concept 2: Variable Fractions (8) ──────────────────────────────────────
+// ── Concept 2: Variable Fractions (16) ─────────────────────────────────────
+// Originals (8)
 {c:"Variable Fractions",
- q:"\\dfrac{8x^5}{12x^2}", a:"\\frac{2x^3}{3}",
- ch:["\\frac{2x^3}{3}","\\frac{2x^7}{3}","\\frac{2}{3x^3}","\\frac{8x^3}{12}"],
- h:"\\frac{8}{12}=\\frac{2}{3},\\ x^{5-2}=x^3"},
+ q:"\\dfrac{8x^5}{12x^2}", a:"\\tfrac{2x^3}{3}",
+ ch:["\\tfrac{2x^3}{3}","\\tfrac{2x^7}{3}","\\tfrac{2}{3x^3}","\\tfrac{8x^3}{12}"],
+ h:"\\tfrac{8}{12}=\\tfrac{2}{3},\\ x^{5-2}=x^3"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{-15a^4}{10a^7}", a:"\\frac{-3}{2a^3}",
- ch:["\\frac{-3}{2a^3}","\\frac{-3a^3}{2}","\\frac{-3a^{11}}{2}","\\frac{-3}{2a^{11}}"],
- h:"\\frac{-15}{10}=\\frac{-3}{2},\\ a^{4-7}=a^{-3}\\ \\Rightarrow\\ move\\ to\\ denominator"},
+ q:"\\dfrac{-15a^4}{10a^7}", a:"\\tfrac{-3}{2a^3}",
+ ch:["\\tfrac{-3}{2a^3}","\\tfrac{-3a^3}{2}","\\tfrac{-3a^{11}}{2}","\\tfrac{-3}{2a^{11}}"],
+ h:"\\tfrac{-15}{10}=\\tfrac{-3}{2},\\ a^{4-7}=a^{-3}\\ \\Rightarrow\\ move\\ to\\ denominator"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{24x^3y^2}{36x^5y}", a:"\\frac{2y}{3x^2}",
- ch:["\\frac{2y}{3x^2}","\\frac{2x^2y}{3}","\\frac{2y^2}{3x^2}","\\frac{2}{3x^2y}"],
- h:"\\frac{24}{36}=\\frac{2}{3},\\ x^{3-5}=x^{-2},\\ y^{2-1}=y^1"},
+ q:"\\dfrac{24x^3y^2}{36x^5y}", a:"\\tfrac{2y}{3x^2}",
+ ch:["\\tfrac{2y}{3x^2}","\\tfrac{2x^2y}{3}","\\tfrac{2y^2}{3x^2}","\\tfrac{2}{3x^2y}"],
+ h:"\\tfrac{24}{36}=\\tfrac{2}{3},\\ x^{3-5}=x^{-2},\\ y^{2-1}=y^1"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{6m^4n^3}{9m^2n}", a:"\\frac{2m^2n^2}{3}",
- ch:["\\frac{2m^2n^2}{3}","\\frac{2m^6n^4}{3}","\\frac{2m^2}{3}","\\frac{2n^2}{3m^2}"],
- h:"\\frac{6}{9}=\\frac{2}{3},\\ m^{4-2}=m^2,\\ n^{3-1}=n^2"},
+ q:"\\dfrac{6m^4n^3}{9m^2n}", a:"\\tfrac{2m^2n^2}{3}",
+ ch:["\\tfrac{2m^2n^2}{3}","\\tfrac{2m^6n^4}{3}","\\tfrac{2m^2}{3}","\\tfrac{2n^2}{3m^2}"],
+ h:"\\tfrac{6}{9}=\\tfrac{2}{3},\\ m^{4-2}=m^2,\\ n^{3-1}=n^2"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{-20x^3}{15x^5}", a:"\\frac{-4}{3x^2}",
- ch:["\\frac{-4}{3x^2}","\\frac{-4x^2}{3}","\\frac{-4}{3x^8}","\\frac{4}{3x^2}"],
- h:"\\frac{-20}{15}=\\frac{-4}{3},\\ x^{3-5}=x^{-2}"},
+ q:"\\dfrac{-20x^3}{15x^5}", a:"\\tfrac{-4}{3x^2}",
+ ch:["\\tfrac{-4}{3x^2}","\\tfrac{-4x^2}{3}","\\tfrac{-4}{3x^8}","\\tfrac{4}{3x^2}"],
+ h:"\\tfrac{-20}{15}=\\tfrac{-4}{3},\\ x^{3-5}=x^{-2}"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{12a^2b^3}{18a^5b}", a:"\\frac{2b^2}{3a^3}",
- ch:["\\frac{2b^2}{3a^3}","\\frac{2a^3b^2}{3}","\\frac{2b^2}{3}","\\frac{2b^3}{3a^2}"],
- h:"\\frac{12}{18}=\\frac{2}{3},\\ a^{2-5}=a^{-3},\\ b^{3-1}=b^2"},
+ q:"\\dfrac{12a^2b^3}{18a^5b}", a:"\\tfrac{2b^2}{3a^3}",
+ ch:["\\tfrac{2b^2}{3a^3}","\\tfrac{2a^3b^2}{3}","\\tfrac{2b^2}{3}","\\tfrac{2b^3}{3a^2}"],
+ h:"\\tfrac{12}{18}=\\tfrac{2}{3},\\ a^{2-5}=a^{-3},\\ b^{3-1}=b^2"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{30p^6q^2}{45p^2q^4}", a:"\\frac{2p^4}{3q^2}",
- ch:["\\frac{2p^4}{3q^2}","\\frac{2p^4q^2}{3}","\\frac{2p^8}{3q^6}","\\frac{2p^3}{q}"],
- h:"\\frac{30}{45}=\\frac{2}{3},\\ p^{6-2}=p^4,\\ q^{2-4}=q^{-2}"},
+ q:"\\dfrac{30p^6q^2}{45p^2q^4}", a:"\\tfrac{2p^4}{3q^2}",
+ ch:["\\tfrac{2p^4}{3q^2}","\\tfrac{2p^4q^2}{3}","\\tfrac{2p^8}{3q^6}","\\tfrac{2p^3}{q}"],
+ h:"\\tfrac{30}{45}=\\tfrac{2}{3},\\ p^{6-2}=p^4,\\ q^{2-4}=q^{-2}"},
 
 {c:"Variable Fractions",
- q:"\\dfrac{18x^4y^3}{24x^2y^5}", a:"\\frac{3x^2}{4y^2}",
- ch:["\\frac{3x^2}{4y^2}","\\frac{3x^2y^2}{4}","\\frac{3x^6y^8}{4}","\\frac{3}{4x^2y^2}"],
- h:"\\frac{18}{24}=\\frac{3}{4},\\ x^{4-2}=x^2,\\ y^{3-5}=y^{-2}"},
+ q:"\\dfrac{18x^4y^3}{24x^2y^5}", a:"\\tfrac{3x^2}{4y^2}",
+ ch:["\\tfrac{3x^2}{4y^2}","\\tfrac{3x^2y^2}{4}","\\tfrac{3x^6y^8}{4}","\\tfrac{3}{4x^2y^2}"],
+ h:"\\tfrac{18}{24}=\\tfrac{3}{4},\\ x^{4-2}=x^2,\\ y^{3-5}=y^{-2}"},
+
+// New (8) — neg-exponent focused
+{c:"Variable Fractions",
+ q:"\\dfrac{x^{-2}}{x^3}", a:"\\tfrac{1}{x^5}",
+ ch:["\\tfrac{1}{x^5}","x^5","x^{-6}","\\tfrac{1}{x}"],
+ h:"x^{-2-3}=x^{-5}\\Rightarrow\\tfrac{1}{x^5}"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{a^3}{a^{-4}}", a:"a^7",
+ ch:["a^7","a^{-1}","\\tfrac{1}{a^7}","a^{12}"],
+ h:"a^{3-(-4)}=a^{3+4}=a^7"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{4x^{-3}}{2x^2}", a:"\\tfrac{2}{x^5}",
+ ch:["\\tfrac{2}{x^5}","2x^5","\\tfrac{2}{x}","2x^{-1}"],
+ h:"\\tfrac{4}{2}=2;\\ x^{-3-2}=x^{-5}\\Rightarrow\\tfrac{2}{x^5}"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{6a^2}{9a^{-3}}", a:"\\tfrac{2a^5}{3}",
+ ch:["\\tfrac{2a^5}{3}","\\tfrac{2}{3a^5}","\\tfrac{2a^{-1}}{3}","\\tfrac{2a}{3}"],
+ h:"\\tfrac{6}{9}=\\tfrac{2}{3};\\ a^{2-(-3)}=a^5"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{8x^{-2}y^3}{4x^3y^{-1}}", a:"\\tfrac{2y^4}{x^5}",
+ ch:["\\tfrac{2y^4}{x^5}","2x^5y^4","\\tfrac{2y^2}{x^5}","\\tfrac{2}{x^5y^4}"],
+ h:"\\tfrac{8}{4}=2;\\ x^{-2-3}=x^{-5};\\ y^{3-(-1)}=y^4"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{10m^{-4}n^2}{5m^2n^{-3}}", a:"\\tfrac{2n^5}{m^6}",
+ ch:["\\tfrac{2n^5}{m^6}","2m^6n^5","\\tfrac{2n^5}{m^2}","\\tfrac{2}{m^6n^5}"],
+ h:"\\tfrac{10}{5}=2;\\ m^{-4-2}=m^{-6};\\ n^{2-(-3)}=n^5"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{12p^3q^{-2}}{8p^{-1}q^4}", a:"\\tfrac{3p^4}{2q^6}",
+ ch:["\\tfrac{3p^4}{2q^6}","\\tfrac{3p^2q^6}{2}","\\tfrac{3p^4q^6}{2}","\\tfrac{3}{2p^4q^6}"],
+ h:"\\tfrac{12}{8}=\\tfrac{3}{2};\\ p^{3-(-1)}=p^4;\\ q^{-2-4}=q^{-6}"},
+
+{c:"Variable Fractions",
+ q:"\\dfrac{15x^{-1}y^3}{9x^4y^{-2}}", a:"\\tfrac{5y^5}{3x^5}",
+ ch:["\\tfrac{5y^5}{3x^5}","\\tfrac{5x^5y^5}{3}","\\tfrac{5y^5}{3x^3}","\\tfrac{5}{3x^5y^5}"],
+ h:"\\tfrac{15}{9}=\\tfrac{5}{3};\\ x^{-1-4}=x^{-5};\\ y^{3-(-2)}=y^5"},
 
 // ── Concept 3: Add Exponents (7) ───────────────────────────────────────────
 {c:"Add Exponents",
@@ -302,48 +349,123 @@ const Q = [
  ch:["\\tfrac{1}{25}","-25","-\\tfrac{1}{25}","25"],
  h:"5^{-2}=\\tfrac{1}{25}\\ (not\\ {-25}!).\\ \\ 5^0=1"},
 
-// ── Concept 5: (a−b)² (8) ──────────────────────────────────────────────────
-{c:"(a\u2212b)\u00b2",
+// ── Concept 5: (a−b)² (12) ─────────────────────────────────────────────────
+// Originals (8)
+{c:"(a−b)²",
  q:"(x-4)^2", a:"x^2-8x+16",
  ch:["x^2-8x+16","x^2-16","x^2+16","x^2-4x+16"],
  h:"a^2-2ab+b^2.\\ \\ 2\\cdot x\\cdot 4=8x.\\ \\ x^2-16\\ drops\\ the\\ middle!"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(\\sqrt{3}-2)^2", a:"7-4\\sqrt{3}",
  ch:["7-4\\sqrt{3}","7","1-4\\sqrt{3}","7+4\\sqrt{3}"],
  h:"3-2(\\sqrt{3})(2)+4=7-4\\sqrt{3}.\\ \\ '7'\\ drops\\ the\\ middle!"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(\\sqrt{7}-\\sqrt{2})^2", a:"9-2\\sqrt{14}",
  ch:["9-2\\sqrt{14}","9","5-2\\sqrt{14}","9+2\\sqrt{14}"],
  h:"7-2\\sqrt{14}+2=9-2\\sqrt{14}"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(\\sqrt{5}-3)^2", a:"14-6\\sqrt{5}",
  ch:["14-6\\sqrt{5}","14","2-6\\sqrt{5}","14+6\\sqrt{5}"],
  h:"5-2(\\sqrt{5})(3)+9=14-6\\sqrt{5}"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(2\\sqrt{3}-\\sqrt{5})^2", a:"17-4\\sqrt{15}",
  ch:["17-4\\sqrt{15}","17","7-4\\sqrt{15}","17+4\\sqrt{15}"],
  h:"12-2(2\\sqrt{3})(\\sqrt{5})+5=17-4\\sqrt{15}"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(x-\\sqrt{2})^2", a:"x^2-2\\sqrt{2}\\,x+2",
  ch:["x^2-2\\sqrt{2}\\,x+2","x^2+2","x^2-2","x^2+2\\sqrt{2}\\,x+2"],
  h:"x^2-2x\\sqrt{2}+(\\sqrt{2})^2=x^2-2\\sqrt{2}\\,x+2"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(3-\\sqrt{6})^2", a:"15-6\\sqrt{6}",
  ch:["15-6\\sqrt{6}","15","3-6\\sqrt{6}","15+6\\sqrt{6}"],
  h:"9-2(3)(\\sqrt{6})+6=15-6\\sqrt{6}"},
 
-{c:"(a\u2212b)\u00b2",
+{c:"(a−b)²",
  q:"(2x-3)^2", a:"4x^2-12x+9",
  ch:["4x^2-12x+9","4x^2-9","4x^2+9","4x^2-6x+9"],
  h:"2(2x)(3)=12x,\\ not\\ 6x.\\ \\ 4x^2-9\\ drops\\ the\\ middle!"},
 
-// ── Concept 6: Factor First (6) ────────────────────────────────────────────
+// New (4) — radical-binomial focus (where the middle term gets dropped)
+{c:"(a−b)²",
+ q:"(\\sqrt{6}-3)^2", a:"15-6\\sqrt{6}",
+ ch:["15-6\\sqrt{6}","15","3-6\\sqrt{6}","15+6\\sqrt{6}"],
+ h:"6-2(\\sqrt{6})(3)+9=15-6\\sqrt{6}"},
+
+{c:"(a−b)²",
+ q:"(\\sqrt{2}-\\sqrt{5})^2", a:"7-2\\sqrt{10}",
+ ch:["7-2\\sqrt{10}","7","3-2\\sqrt{10}","7+2\\sqrt{10}"],
+ h:"2-2\\sqrt{10}+5=7-2\\sqrt{10}"},
+
+{c:"(a−b)²",
+ q:"(\\sqrt{11}-2)^2", a:"15-4\\sqrt{11}",
+ ch:["15-4\\sqrt{11}","15","7-4\\sqrt{11}","15+4\\sqrt{11}"],
+ h:"11-2(\\sqrt{11})(2)+4=15-4\\sqrt{11}"},
+
+{c:"(a−b)²",
+ q:"(3\\sqrt{2}-\\sqrt{3})^2", a:"21-6\\sqrt{6}",
+ ch:["21-6\\sqrt{6}","21","15-6\\sqrt{6}","21+6\\sqrt{6}"],
+ h:"18-2(3\\sqrt{2})(\\sqrt{3})+3=21-6\\sqrt{6}"},
+
+// ── Concept 6: Factor First (16) ───────────────────────────────────────────
+// EASY (6) — single-step scaffold
+{c:"Factor First",
+ q:"\\dfrac{6x^4}{4x^2}", a:"\\tfrac{3x^2}{2}",
+ ch:["\\tfrac{3x^2}{2}","\\tfrac{3x^6}{2}","\\tfrac{6x^2}{4}","\\tfrac{3}{2x^2}"],
+ h:"\\tfrac{6}{4}=\\tfrac{3}{2};\\ x^{4-2}=x^2"},
+
+{c:"Factor First",
+ q:"\\dfrac{10a^5}{4a^3}", a:"\\tfrac{5a^2}{2}",
+ ch:["\\tfrac{5a^2}{2}","\\tfrac{5a^8}{2}","\\tfrac{5}{2a^2}","\\tfrac{10a^2}{4}"],
+ h:"\\tfrac{10}{4}=\\tfrac{5}{2};\\ a^{5-3}=a^2"},
+
+{c:"Factor First",
+ q:"\\dfrac{9m^6}{6m^2}", a:"\\tfrac{3m^4}{2}",
+ ch:["\\tfrac{3m^4}{2}","\\tfrac{3m^8}{2}","\\tfrac{3}{2m^4}","\\tfrac{9m^4}{6}"],
+ h:"\\tfrac{9}{6}=\\tfrac{3}{2};\\ m^{6-2}=m^4"},
+
+{c:"Factor First",
+ q:"\\dfrac{8x^3}{12x}", a:"\\tfrac{2x^2}{3}",
+ ch:["\\tfrac{2x^2}{3}","\\tfrac{2x^4}{3}","\\tfrac{2}{3x^2}","\\tfrac{8x^2}{12}"],
+ h:"\\tfrac{8}{12}=\\tfrac{2}{3};\\ x^{3-1}=x^2"},
+
+{c:"Factor First",
+ q:"\\dfrac{15p^5}{10p^3}", a:"\\tfrac{3p^2}{2}",
+ ch:["\\tfrac{3p^2}{2}","\\tfrac{3p^8}{2}","\\tfrac{3}{2p^2}","\\tfrac{5p^2}{2}"],
+ h:"\\tfrac{15}{10}=\\tfrac{3}{2};\\ p^{5-3}=p^2"},
+
+{c:"Factor First",
+ q:"\\dfrac{12y^7}{8y^4}", a:"\\tfrac{3y^3}{2}",
+ ch:["\\tfrac{3y^3}{2}","\\tfrac{3y^{11}}{2}","\\tfrac{3}{2y^3}","\\tfrac{12y^3}{8}"],
+ h:"\\tfrac{12}{8}=\\tfrac{3}{2};\\ y^{7-4}=y^3"},
+
+// MEDIUM (4) — two operations
+{c:"Factor First",
+ q:"\\dfrac{6x^5}{4x^2}\\cdot x^{-1}", a:"\\tfrac{3x^2}{2}",
+ ch:["\\tfrac{3x^2}{2}","\\tfrac{3x^3}{2}","\\tfrac{3}{2x^2}","\\tfrac{3x^4}{2}"],
+ h:"\\tfrac{6}{4}=\\tfrac{3}{2};\\ x^{5-2}=x^3;\\ \\cdot\\,x^{-1}\\Rightarrow x^2"},
+
+{c:"Factor First",
+ q:"\\dfrac{10a^4}{6a}\\cdot a^{-2}", a:"\\tfrac{5a}{3}",
+ ch:["\\tfrac{5a}{3}","\\tfrac{5a^3}{3}","\\tfrac{5}{3a}","\\tfrac{5a^5}{3}"],
+ h:"\\tfrac{10}{6}=\\tfrac{5}{3};\\ a^{4-1}=a^3;\\ \\cdot\\,a^{-2}\\Rightarrow a"},
+
+{c:"Factor First",
+ q:"\\dfrac{9x^5}{6x^2}\\cdot\\left(x^{-1}\\right)^2", a:"\\tfrac{3x}{2}",
+ ch:["\\tfrac{3x}{2}","\\tfrac{3x^3}{2}","\\tfrac{3}{2x}","\\tfrac{3x^5}{2}"],
+ h:"\\tfrac{9}{6}=\\tfrac{3}{2};\\ x^3;\\ (x^{-1})^2=x^{-2};\\ x^{3-2}=x"},
+
+{c:"Factor First",
+ q:"\\dfrac{8m^6}{12m^3}\\cdot\\left(m^{-1}\\right)^3", a:"\\tfrac{2}{3}",
+ ch:["\\tfrac{2}{3}","\\tfrac{2m^3}{3}","\\tfrac{2}{3m^3}","\\tfrac{2m^6}{3}"],
+ h:"\\tfrac{8}{12}=\\tfrac{2}{3};\\ m^{6-3}=m^3;\\ (m^{-1})^3=m^{-3};\\ m^{3-3}=m^0=1"},
+
+// HARD (6) — original combined-operation
 {c:"Factor First",
  q:"\\dfrac{24x^5}{16x^2}\\cdot\\left(x^{-1}\\right)^2", a:"\\tfrac{3x}{2}",
  ch:["\\tfrac{3x}{2}","\\tfrac{3x^3}{2}","\\tfrac{3}{2x}","\\tfrac{3x^2}{2}"],
@@ -375,9 +497,30 @@ const Q = [
  h:"\\tfrac{45}{30}=\\tfrac{3}{2};\\ p^{-3};\\ \\cdot\\,9p^{-2}\\Rightarrow\\tfrac{27}{2}p^{-5}"}
 ];
 
+// Per-concept "key rule" shown when Ethan misses a question
+const KEY_RULES = {
+  "Like Radicals":      "Simplify each \\sqrt{} first (e.g., \\sqrt{8}=2\\sqrt{2}). Only matching radicands can combine.",
+  "Variable Fractions": "Same base \\Rightarrow SUBTRACT exponents (top - bottom). Negative result \\Rightarrow move across the fraction bar.",
+  "Add Exponents":      "Same base, MULTIPLIED \\Rightarrow ADD the exponents.",
+  "Neg. Exponents":     "x^{-n}=\\tfrac{1}{x^n}. A negative exponent makes a RECIPROCAL, not a negative number.",
+  "(a−b)²":   "(a-b)^2 = a^2 - 2ab + b^2. ALWAYS three terms - never drop the middle!",
+  "Factor First":       "1) Reduce the coefficient fraction. 2) For each variable, combine ALL its exponents (top, bottom flips, outside powers)."
+};
+
 const CONCEPTS = [...new Set(Q.map(q => q.c))];
 const SZ = 15; // questions per session
 const STUDENT_ID = "ethan";
+
+// Base priority per concept (higher = more frequent).
+// Tuned from Ethan's session history through April 2026.
+const BASE_WEIGHT = {
+  "Factor First":       0.90,  // 0% history — highest priority
+  "Variable Fractions": 0.80,  // consistently weak
+  "(a−b)²":   0.70,  // moderate weakness, improving
+  "Like Radicals":      0.50,  // variable
+  "Neg. Exponents":     0.20,  // mastered — retention only
+  "Add Exponents":      0.20   // mastered — retention only
+};
 
 // ════════════════════════════════════════════════════════════════════════════
 //  FIREBASE INIT
@@ -401,7 +544,7 @@ if (EJ_ON) {
 //  STATE
 // ════════════════════════════════════════════════════════════════════════════
 
-const LS = "ethan_drill_v3";
+const LS = "ethan_drill_v4";
 
 function defaultState() {
   return {
@@ -425,10 +568,12 @@ function save() {
 // ════════════════════════════════════════════════════════════════════════════
 
 function conceptWeight(concept) {
+  const base = BASE_WEIGHT[concept] ?? 0.6;
   const s = ST.conceptStats[concept];
-  if (!s || s.total === 0) return 0.7; // default medium-high priority
+  if (!s || s.total < 3) return base;          // not enough data, use base
   const acc = s.right / s.total;
-  return Math.max(0.15, 1 - acc); // weak = high weight, strong = low but never 0
+  // Blend: 40% base priority, 60% live accuracy signal
+  return 0.4 * base + 0.6 * Math.max(0.1, 1 - acc);
 }
 
 function buildSession() {
@@ -628,10 +773,18 @@ function pick(idx, ok, q) {
     if (i===idx) b.classList.add(ok?"correct":"wrong");
     if (shuffChoices[i].ok && !ok) b.classList.add("reveal");
   });
+
+  // Key-rule reminder when wrong
+  const ruleHTML = ok ? "" :
+    `<div class="key-rule">
+       <span class="label">📌 Key Rule — ${q.c}</span>
+       ${k(KEY_RULES[q.c] || "")}
+     </div>`;
+
   document.getElementById("fb").innerHTML =
     `<div class="feedback ${ok?'correct':'wrong'}">
        ${ok?"✓ Correct!":"✗ Not quite."}&ensp;${k(q.h)}
-     </div>`;
+     </div>${ruleHTML}`;
   document.getElementById("nw").innerHTML =
     `<button class="next-btn" onclick="adv()">
        ${qi+1<SZ?"Next Question →":"See My Score"}
