@@ -705,6 +705,7 @@ async function uploadWork(sessionData, pdfDataUrl) {
     concept: q.c,
     question: q.q,
     answer: q.a,
+    chosen: perQuestion[i]?.chosen || null,
     correct: !!sessionData.perQuestion[i]?.correct,
     pngDataUrl: workShown[i] || null
   }));
@@ -906,10 +907,14 @@ async function generatePdf(sessionData) {
         : `<p style="color:#999;font-size:12px;text-align:center;
                      font-style:italic;padding:24px;background:#FAFAF7;
                      border-radius:6px;margin:0;">No work shown</p>`}
-      <div style="font-size:12px;color:#666;margin-top:10px;
-                  padding-top:8px;border-top:0.5px solid #eee;
-                  display:flex;justify-content:space-between;align-items:center;">
-        <span>Correct answer: <strong>${k(q.a)}</strong></span>
+      <div style="font-size:13px;margin-top:10px;
+                  padding-top:8px;border-top:0.5px solid #eee;">
+        ${correct
+          ? `<span style="color:#2A9E6B;">Picked: <strong>${k(q.a)}</strong> ✓</span>`
+          : `<div style="display:flex;justify-content:space-between;gap:12px;">
+               <span style="color:#D94F4F;">Picked: <strong>${k(perQuestion[i]?.chosen || '?')}</strong></span>
+               <span style="color:#2A9E6B;">Correct: <strong>${k(q.a)}</strong></span>
+             </div>`}
       </div>`;
     report.appendChild(block);
   });
@@ -1008,7 +1013,7 @@ function renderQ() {
 function pick(idx, ok, q) {
   if (answered) return;
   workShown[qi] = captureCanvas();   // freeze strokes BEFORE flipping `answered`
-  perQuestion[qi] = { correct: ok };
+  perQuestion[qi] = { correct: ok, chosen: shuffChoices[idx].l };
   answered = true;
   const cv = document.getElementById("wc");
   if (cv) cv.classList.add("disabled");

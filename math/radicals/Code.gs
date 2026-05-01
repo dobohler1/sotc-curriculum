@@ -55,7 +55,10 @@ function doPost(e) {
       const url = imageUrls[i];
       const mark = item.correct ? '✓' : '✗';
       const link = url ? url : '(no work shown)';
-      return `Q${item.qNum} ${mark} ${item.concept} — ${link}`;
+      const detail = item.correct
+        ? ''
+        : ` (picked ${item.chosen || '?'}, correct ${item.answer})`;
+      return `Q${item.qNum} ${mark} ${item.concept}${detail} — ${link}`;
     }).join('\n');
 
     // Save full PDF report (if provided)
@@ -78,7 +81,8 @@ function doPost(e) {
       date: data.date,
       work: (data.work || []).map(w => ({
         qNum: w.qNum, concept: w.concept,
-        question: w.question, answer: w.answer, correct: w.correct
+        question: w.question, answer: w.answer,
+        chosen: w.chosen, correct: w.correct
       }))
     };
     folder.createFile(
