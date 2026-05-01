@@ -80,6 +80,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   margin-top:8px;min-height:18px;}
 .start-screen{background:var(--card);border-radius:16px;padding:36px 24px;
   text-align:center;border:0.5px solid var(--border);}
+
+/* Handwriting canvas */
+.work-area{margin:6px 0 14px;}
+.work-header{display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.05em;font-weight:600;margin-bottom:6px;padding:0 2px;}
+.work-clear{background:none;border:0.5px solid var(--border);
+  border-radius:8px;padding:3px 10px;font-size:11px;color:var(--muted);
+  cursor:pointer;text-transform:none;letter-spacing:0;font-weight:500;
+  -webkit-tap-highlight-color:transparent;}
+.work-clear:active{background:#EEECEA;}
+.work-canvas{display:block;width:100%;height:200px;background:#FAFAF7;
+  border:0.5px dashed rgba(0,0,0,0.18);border-radius:10px;
+  touch-action:none;cursor:crosshair;}
+.work-canvas.disabled{opacity:0.7;cursor:default;}
 .start-screen h2{font-size:22px;font-weight:600;margin-bottom:8px;}
 .start-screen p{font-size:15px;color:var(--muted);margin-bottom:6px;line-height:1.6;}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0;}
@@ -99,6 +114,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 // ════════════════════════════════════════════════════════════════════════════
@@ -124,10 +141,16 @@ const FIREBASE_CONFIG = {
   appId:             "YOUR_APP_ID"
 };
 
+// Apps Script webhook (handwriting capture → Drive)
+// Deploy radicals/Code.gs as a web app, paste the /exec URL here.
+// Leave as "" to disable upload (canvas still works locally).
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzoa0rZgrVklK6ZFQcwjKSXQXBG9IfVoyrC_pLzR_4lTlGxdkhEifYndECedXmaSsBJew/exec";
+
 // EmailJS — sign up free at emailjs.com
 // Create a service (Gmail works), then create a template with these variables:
 //   {{student}}  {{date}}  {{session_num}}  {{score}}  {{pct}}
 //   {{breakdown}}  {{weakest}}  {{running_stats}}  {{next_focus}}
+//   {{work_folder}}  {{work_summary}}     ← added for handwriting capture
 const EMAILJS_CONFIG = {
   publicKey:  "ipaVLQ_Dm6mxja_XA",
   serviceId:  "service_q1l18a2",
@@ -675,7 +698,46 @@ function formatRunningStats() {
   }).join("\n");
 }
 
-async function sendReport(sessionData) {
+async function uploadWork(sessionData, pdfDataUrl) {
+  if (!WEBHOOK_URL) return { folderUrl: "", pdfUrl: "", summary: "(handwriting upload disabled)" };
+  const work = session.map((q, i) => ({
+    qNum: i + 1,
+    concept: q.c,
+    question: q.q,
+    answer: q.a,
+    correct: !!sessionData.perQuestion[i]?.correct,
+    pngDataUrl: workShown[i] || null
+  }));
+  const anyWork = work.some(w => w.pngDataUrl);
+  if (!anyWork && !pdfDataUrl) {
+    return { folderUrl: "", pdfUrl: "", summary: "(no work shown this session)" };
+  }
+  try {
+    const resp = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },  // avoid CORS preflight
+      body: JSON.stringify({
+        student: STUDENT_NAME,
+        sessionNumber: sessionData.sessionNumber,
+        date: new Date().toISOString().slice(0, 10),
+        work,
+        pdfDataUrl: pdfDataUrl || null
+      })
+    });
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || "webhook returned ok:false");
+    return {
+      folderUrl: data.folderUrl || "",
+      pdfUrl: data.pdfUrl || "",
+      summary: data.summary || ""
+    };
+  } catch (e) {
+    console.warn("Work upload failed:", e);
+    return { folderUrl: "", pdfUrl: "", summary: `(upload failed: ${e.message || e})` };
+  }
+}
+
+async function sendReport(sessionData, workResult) {
   if (!EJ_ON) return;
   const { sessionNumber, score, breakdown } = sessionData;
   const p = pct(score, SZ);
@@ -695,7 +757,10 @@ async function sendReport(sessionData) {
     breakdown:     formatBreakdown(breakdown),
     weakest:       weakest,
     running_stats: formatRunningStats(),
-    next_focus:    weakest
+    next_focus:    weakest,
+    work_folder:   workResult?.folderUrl || "",
+    work_pdf:      workResult?.pdfUrl    || "",
+    work_summary:  workResult?.summary   || ""
   };
 
   try {
@@ -710,11 +775,190 @@ async function sendReport(sessionData) {
 const app = () => document.getElementById("app");
 let session = [], qi = 0, score = 0, answered = false, shuffChoices = [];
 let sessionBreakdown = {}; // {concept: {right, total}} for current session
+let workShown = [];        // dataURLs per question index (or null)
+let perQuestion = [];      // {correct} per question index
+let canvasDirty = false;   // true once a stroke is drawn on the current canvas
+
+// ════════════════════════════════════════════════════════════════════════════
+//  HANDWRITING CANVAS
+// ════════════════════════════════════════════════════════════════════════════
+
+function setupCanvas() {
+  const cv = document.getElementById("wc");
+  if (!cv) return;
+  const ctx = cv.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cv.getBoundingClientRect();
+  cv.width  = Math.round(rect.width  * dpr);
+  cv.height = Math.round(rect.height * dpr);
+  ctx.scale(dpr, dpr);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#1a1a1a";
+
+  let drawing = false, lastX = 0, lastY = 0;
+  canvasDirty = false;
+
+  const pos = e => {
+    const r = cv.getBoundingClientRect();
+    return [e.clientX - r.left, e.clientY - r.top];
+  };
+
+  cv.addEventListener("pointerdown", e => {
+    if (answered) return;
+    drawing = true;
+    canvasDirty = true;
+    cv.setPointerCapture(e.pointerId);
+    [lastX, lastY] = pos(e);
+    e.preventDefault();
+  });
+
+  cv.addEventListener("pointermove", e => {
+    if (!drawing) return;
+    const [x, y] = pos(e);
+    const w = e.pointerType === "pen"
+      ? Math.max(0.6, (e.pressure || 0.5) * 4)
+      : 2;
+    ctx.lineWidth = w;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    lastX = x; lastY = y;
+    e.preventDefault();
+  });
+
+  const stop = () => { drawing = false; };
+  cv.addEventListener("pointerup", stop);
+  cv.addEventListener("pointercancel", stop);
+  cv.addEventListener("pointerleave", stop);
+}
+
+function clearCanvas() {
+  const cv = document.getElementById("wc");
+  if (!cv || answered) return;
+  const ctx = cv.getContext("2d");
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.restore();
+  canvasDirty = false;
+}
+
+function captureCanvas() {
+  if (!canvasDirty) return null;
+  const cv = document.getElementById("wc");
+  if (!cv) return null;
+  try { return cv.toDataURL("image/png"); } catch (e) { return null; }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  PDF SESSION REPORT
+// ════════════════════════════════════════════════════════════════════════════
+
+async function generatePdf(sessionData) {
+  if (!window.jspdf || !window.html2canvas) return null;
+  const { jsPDF } = window.jspdf;
+  const dateStr = new Date().toLocaleDateString("en-US",
+    {weekday:"long", year:"numeric", month:"long", day:"numeric"});
+
+  // Build offscreen report DOM at PDF page width
+  const report = document.createElement("div");
+  report.style.cssText =
+    "position:absolute;left:-9999px;top:0;width:780px;background:#fff;" +
+    "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" +
+    "padding:40px;color:#1a1a1a;line-height:1.4;";
+
+  const correctTotal = perQuestion.filter(p => p && p.correct).length;
+  report.innerHTML = `
+    <div style="text-align:center;border-bottom:2px solid #4A7FE5;
+                padding-bottom:18px;margin-bottom:24px;">
+      <h1 style="font-size:26px;color:#4A7FE5;margin:0;font-weight:600;">
+        ${STUDENT_NAME} — Session ${sessionData.sessionNumber}</h1>
+      <p style="color:#666;margin:8px 0 4px;font-size:14px;">${dateStr}</p>
+      <p style="font-size:36px;font-weight:700;margin:10px 0 0;">
+        ${sessionData.score}/${SZ}
+        <span style="font-size:18px;color:#666;font-weight:500;">
+          (${sessionData.pct}%)</span></p>
+    </div>`;
+
+  session.forEach((q, i) => {
+    const correct = perQuestion[i] && perQuestion[i].correct;
+    const work = workShown[i];
+    const block = document.createElement("div");
+    block.style.cssText =
+      "border:1px solid #e6e6e6;border-radius:10px;padding:16px;" +
+      "margin-bottom:14px;page-break-inside:avoid;";
+    block.innerHTML = `
+      <div style="display:flex;justify-content:space-between;
+                  font-size:12px;color:#666;margin-bottom:10px;
+                  text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">
+        <span>Q${i+1} · ${q.c}</span>
+        <span style="color:${correct?'#2A9E6B':'#D94F4F'};">
+          ${correct?'✓ Correct':'✗ Wrong'}</span>
+      </div>
+      <div style="font-size:22px;text-align:center;margin:10px 0 14px;
+                  padding:8px;">${k(q.q)}</div>
+      ${work
+        ? `<img src="${work}" style="display:block;width:100%;max-height:200px;
+                                      object-fit:contain;background:#FAFAF7;
+                                      border:0.5px dashed #ddd;border-radius:6px;">`
+        : `<p style="color:#999;font-size:12px;text-align:center;
+                     font-style:italic;padding:24px;background:#FAFAF7;
+                     border-radius:6px;margin:0;">No work shown</p>`}
+      <div style="font-size:12px;color:#666;margin-top:10px;
+                  padding-top:8px;border-top:0.5px solid #eee;
+                  display:flex;justify-content:space-between;align-items:center;">
+        <span>Correct answer: <strong>${k(q.a)}</strong></span>
+      </div>`;
+    report.appendChild(block);
+  });
+
+  document.body.appendChild(report);
+
+  try {
+    const canvas = await html2canvas(report, {
+      scale: 1.5, backgroundColor: "#ffffff", logging: false, useCORS: true
+    });
+    const imgData = canvas.toDataURL("image/jpeg", 0.85);
+
+    const pdf = new jsPDF("p", "mm", "letter");
+    const pdfW = 215.9, pdfH = 279.4;  // letter size in mm
+    const imgW = pdfW;
+    const imgH = (canvas.height * imgW) / canvas.width;
+
+    let position = 0;
+    let heightLeft = imgH;
+    pdf.addImage(imgData, "JPEG", 0, position, imgW, imgH);
+    heightLeft -= pdfH;
+    while (heightLeft > 0) {
+      position = heightLeft - imgH;   // negative offset scrolls the image up
+      pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, position, imgW, imgH);
+      heightLeft -= pdfH;
+    }
+
+    const blob = pdf.output("blob");
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn("PDF generation failed:", e);
+    return null;
+  } finally {
+    document.body.removeChild(report);
+  }
+}
 
 function startSession() {
   session = buildSession();
   qi = 0; score = 0; answered = false;
   sessionBreakdown = {};
+  workShown = [];
+  perQuestion = [];
   CONCEPTS.forEach(c => sessionBreakdown[c] = {right:0, total:0});
   renderQ();
 }
@@ -737,6 +981,13 @@ function renderQ() {
     <div class="card">
       <span class="badge ${isWeak?'weak-badge':''}">${q.c}${isWeak?' ⚠️':''}</span>
       <div class="question" id="qd"></div>
+      <div class="work-area">
+        <div class="work-header">
+          <span>Show your work</span>
+          <button class="work-clear" onclick="clearCanvas()">Clear</button>
+        </div>
+        <canvas id="wc" class="work-canvas"></canvas>
+      </div>
       <div class="choices" id="cs"></div>
       <div id="fb"></div>
       <div id="nw"></div>
@@ -751,11 +1002,16 @@ function renderQ() {
     btn.onclick = () => pick(i, c.ok, q);
     cs.appendChild(btn);
   });
+  setupCanvas();
 }
 
 function pick(idx, ok, q) {
   if (answered) return;
+  workShown[qi] = captureCanvas();   // freeze strokes BEFORE flipping `answered`
+  perQuestion[qi] = { correct: ok };
   answered = true;
+  const cv = document.getElementById("wc");
+  if (cv) cv.classList.add("disabled");
   if (ok) score++;
 
   // Update breakdown
@@ -872,16 +1128,27 @@ async function renderScore() {
     sessionNumber: ST.sessionCount,
     score, total: SZ,
     pct: p,
-    breakdown: sessionBreakdown
+    breakdown: sessionBreakdown,
+    perQuestion: perQuestion
   };
-  document.getElementById("status").textContent = FB_ON ? "Saving results…" : "";
+  const status = document.getElementById("status");
+  status.textContent = FB_ON ? "Saving results…" : "";
   await saveToFirebase(sessionData);
+
+  let workResult = { folderUrl: "", pdfUrl: "", summary: "" };
+  if (WEBHOOK_URL) {
+    status.textContent = "Building report…";
+    const pdfDataUrl = await generatePdf(sessionData);
+    status.textContent = "Uploading work…";
+    workResult = await uploadWork(sessionData, pdfDataUrl);
+  }
+
   if (EJ_ON) {
-    document.getElementById("status").textContent = "Sending report…";
-    await sendReport(sessionData);
-    document.getElementById("status").textContent = `✓ Report sent to ${REPORT_EMAIL}`;
+    status.textContent = "Sending report…";
+    await sendReport(sessionData, workResult);
+    status.textContent = `✓ Report sent to ${REPORT_EMAIL}`;
   } else {
-    document.getElementById("status").textContent = FB_ON ? "✓ Saved to Firebase" : "";
+    status.textContent = FB_ON ? "✓ Saved to Firebase" : "";
   }
 }
 
