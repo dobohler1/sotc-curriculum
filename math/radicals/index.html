@@ -95,6 +95,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   border:0.5px dashed rgba(0,0,0,0.18);border-radius:10px;
   touch-action:none;cursor:crosshair;}
 .work-canvas.disabled{opacity:0.7;cursor:default;}
+.reveal-btn{width:100%;background:#F0F0EC;color:var(--text);
+  border:1px solid var(--border);border-radius:12px;padding:14px;
+  font-size:15px;font-weight:500;cursor:pointer;margin-top:10px;
+  -webkit-tap-highlight-color:transparent;}
+.reveal-btn:active{background:#E5E5DF;}
+.reveal-hint{font-size:11.5px;color:var(--muted);text-align:center;
+  margin-top:6px;font-style:italic;}
 .start-screen h2{font-size:22px;font-weight:600;margin-bottom:8px;}
 .start-screen p{font-size:15px;color:var(--muted);margin-bottom:6px;line-height:1.6;}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0;}
@@ -707,6 +714,7 @@ async function uploadWork(sessionData, pdfDataUrl) {
     answer: q.a,
     chosen: perQuestion[i]?.chosen || null,
     correct: !!sessionData.perQuestion[i]?.correct,
+    secondsBeforeReveal: perQuestion[i]?.secondsBeforeReveal ?? null,
     pngDataUrl: workShown[i] || null
   }));
   const anyWork = work.some(w => w.pngDataUrl);
@@ -721,6 +729,7 @@ async function uploadWork(sessionData, pdfDataUrl) {
         student: STUDENT_NAME,
         sessionNumber: sessionData.sessionNumber,
         date: new Date().toISOString().slice(0, 10),
+        activeSeconds: sessionData.activeSeconds || 0,
         work,
         pdfDataUrl: pdfDataUrl || null
       })
@@ -777,8 +786,16 @@ const app = () => document.getElementById("app");
 let session = [], qi = 0, score = 0, answered = false, shuffChoices = [];
 let sessionBreakdown = {}; // {concept: {right, total}} for current session
 let workShown = [];        // dataURLs per question index (or null)
-let perQuestion = [];      // {correct} per question index
+let perQuestion = [];      // {correct, chosen, secondsBeforeReveal} per question index
 let canvasDirty = false;   // true once a stroke is drawn on the current canvas
+let revealStartTime = 0;   // ms timestamp when current question rendered
+let secondsBeforeReveal = null; // seconds between question render and "show choices" tap
+
+// Active-minute tracking
+let activeMs = 0;
+let lastActivityAt = 0;
+let activityTimer = null;
+const IDLE_TIMEOUT_MS = 60_000;
 
 // ════════════════════════════════════════════════════════════════════════════
 //  HANDWRITING CANVAS
@@ -854,6 +871,29 @@ function captureCanvas() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
+//  ACTIVE-MINUTE TRACKING (hybrid: time accrues unless idle >60s or tab hidden)
+// ════════════════════════════════════════════════════════════════════════════
+
+const _markActive = () => { lastActivityAt = Date.now(); };
+const _activityEvents = ["pointerdown","pointermove","keydown","click","touchstart","scroll"];
+
+function startActivityTracking() {
+  stopActivityTracking();
+  activeMs = 0;
+  lastActivityAt = Date.now();
+  _activityEvents.forEach(ev => document.addEventListener(ev, _markActive, {passive:true}));
+  activityTimer = setInterval(() => {
+    if (document.hidden) return;
+    if (Date.now() - lastActivityAt < IDLE_TIMEOUT_MS) activeMs += 1000;
+  }, 1000);
+}
+
+function stopActivityTracking() {
+  if (activityTimer) { clearInterval(activityTimer); activityTimer = null; }
+  _activityEvents.forEach(ev => document.removeEventListener(ev, _markActive));
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 //  PDF SESSION REPORT
 // ════════════════════════════════════════════════════════════════════════════
 
@@ -915,6 +955,11 @@ async function generatePdf(sessionData) {
                <span style="color:#D94F4F;">Picked: <strong>${k(perQuestion[i]?.chosen || '?')}</strong></span>
                <span style="color:#2A9E6B;">Correct: <strong>${k(q.a)}</strong></span>
              </div>`}
+        ${perQuestion[i]?.secondsBeforeReveal != null
+          ? `<div style="font-size:11px;color:#999;margin-top:6px;">
+               Thought time before revealing choices: ${perQuestion[i].secondsBeforeReveal}s
+             </div>`
+          : ''}
       </div>`;
     report.appendChild(block);
   });
@@ -965,6 +1010,7 @@ function startSession() {
   workShown = [];
   perQuestion = [];
   CONCEPTS.forEach(c => sessionBreakdown[c] = {right:0, total:0});
+  startActivityTracking();
   renderQ();
 }
 
@@ -993,27 +1039,51 @@ function renderQ() {
         </div>
         <canvas id="wc" class="work-canvas"></canvas>
       </div>
-      <div class="choices" id="cs"></div>
+      <button class="reveal-btn" id="reveal" onclick="revealChoices()">
+        I have my answer — show choices ↓
+      </button>
+      <p class="reveal-hint">Work the problem first. You'll see the choices once you commit.</p>
+      <div class="choices" id="cs" style="display:none;"></div>
       <div id="fb"></div>
       <div id="nw"></div>
     </div>`;
 
   document.getElementById("qd").innerHTML = k(q.q);
-  const cs = document.getElementById("cs");
-  shuffChoices.forEach((c, i) => {
-    const btn = document.createElement("button");
-    btn.className = "cbtn";
-    btn.innerHTML = k(c.l);
-    btn.onclick = () => pick(i, c.ok, q);
-    cs.appendChild(btn);
-  });
+  revealStartTime = Date.now();
+  secondsBeforeReveal = null;
   setupCanvas();
+}
+
+function revealChoices() {
+  const btn = document.getElementById("reveal");
+  if (!btn) return;                                  // already revealed (idempotent)
+  secondsBeforeReveal = Math.round((Date.now() - revealStartTime) / 1000);
+
+  // Hide the reveal button + hint, show the choices grid
+  btn.remove();
+  const hint = document.querySelector(".reveal-hint");
+  if (hint) hint.remove();
+  const cs = document.getElementById("cs");
+  cs.style.display = "grid";
+
+  const q = session[qi];
+  shuffChoices.forEach((c, i) => {
+    const cbtn = document.createElement("button");
+    cbtn.className = "cbtn";
+    cbtn.innerHTML = k(c.l);
+    cbtn.onclick = () => pick(i, c.ok, q);
+    cs.appendChild(cbtn);
+  });
 }
 
 function pick(idx, ok, q) {
   if (answered) return;
   workShown[qi] = captureCanvas();   // freeze strokes BEFORE flipping `answered`
-  perQuestion[qi] = { correct: ok, chosen: shuffChoices[idx].l };
+  perQuestion[qi] = {
+    correct: ok,
+    chosen: shuffChoices[idx].l,
+    secondsBeforeReveal: secondsBeforeReveal
+  };
   answered = true;
   const cv = document.getElementById("wc");
   if (cv) cv.classList.add("disabled");
@@ -1055,6 +1125,7 @@ function pick(idx, ok, q) {
 function adv() { qi++; answered=false; renderQ(); }
 
 async function renderScore() {
+  stopActivityTracking();
   ST.sessionCount++;
   save();
 
@@ -1098,12 +1169,14 @@ async function renderScore() {
     </div>`;
   }).join("");
 
+  const activeMin = Math.max(1, Math.round(activeMs / 60000));
   app().innerHTML = `
     <div class="score-card">
       <div class="score-big">${score}/${SZ}</div>
       <div class="score-sub">Session ${ST.sessionCount} complete</div>
       <div class="score-msg">${msg}</div>
-      <p style="font-size:13px;color:#888;margin-top:3px">${p}% correct</p>
+      <p style="font-size:13px;color:#888;margin-top:3px">
+        ${p}% correct &nbsp;·&nbsp; ${activeMin} active min</p>
 
       <table class="breakdown-table">
         <thead><tr>
@@ -1134,7 +1207,8 @@ async function renderScore() {
     score, total: SZ,
     pct: p,
     breakdown: sessionBreakdown,
-    perQuestion: perQuestion
+    perQuestion: perQuestion,
+    activeSeconds: Math.round(activeMs / 1000)
   };
   const status = document.getElementById("status");
   status.textContent = FB_ON ? "Saving results…" : "";

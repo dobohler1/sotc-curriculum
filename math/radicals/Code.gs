@@ -29,6 +29,9 @@
  */
 
 const PARENT_FOLDER_ID = '1Euxd2BeJgSGF7ZnX1NbdBWp656rflOJI';  // "Ethan Drill Sessions" in SOTC Drive
+const REPORT_RECIPIENT = 'dbohler@scienceonthecourt.com';
+const STUDENT_DISPLAY_NAME = 'Ethan';
+const WEEKLY_GOAL_MINUTES = 210;  // shown as goal in the weekly report (30 min × 7 days)
 
 function doPost(e) {
   try {
@@ -79,10 +82,12 @@ function doPost(e) {
       student: data.student,
       sessionNumber: data.sessionNumber,
       date: data.date,
+      activeSeconds: data.activeSeconds || 0,
       work: (data.work || []).map(w => ({
         qNum: w.qNum, concept: w.concept,
         question: w.question, answer: w.answer,
-        chosen: w.chosen, correct: w.correct
+        chosen: w.chosen, correct: w.correct,
+        secondsBeforeReveal: w.secondsBeforeReveal
       }))
     };
     folder.createFile(
@@ -129,4 +134,131 @@ function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  WEEKLY ACTIVE-MINUTES REPORT
+// ════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Aggregates active minutes from all session.json files created in the past 7
+ * days, sends an HTML email summary to REPORT_RECIPIENT.
+ *
+ * To install as a Sunday-morning trigger, run `setupWeeklyTrigger` once from
+ * the editor. To preview without scheduling, run `sendWeeklyReport` directly.
+ */
+function sendWeeklyReport() {
+  const parent = DriveApp.getFolderById(PARENT_FOLDER_ID);
+  const now = new Date();
+  // Window: previous Mon 00:00 through previous Sun 23:59:59 (the "last week" the email is about)
+  const dow = now.getDay();                            // Sun=0..Sat=6
+  const lastSunEnd = new Date(now);
+  lastSunEnd.setDate(now.getDate() - (dow === 0 ? 0 : dow));
+  lastSunEnd.setHours(23, 59, 59, 999);
+  const lastMonStart = new Date(lastSunEnd);
+  lastMonStart.setDate(lastSunEnd.getDate() - 6);
+  lastMonStart.setHours(0, 0, 0, 0);
+
+  // Walk session subfolders, read session.json, filter by created date
+  const dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const byDay = {Mon:0, Tue:0, Wed:0, Thu:0, Fri:0, Sat:0, Sun:0};
+  let totalSec = 0, sessionCount = 0;
+
+  const subFolders = parent.getFolders();
+  while (subFolders.hasNext()) {
+    const f = subFolders.next();
+    const created = f.getDateCreated();
+    if (created < lastMonStart || created > lastSunEnd) continue;
+    const files = f.getFilesByName('session.json');
+    if (!files.hasNext()) continue;
+    try {
+      const data = JSON.parse(files.next().getBlob().getDataAsString());
+      const sec = Number(data.activeSeconds) || 0;
+      const day = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][created.getDay()];
+      byDay[day] += sec;
+      totalSec += sec;
+      sessionCount++;
+    } catch (e) { /* skip malformed */ }
+  }
+
+  const totalMin = Math.round(totalSec / 60);
+  const goal = WEEKLY_GOAL_MINUTES;
+  const pctOfGoal = Math.min(100, Math.round((totalMin / goal) * 100));
+  const fmtRange = `${Utilities.formatDate(lastMonStart, 'America/Los_Angeles', 'MMM d')} – ${Utilities.formatDate(lastSunEnd, 'America/Los_Angeles', 'MMM d')}`;
+
+  const dayRows = dayLabels.map(d => {
+    const min = Math.round(byDay[d] / 60);
+    const barW = Math.max(2, Math.round((min / Math.max(60, goal/7 * 1.5)) * 240));
+    return `
+      <tr>
+        <td style="padding:6px 0;color:#666;">${d}</td>
+        <td style="padding:6px 0;width:100%;">
+          <div style="background:#EEF2FF;height:8px;border-radius:4px;width:${barW}px;max-width:100%;
+                      ${min === 0 ? 'background:#f5f5f5;' : ''}"></div>
+        </td>
+        <td style="padding:6px 0;text-align:right;font-weight:500;color:${min === 0 ? '#bbb' : '#1a1a1a'};">
+          ${min} min
+        </td>
+      </tr>`;
+  }).join('');
+
+  const goalBarW = Math.round(pctOfGoal * 4);  // 4px per percent → 400px max
+
+  const html = `
+  <div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;color:#1a1a1a;">
+    <p style="text-align:center;color:#888;font-size:11px;letter-spacing:0.1em;margin:0;">
+      ${fmtRange.toUpperCase()}
+    </p>
+    <h1 style="text-align:center;font-size:22px;font-weight:600;margin:6px 0 28px;">
+      Weekly Progress Report
+    </h1>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:0 0 24px;">
+
+    <h2 style="font-size:13px;font-weight:600;letter-spacing:0.05em;color:#888;margin:0 0 16px;">
+      LAST WEEK
+    </h2>
+    <p style="font-size:14px;margin:0 0 12px;">
+      ${STUDENT_DISPLAY_NAME} earned <strong>${totalMin} active minutes</strong>
+      towards a goal of <strong>${goal} min</strong>.
+    </p>
+    <div style="background:#f5f5f5;height:10px;border-radius:5px;margin:0 0 28px;width:100%;max-width:480px;">
+      <div style="background:#F4B400;height:10px;border-radius:5px;width:${goalBarW}px;max-width:100%;"></div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px;">
+      ${dayRows}
+    </table>
+
+    <p style="font-size:12px;color:#888;line-height:1.5;border-top:1px solid #eee;padding-top:14px;">
+      <strong>Active minutes</strong> measure productive engagement — time on a
+      session counts only when ${STUDENT_DISPLAY_NAME} is actively working
+      (no idle time over 60 seconds, no time with the tab in the background).
+      ${sessionCount} session${sessionCount === 1 ? '' : 's'} this week.
+    </p>
+  </div>`;
+
+  MailApp.sendEmail({
+    to: REPORT_RECIPIENT,
+    subject: `${STUDENT_DISPLAY_NAME} weekly report — ${totalMin} active min`,
+    htmlBody: html
+  });
+  Logger.log(`Sent weekly report: ${totalMin} active min across ${sessionCount} sessions`);
+}
+
+/**
+ * Run once from the Apps Script editor to install the weekly trigger
+ * (Sundays, 8 AM local). Re-running replaces the existing trigger.
+ */
+function setupWeeklyTrigger() {
+  // Remove existing triggers for this function so we don't pile up duplicates
+  ScriptApp.getProjectTriggers().forEach(t => {
+    if (t.getHandlerFunction() === 'sendWeeklyReport') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('sendWeeklyReport')
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.SUNDAY)
+    .atHour(8)
+    .create();
+  Logger.log('Weekly trigger installed: Sundays at 8 AM local time.');
 }
