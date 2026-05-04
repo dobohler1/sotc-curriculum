@@ -153,11 +153,17 @@ const FIREBASE_CONFIG = {
 // Leave as "" to disable upload (canvas still works locally).
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzoa0rZgrVklK6ZFQcwjKSXQXBG9IfVoyrC_pLzR_4lTlGxdkhEifYndECedXmaSsBJew/exec";
 
+// Shared secret — must match WEBHOOK_SECRET in the Apps Script's Script Properties.
+// This is security-through-obscurity (anyone can view source), but raises the
+// bar against random URL crawlers and bots.
+const WEBHOOK_SECRET = "";  // paste a random string here matching Script Properties
+
 // EmailJS — sign up free at emailjs.com
 // Create a service (Gmail works), then create a template with these variables:
 //   {{student}}  {{date}}  {{session_num}}  {{score}}  {{pct}}
 //   {{breakdown}}  {{weakest}}  {{running_stats}}  {{next_focus}}
-//   {{work_folder}}  {{work_summary}}     ← added for handwriting capture
+//   {{work_folder}}  {{work_pdf}}  {{work_summary}}    ← handwriting capture
+//   {{ai_analysis}}                                     ← Claude misconception analysis
 const EMAILJS_CONFIG = {
   publicKey:  "ipaVLQ_Dm6mxja_XA",
   serviceId:  "service_q1l18a2",
@@ -726,6 +732,7 @@ async function uploadWork(sessionData, pdfDataUrl) {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },  // avoid CORS preflight
       body: JSON.stringify({
+        secret: WEBHOOK_SECRET,
         student: STUDENT_NAME,
         sessionNumber: sessionData.sessionNumber,
         date: new Date().toISOString().slice(0, 10),
@@ -739,11 +746,18 @@ async function uploadWork(sessionData, pdfDataUrl) {
     return {
       folderUrl: data.folderUrl || "",
       pdfUrl: data.pdfUrl || "",
-      summary: data.summary || ""
+      summary: data.summary || "",
+      analysisBlock: data.analysisBlock || "",
+      analysisEnabled: data.analysisEnabled !== false
     };
   } catch (e) {
     console.warn("Work upload failed:", e);
-    return { folderUrl: "", pdfUrl: "", summary: `(upload failed: ${e.message || e})` };
+    return {
+      folderUrl: "", pdfUrl: "",
+      summary: `(upload failed: ${e.message || e})`,
+      analysisBlock: "(analysis unavailable — upload failed)",
+      analysisEnabled: false
+    };
   }
 }
 
@@ -768,9 +782,10 @@ async function sendReport(sessionData, workResult) {
     weakest:       weakest,
     running_stats: formatRunningStats(),
     next_focus:    weakest,
-    work_folder:   workResult?.folderUrl || "",
-    work_pdf:      workResult?.pdfUrl    || "",
-    work_summary:  workResult?.summary   || ""
+    work_folder:   workResult?.folderUrl    || "",
+    work_pdf:      workResult?.pdfUrl       || "",
+    work_summary:  workResult?.summary      || "",
+    ai_analysis:   workResult?.analysisBlock || ""
   };
 
   try {
@@ -1214,11 +1229,11 @@ async function renderScore() {
   status.textContent = FB_ON ? "Saving results…" : "";
   await saveToFirebase(sessionData);
 
-  let workResult = { folderUrl: "", pdfUrl: "", summary: "" };
+  let workResult = { folderUrl: "", pdfUrl: "", summary: "", analysisBlock: "", analysisEnabled: true };
   if (WEBHOOK_URL) {
     status.textContent = "Building report…";
     const pdfDataUrl = await generatePdf(sessionData);
-    status.textContent = "Uploading work…";
+    status.textContent = "Uploading and analyzing work…";   // analysis runs server-side, takes ~5–10s
     workResult = await uploadWork(sessionData, pdfDataUrl);
   }
 
