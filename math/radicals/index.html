@@ -111,6 +111,143 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--border);}
 .accuracy-label{flex:1;color:var(--text);}
 .accuracy-stat{color:var(--muted);min-width:50px;text-align:right;}
+
+/* ── Learn mode ─────────────────────────────────────────────────────────── */
+.learn-card-cta{background:var(--card);border-radius:14px;padding:14px 16px;
+  border:0.5px solid var(--border);margin-bottom:8px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;text-align:left;
+  width:100%;-webkit-tap-highlight-color:transparent;}
+.learn-card-cta:active{background:#FAFAF7;}
+.learn-card-cta .icon{font-size:22px;flex-shrink:0;}
+.learn-card-cta .body{flex:1;min-width:0;}
+.learn-card-cta .body strong{display:block;font-size:14.5px;
+  font-weight:600;color:var(--text);}
+.learn-card-cta .body span{display:block;font-size:12px;
+  color:var(--muted);line-height:1.45;margin-top:2px;}
+.learn-card-cta .arrow{color:var(--blue);font-size:20px;flex-shrink:0;}
+.section-label{font-size:11px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.06em;
+  margin:18px 0 8px;text-align:left;}
+.concept-list{display:flex;flex-direction:column;gap:6px;
+  margin-bottom:6px;}
+.concept-card{background:var(--card);border-radius:10px;
+  padding:10px 14px;border:0.5px solid var(--border);
+  display:flex;align-items:center;gap:10px;font-size:13.5px;text-align:left;}
+.concept-active{flex-direction:column;align-items:stretch;gap:6px;}
+.concept-active .cc-row{display:flex;align-items:center;justify-content:space-between;}
+.cc-name{font-weight:500;color:var(--text);flex:1;}
+.cc-bar{background:rgba(0,0,0,0.07);border-radius:4px;height:5px;overflow:hidden;}
+.cc-bar-fill{height:5px;border-radius:4px;}
+.cstat{font-size:13px;font-weight:600;}
+.cstat-empty{font-size:12px;color:var(--muted);font-style:italic;}
+.cstat-sub{font-size:11.5px;color:var(--muted);margin-left:auto;}
+.concept-passed{background:#F1F8F2;border-color:#CFE6D6;}
+.concept-passed .cc-name{color:#1A6644;}
+.cc-check{color:var(--green);font-weight:700;flex-shrink:0;}
+.retention-note{font-size:11.5px;color:var(--muted);
+  text-align:center;margin:6px 0 0;font-style:italic;min-height:14px;}
+.promo-banner{
+  background:linear-gradient(135deg,#2A9E6B,#4A7FE5);
+  color:#fff;border-radius:16px;padding:22px 22px 20px;
+  margin-bottom:14px;text-align:center;
+  box-shadow:0 4px 14px rgba(74,127,229,0.18);
+}
+.promo-icon{font-size:46px;line-height:1;margin-bottom:6px;}
+.promo-title{font-size:21px;font-weight:600;margin-bottom:8px;}
+.promo-body{font-size:13.5px;line-height:1.55;opacity:0.95;}
+.pinned-rule{background:#FFF8E5;border-left:3px solid #C07010;
+  border-radius:6px;padding:10px 13px;margin-bottom:14px;
+  font-size:13px;color:#7A4D00;line-height:1.55;}
+.pinned-rule .label{display:block;font-size:10.5px;font-weight:700;
+  letter-spacing:0.05em;color:#C07010;margin-bottom:4px;text-transform:uppercase;}
+.learn-intro{font-size:14.5px;line-height:1.6;color:var(--text);
+  padding:6px 2px 14px;}
+.example-title{font-size:12px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.05em;font-weight:600;margin-bottom:6px;}
+.example-problem{font-size:22px;text-align:center;padding:10px 0 6px;}
+.box-katex{
+  background:#FAFAF7;border-radius:10px;
+  padding:18px 14px;margin:12px 0;
+  text-align:center;overflow-x:auto;
+}
+.box-katex .katex{font-size:1.05em;}
+.lv-step{
+  border-radius:3px;padding:1px 2px;
+  transition:background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+.lv-step.highlighted{
+  background:#FFE680;color:#5A3A00;
+  box-shadow:0 0 0 1px #C07010;
+}
+.lv-step.flash{animation:lv-flash 0.6s ease-out;}
+@keyframes lv-flash{
+  0%   {background:#FFD24D;}
+  100% {background:#FFE680;}
+}
+.focus-card{
+  background:#F4F8FF;border:1px solid #C9DAF7;border-radius:10px;
+  padding:14px 16px;margin:10px 0 14px;min-height:64px;
+  text-align:center;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:background 0.25s ease, border-color 0.25s ease;
+}
+.focus-card.focus-card-active{background:#FFF7E0;border-color:#F0D78A;color:var(--text);}
+.focus-card.flash{animation:focus-flash 0.6s ease-out;}
+@keyframes focus-flash{
+  0%   {background:#FFD24D;}
+  100% {background:#FFF7E0;}
+}
+.focus-card-name{font-size:12px;font-weight:600;color:#C07010;
+  text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.focus-card-math{font-size:17px;color:var(--text);}
+.focus-hint{font-size:12.5px;color:var(--muted);font-style:italic;}
+.learn-steps{margin:10px 0 6px;display:flex;flex-direction:column;gap:6px;}
+.learn-step-clickable{
+  background:#FFFFFF;
+  border:1px solid var(--border);
+  border-radius:10px;
+  width:100%;
+  text-align:left;
+  cursor:pointer;
+  padding:10px 14px;
+  display:flex;flex-direction:column;gap:4px;
+  font-family:inherit;color:var(--text);
+  -webkit-tap-highlight-color:transparent;
+  transition:background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.learn-step-clickable:hover{background:#FAFAF7;}
+.learn-step-clickable.active{
+  background:#FFF7E0;border-color:#F0D78A;
+  box-shadow:0 0 0 2px rgba(192,112,16,0.15);
+}
+.learn-step-name{
+  font-size:12px;font-weight:600;color:#C07010;
+  text-transform:uppercase;letter-spacing:0.04em;
+}
+.learn-step-math{font-size:14px;color:var(--text);}
+.learn-result{background:#EAF7F0;border-radius:8px;padding:14px;
+  margin:14px 0 4px;font-size:16px;text-align:center;color:#1A6644;
+  border:1px solid #B6E2C8;}
+.learn-nav{display:flex;gap:10px;margin-top:8px;}
+.learn-nav-btn{flex:1;padding:14px;border-radius:12px;font-size:15px;
+  font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;border:none;}
+.learn-prev{background:#F0F0EC;color:var(--text);border:1px solid var(--border);}
+.learn-prev:disabled{opacity:0.4;cursor:not-allowed;}
+.learn-next{background:var(--blue);color:#fff;}
+.learn-back{background:none;color:var(--muted);border:0.5px solid var(--border);
+  border-radius:12px;padding:11px 24px;font-size:14px;cursor:pointer;
+  margin-top:8px;width:100%;}
+.streak-row{display:flex;align-items:center;justify-content:center;
+  gap:6px;font-size:12.5px;color:var(--muted);margin:6px 0 10px;}
+.streak-dot{display:inline-block;width:12px;height:12px;border-radius:50%;
+  border:2px solid rgba(0,0,0,0.15);background:transparent;}
+.streak-dot.filled{background:var(--green);border-color:var(--green);}
+.mastery-screen{text-align:center;padding:42px 22px 28px;background:var(--card);
+  border-radius:16px;border:0.5px solid var(--border);margin-bottom:14px;}
+.mastery-icon{font-size:54px;margin-bottom:8px;line-height:1;}
+.mastery-title{font-size:22px;font-weight:600;color:var(--green);margin-bottom:8px;}
+.mastery-sub{font-size:14px;color:var(--muted);line-height:1.55;
+  max-width:340px;margin:0 auto;}
 </style>
 </head>
 <body>
@@ -530,21 +667,107 @@ const Q = [
 {c:"Factor First",
  q:"\\dfrac{45p^{-1}}{30p^2}\\cdot\\left(3p^{-1}\\right)^2", a:"\\tfrac{27}{2p^5}",
  ch:["\\tfrac{27}{2p^5}","\\tfrac{27p^5}{2}","\\tfrac{27}{2p^3}","\\tfrac{9}{2p^5}"],
- h:"\\tfrac{45}{30}=\\tfrac{3}{2};\\ p^{-3};\\ \\cdot\\,9p^{-2}\\Rightarrow\\tfrac{27}{2}p^{-5}"}
+ h:"\\tfrac{45}{30}=\\tfrac{3}{2};\\ p^{-3};\\ \\cdot\\,9p^{-2}\\Rightarrow\\tfrac{27}{2}p^{-5}"},
+
+// ── Concept 7: Divide Monomials (8) ────────────────────────────────────────
+{c:"Divide Monomials",
+ q:"2c^5 \\div (-18c)", a:"-\\tfrac{c^4}{9}",
+ ch:["-\\tfrac{c^4}{9}","\\tfrac{c^4}{9}","-\\tfrac{c^6}{9}","-\\tfrac{2c^4}{18}"],
+ h:"\\tfrac{2}{-18}=-\\tfrac{1}{9};\\ c^{5-1}=c^4"},
+
+{c:"Divide Monomials",
+ q:"-6w^9 \\div (-4w^8)", a:"\\tfrac{3w}{2}",
+ ch:["\\tfrac{3w}{2}","-\\tfrac{3w}{2}","\\tfrac{3w^{17}}{2}","\\tfrac{3}{2w}"],
+ h:"\\tfrac{-6}{-4}=\\tfrac{3}{2}\\ (neg\\div neg=pos);\\ w^{9-8}=w"},
+
+{c:"Divide Monomials",
+ q:"-4x^3 \\div x^5", a:"-\\tfrac{4}{x^2}",
+ ch:["-\\tfrac{4}{x^2}","-4x^2","\\tfrac{4}{x^2}","-4x^8"],
+ h:"x^{3-5}=x^{-2}\\Rightarrow\\tfrac{1}{x^2}\\ (move\\ to\\ denominator)"},
+
+{c:"Divide Monomials",
+ q:"4a^2 \\div 28a^3", a:"\\tfrac{1}{7a}",
+ ch:["\\tfrac{1}{7a}","\\tfrac{a}{7}","\\tfrac{1}{7a^5}","\\tfrac{4}{28a}"],
+ h:"\\tfrac{4}{28}=\\tfrac{1}{7};\\ a^{2-3}=a^{-1}\\Rightarrow\\tfrac{1}{a}"},
+
+{c:"Divide Monomials",
+ q:"21y^7 \\div 3y^2", a:"7y^5",
+ ch:["7y^5","7y^9","7y^{-5}","18y^5"],
+ h:"\\tfrac{21}{3}=7;\\ y^{7-2}=y^5"},
+
+{c:"Divide Monomials",
+ q:"63b^5 \\div (-7b^{10})", a:"-\\tfrac{9}{b^5}",
+ ch:["-\\tfrac{9}{b^5}","-9b^5","\\tfrac{9}{b^5}","-9b^{15}"],
+ h:"\\tfrac{63}{-7}=-9;\\ b^{5-10}=b^{-5}\\Rightarrow\\tfrac{1}{b^5}"},
+
+{c:"Divide Monomials",
+ q:"-9p^{11} \\div 36p^8", a:"-\\tfrac{p^3}{4}",
+ ch:["-\\tfrac{p^3}{4}","-\\tfrac{p^{19}}{4}","\\tfrac{p^3}{4}","-\\tfrac{1}{4p^3}"],
+ h:"\\tfrac{-9}{36}=-\\tfrac{1}{4};\\ p^{11-8}=p^3"},
+
+{c:"Divide Monomials",
+ q:"-8m^4 \\div 24m^{11}", a:"-\\tfrac{1}{3m^7}",
+ ch:["-\\tfrac{1}{3m^7}","-\\tfrac{m^7}{3}","\\tfrac{1}{3m^7}","-\\tfrac{m^{15}}{3}"],
+ h:"\\tfrac{-8}{24}=-\\tfrac{1}{3};\\ m^{4-11}=m^{-7}\\Rightarrow\\tfrac{1}{m^7}"},
+
+// ── Concept 8: Divide Polynomials (8) ──────────────────────────────────────
+{c:"Divide Polynomials",
+ q:"(8x^3-12x^2+16x)\\div 4x", a:"2x^2-3x+4",
+ ch:["2x^2-3x+4","2x^3-3x^2+4x","2x^2+3x+4","2x^2-3x"],
+ h:"Divide\\ each\\ term:\\ \\tfrac{8x^3}{4x}=2x^2,\\ \\tfrac{-12x^2}{4x}=-3x,\\ \\tfrac{16x}{4x}=4"},
+
+{c:"Divide Polynomials",
+ q:"(10y^3+20y^2+55y)\\div 5y", a:"2y^2+4y+11",
+ ch:["2y^2+4y+11","2y^3+4y^2+11y","2y^2+4y+11y","2y^2+4y"],
+ h:"\\tfrac{10y^3}{5y}=2y^2;\\ \\tfrac{20y^2}{5y}=4y;\\ \\tfrac{55y}{5y}=11\\ (no\\ y\\ left)"},
+
+{c:"Divide Polynomials",
+ q:"(3v^2-v-10)\\div(v-2)", a:"3v+5",
+ ch:["3v+5","3v-5","v+5","3v+4"],
+ h:"3v^2\\div v=3v;\\ 3v(v-2)=3v^2-6v;\\ rem\\ 5v-10;\\ 5v\\div v=5;\\ 5(v-2)=5v-10;\\ rem\\ 0"},
+
+{c:"Divide Polynomials",
+ q:"(2m^2-5m-12)\\div(2m+3)", a:"m-4",
+ ch:["m-4","m+4","2m-4","m-12"],
+ h:"2m^2\\div 2m=m;\\ m(2m+3)=2m^2+3m;\\ rem\\ -8m-12;\\ -8m\\div 2m=-4;\\ -4(2m+3)=-8m-12;\\ rem\\ 0"},
+
+{c:"Divide Polynomials",
+ q:"(q^2+8q+7)\\div(7+q)", a:"q+1",
+ ch:["q+1","q-1","q+7","q^2+1"],
+ h:"Rewrite\\ divisor\\ as\\ (q+7).\\ q^2\\div q=q;\\ q(q+7)=q^2+7q;\\ rem\\ q+7;\\ q\\div q=1"},
+
+{c:"Divide Polynomials",
+ q:"(x^2+9x+6)\\div(x+6)", a:"x+3-\\dfrac{12}{x+6}",
+ ch:["x+3-\\dfrac{12}{x+6}","x+3+\\dfrac{12}{x+6}","x+3","x-3-\\dfrac{12}{x+6}"],
+ h:"x^2\\div x=x;\\ x(x+6)=x^2+6x;\\ rem\\ 3x+6;\\ 3x\\div x=3;\\ 3(x+6)=3x+18;\\ rem\\ 6-18=-12"},
+
+{c:"Divide Polynomials",
+ q:"(4y^2-5)\\div(2y+5)", a:"2y-5+\\dfrac{20}{2y+5}",
+ ch:["2y-5+\\dfrac{20}{2y+5}","2y-5","2y+5","2y-5-\\dfrac{20}{2y+5}"],
+ h:"Insert\\ 0y\\ for\\ missing\\ term.\\ 4y^2\\div 2y=2y;\\ rem\\ -10y-5;\\ -10y\\div 2y=-5;\\ rem\\ 20"},
+
+{c:"Divide Polynomials",
+ q:"(6h^2+5-2h^3)\\div(h-3)", a:"-2h^2+\\dfrac{5}{h-3}",
+ ch:["-2h^2+\\dfrac{5}{h-3}","-2h^2+5","-2h^2-5","-2h^2"],
+ h:"Rewrite:\\ -2h^3+6h^2+0h+5.\\ -2h^3\\div h=-2h^2;\\ -2h^2(h-3)=-2h^3+6h^2;\\ rem\\ 5"}
 ];
 
-// Per-concept "key rule" shown when Ethan misses a question
+// Per-concept "key rule" shown when Ethan misses a question.
+// Math snippets are wrapped in $...$ and rendered with renderStepText
+// (mixed text + KaTeX) so prose spacing is preserved.
 const KEY_RULES = {
-  "Like Radicals":      "Simplify each \\sqrt{} first (e.g., \\sqrt{8}=2\\sqrt{2}). Only matching radicands can combine.",
-  "Variable Fractions": "Same base \\Rightarrow SUBTRACT exponents (top - bottom). Negative result \\Rightarrow move across the fraction bar.",
-  "Add Exponents":      "Same base, MULTIPLIED \\Rightarrow ADD the exponents.",
-  "Neg. Exponents":     "x^{-n}=\\tfrac{1}{x^n}. A negative exponent makes a RECIPROCAL, not a negative number.",
-  "(a−b)²":   "(a-b)^2 = a^2 - 2ab + b^2. ALWAYS three terms - never drop the middle!",
-  "Factor First":       "1) Reduce the coefficient fraction. 2) For each variable, combine ALL its exponents (top, bottom flips, outside powers)."
+  "Like Radicals":      "Simplify each $\\sqrt{}$ first (e.g., $\\sqrt{8}=2\\sqrt{2}$). Only matching radicands can combine.",
+  "Variable Fractions": "Same base $\\Rightarrow$ SUBTRACT exponents (top − bottom). Negative result $\\Rightarrow$ move across the fraction bar.",
+  "Add Exponents":      "Same base, MULTIPLIED $\\Rightarrow$ ADD the exponents.",
+  "Neg. Exponents":     "$x^{-n}=\\tfrac{1}{x^n}$. A negative exponent makes a RECIPROCAL, not a negative number.",
+  "(a−b)²":             "$(a-b)^2 = a^2 - 2ab + b^2$. ALWAYS three terms — never drop the middle!",
+  "Factor First":       "1) Reduce the coefficient fraction. 2) For each variable, combine ALL its exponents (top, bottom flips, outside powers).",
+  "Divide Monomials":   "Same base $\\Rightarrow$ SUBTRACT exponents (top − bottom). Negative result $\\Rightarrow$ variable moves to the denominator.",
+  "Divide Polynomials": "Long division: divide leading terms $\\to$ multiply back $\\to$ subtract $\\to$ bring down. Repeat until what's left has lower degree than the divisor."
 };
 
 const CONCEPTS = [...new Set(Q.map(q => q.c))];
-const SZ = 15; // questions per session
+const SZ = 8; // questions per session
 const STUDENT_ID = "ethan";
 
 // Base priority per concept (higher = more frequent).
@@ -555,7 +778,144 @@ const BASE_WEIGHT = {
   "(a−b)²":   0.70,  // moderate weakness, improving
   "Like Radicals":      0.50,  // variable
   "Neg. Exponents":     0.20,  // mastered — retention only
-  "Add Exponents":      0.20   // mastered — retention only
+  "Add Exponents":      0.20,  // mastered — retention only
+  "Divide Monomials":   0.85,  // newly learned — rehearse heavily
+  "Divide Polynomials": 0.95   // newly learned — rehearse heavily
+};
+
+// Concepts that are NEW (must complete Learn mode before drilling).
+// Pre-existing concepts are assumed mastered enough to drill day-one.
+const REQUIRES_LEARN = ["Divide Monomials", "Divide Polynomials"];
+
+// ════════════════════════════════════════════════════════════════════════════
+//  LEARN MODE CONTENT  (worked examples + intro per concept)
+// ════════════════════════════════════════════════════════════════════════════
+// Steps may contain inline LaTeX delimited by $...$. Layout strings render
+// inside a monospace <pre> for the long-division box.
+
+const LEARN_CONTENT = {
+  "Divide Monomials": {
+    intro: "Same base means SUBTRACT the exponents (top minus bottom). If the result is negative, that variable moves across the fraction bar to the denominator.",
+    examples: [
+      {
+        title: "Basic — positive exponents",
+        problem: "21y^7 \\div 3y^2",
+        steps: [
+          { name: "#1 Divide coefficients", math: "\\dfrac{21}{3} = 7" },
+          { name: "#2 Subtract exponents", math: "y^{\\,7-2} = y^{5}" },
+          { name: "#3 Combine", math: "7 \\cdot y^{5} = 7y^{5}" }
+        ],
+        result: "21y^7 \\div 3y^2 = 7y^5"
+      },
+      {
+        title: "Negative coefficient + negative exponent",
+        problem: "-8m^4 \\div 24m^{11}",
+        steps: [
+          { name: "#1 Divide coefficients", math: "\\dfrac{-8}{24} = -\\dfrac{1}{3}" },
+          { name: "#2 Subtract exponents", math: "m^{\\,4-11} = m^{-7}" },
+          { name: "#3 Negative-exponent rule", math: "m^{-7} = \\dfrac{1}{m^{7}}" },
+          { name: "#4 Combine", math: "-\\dfrac{1}{3} \\cdot \\dfrac{1}{m^{7}} = -\\dfrac{1}{3m^{7}}" }
+        ],
+        result: "-8m^4 \\div 24m^{11} = -\\dfrac{1}{3m^{7}}"
+      }
+    ]
+  },
+  "Divide Polynomials": {
+    intro: "Long division — just like with numbers, but with x's. At each step: divide the leading terms, multiply the result back through the divisor, subtract, then bring down the next term. Stop when what's left has a lower degree than the divisor.",
+    examples: [
+      {
+        title: "Clean division — no remainder",
+        problem: "(x^2 + 2x - 3) \\div (x - 1)",
+        boxLatex:
+          "\\begin{array}{l}" +
+          "\\phantom{x-1\\,\\big)\\;}\\htmlClass{lv-step lv-1}{x} \\;\\htmlClass{lv-step lv-4}{+\\,3} \\\\[2pt] " +
+          "x-1\\,\\big)\\overline{\\;\\htmlClass{lv-step lv-1}{x^{2}}+2x-3\\;} \\\\[2pt] " +
+          "\\phantom{x-1\\,\\big)\\;}\\htmlClass{lv-step lv-2}{\\underline{x^{2}-x\\phantom{0}}} \\\\[2pt] " +
+          "\\phantom{x-1\\,\\big)\\,x^{2}-\\,}\\htmlClass{lv-step lv-3}{3x-3} \\\\[2pt] " +
+          "\\phantom{x-1\\,\\big)\\,x^{2}-\\,}\\htmlClass{lv-step lv-5}{\\underline{3x-3}} \\\\[2pt] " +
+          "\\phantom{x-1\\,\\big)\\,x^{2}-\\,3x-\\,}\\htmlClass{lv-step lv-6}{0} " +
+          "\\end{array}",
+        steps: [
+          { name: "#1 Divide 1st term", math: "\\dfrac{x^{2}}{x} = x" },
+          { name: "#2 Multiply", math: "x \\cdot (x-1) = x^{2} - x" },
+          { name: "#3 Subtract & bring down", math: "(x^{2}+2x) - (x^{2}-x) = 3x \\;\\Rightarrow\\; 3x - 3" },
+          { name: "#4 Divide 1st term again", math: "\\dfrac{3x}{x} = 3" },
+          { name: "#5 Multiply", math: "3 \\cdot (x-1) = 3x - 3" },
+          { name: "#6 Subtract", math: "(3x-3) - (3x-3) = 0 \\;\\;\\text{(no remainder)}" }
+        ],
+        result: "(x^2 + 2x - 3) \\div (x - 1) = x + 3"
+      },
+      {
+        title: "With a remainder",
+        problem: "(2x^2 + 11x - 9) \\div (2x - 3)",
+        boxLatex:
+          "\\begin{array}{l}" +
+          "\\phantom{2x-3\\,\\big)\\;}\\htmlClass{lv-step lv-1}{x} \\;\\htmlClass{lv-step lv-4}{+\\,7} \\\\[2pt] " +
+          "2x-3\\,\\big)\\overline{\\;\\htmlClass{lv-step lv-1}{2x^{2}}+11x-9\\;} \\\\[2pt] " +
+          "\\phantom{2x-3\\,\\big)\\;}\\htmlClass{lv-step lv-2}{\\underline{2x^{2}-3x\\phantom{00}}} \\\\[2pt] " +
+          "\\phantom{2x-3\\,\\big)\\,2x^{2}-\\,}\\htmlClass{lv-step lv-3}{14x-9} \\\\[2pt] " +
+          "\\phantom{2x-3\\,\\big)\\,2x^{2}-\\,}\\htmlClass{lv-step lv-5}{\\underline{14x-21}} \\\\[2pt] " +
+          "\\phantom{2x-3\\,\\big)\\,2x^{2}-\\,14x-\\,}\\htmlClass{lv-step lv-6}{12} " +
+          "\\end{array}",
+        steps: [
+          { name: "#1 Divide 1st term", math: "\\dfrac{2x^{2}}{2x} = x" },
+          { name: "#2 Multiply", math: "x \\cdot (2x-3) = 2x^{2} - 3x" },
+          { name: "#3 Subtract & bring down", math: "(2x^{2}+11x) - (2x^{2}-3x) = 14x \\;\\Rightarrow\\; 14x - 9" },
+          { name: "#4 Divide 1st term again", math: "\\dfrac{14x}{2x} = 7" },
+          { name: "#5 Multiply", math: "7 \\cdot (2x-3) = 14x - 21" },
+          { name: "#6 Subtract", math: "(14x-9) - (14x-21) = 12 \\;\\;\\text{(remainder)}" }
+        ],
+        result: "(2x^2 + 11x - 9) \\div (2x - 3) = x + 7 + \\dfrac{12}{2x - 3}"
+      },
+      {
+        title: "Reorder first — terms out of order",
+        problem: "(5y + y^2 + 4) \\div (2 + y)",
+        boxLatex:
+          "\\begin{array}{l}" +
+          "\\phantom{y+2\\,\\big)\\;}\\htmlClass{lv-step lv-2}{y} \\;\\htmlClass{lv-step lv-5}{+\\,3} \\\\[2pt] " +
+          "\\htmlClass{lv-step lv-1}{y+2}\\,\\big)\\overline{\\;\\htmlClass{lv-step lv-1 lv-2}{y^{2}}\\htmlClass{lv-step lv-1}{+5y+4}\\;} \\\\[2pt] " +
+          "\\phantom{y+2\\,\\big)\\;}\\htmlClass{lv-step lv-3}{\\underline{y^{2}+2y\\phantom{0}}} \\\\[2pt] " +
+          "\\phantom{y+2\\,\\big)\\,y^{2}+\\,}\\htmlClass{lv-step lv-4}{3y+4} \\\\[2pt] " +
+          "\\phantom{y+2\\,\\big)\\,y^{2}+\\,}\\htmlClass{lv-step lv-6}{\\underline{3y+6}} \\\\[2pt] " +
+          "\\phantom{y+2\\,\\big)\\,y^{2}+\\,3y+}\\htmlClass{lv-step lv-7}{-2} " +
+          "\\end{array}",
+        steps: [
+          { name: "#0 Reorder (highest rank first)", math: "(5y + y^{2} + 4) \\div (2 + y) \\;\\Rightarrow\\; (y^{2} + 5y + 4) \\div (y + 2)" },
+          { name: "#1 Divide 1st term", math: "\\dfrac{y^{2}}{y} = y" },
+          { name: "#2 Multiply", math: "y \\cdot (y+2) = y^{2} + 2y" },
+          { name: "#3 Subtract & bring down", math: "(y^{2}+5y) - (y^{2}+2y) = 3y \\;\\Rightarrow\\; 3y + 4" },
+          { name: "#4 Divide 1st term again", math: "\\dfrac{3y}{y} = 3" },
+          { name: "#5 Multiply", math: "3 \\cdot (y+2) = 3y + 6" },
+          { name: "#6 Subtract", math: "(3y+4) - (3y+6) = -2 \\;\\;\\text{(remainder)}" }
+        ],
+        result: "(5y + y^2 + 4) \\div (2 + y) = y + 3 + \\dfrac{-2}{y + 2}"
+      },
+      {
+        title: "Reorder + insert missing term",
+        problem: "(13 + 4m^2) \\div (-1 + 2m)",
+        boxLatex:
+          "\\begin{array}{l}" +
+          "\\phantom{2m-1\\,\\big)\\;}\\htmlClass{lv-step lv-3}{2m} \\;\\htmlClass{lv-step lv-6}{+\\,1} \\\\[2pt] " +
+          "\\htmlClass{lv-step lv-1}{2m-1}\\,\\big)\\overline{\\;\\htmlClass{lv-step lv-1 lv-3}{4m^{2}}\\,\\htmlClass{lv-step lv-2}{+\\,0m}\\,\\htmlClass{lv-step lv-1}{+\\,13}\\;} \\\\[2pt] " +
+          "\\phantom{2m-1\\,\\big)\\;}\\htmlClass{lv-step lv-4}{\\underline{4m^{2}-2m\\phantom{00}}} \\\\[2pt] " +
+          "\\phantom{2m-1\\,\\big)\\,4m^{2}-\\,}\\htmlClass{lv-step lv-5}{2m+13} \\\\[2pt] " +
+          "\\phantom{2m-1\\,\\big)\\,4m^{2}-\\,}\\htmlClass{lv-step lv-7}{\\underline{2m-1\\phantom{0}}} \\\\[2pt] " +
+          "\\phantom{2m-1\\,\\big)\\,4m^{2}-\\,2m+\\,}\\htmlClass{lv-step lv-8}{14} " +
+          "\\end{array}",
+        steps: [
+          { name: "#0 Reorder (highest rank first)", math: "(13 + 4m^{2}) \\div (-1 + 2m) \\;\\Rightarrow\\; (4m^{2} + 13) \\div (2m - 1)" },
+          { name: "#0b Insert missing m term", math: "(4m^{2} + 13) \\;\\Rightarrow\\; (4m^{2} + 0m + 13)" },
+          { name: "#1 Divide 1st term", math: "\\dfrac{4m^{2}}{2m} = 2m" },
+          { name: "#2 Multiply", math: "2m \\cdot (2m-1) = 4m^{2} - 2m" },
+          { name: "#3 Subtract & bring down", math: "(4m^{2}+0m) - (4m^{2}-2m) = 2m \\;\\Rightarrow\\; 2m + 13" },
+          { name: "#4 Divide 1st term again", math: "\\dfrac{2m}{2m} = 1" },
+          { name: "#5 Multiply", math: "1 \\cdot (2m-1) = 2m - 1" },
+          { name: "#6 Subtract", math: "(2m+13) - (2m-1) = 14 \\;\\;\\text{(remainder)}" }
+        ],
+        result: "(13 + 4m^2) \\div (-1 + 2m) = 2m + 1 + \\dfrac{14}{2m - 1}"
+      }
+    ]
+  }
 };
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -585,14 +945,66 @@ const LS = "ethan_drill_v4";
 function defaultState() {
   return {
     conceptStats: {},   // {concept: {right, total}}
-    usedIds: [],        // question indices shown so far
-    sessionCount: 0
+    usedIds: [],        // question indices shown so far (active pool only)
+    sessionCount: 0,
+    // Concepts the student has completed in Learn mode (or that don't need it).
+    // The pre-existing 6 are assumed mastered enough to drill day-one.
+    learnedConcepts: [
+      "Like Radicals","Variable Fractions","Add Exponents",
+      "Neg. Exponents","(a−b)²","Factor First"
+    ],
+    // Concepts already mastered — kept on a 5% retention rotation only.
+    // New concepts (after Learn mode) start as ACTIVE, not mastered, and earn
+    // their way into this list (eventually — promotion criteria TBD).
+    mastered: [
+      "Like Radicals","Variable Fractions","Add Exponents",
+      "Neg. Exponents","(a−b)²","Factor First"
+    ],
+    // {concept: {streak: N}} — in-progress Learn practice
+    learnProgress: {}
   };
 }
 
+// How concepts are grouped on the start screen.
+const CONCEPT_GROUPS = {
+  "Radicals":      ["Like Radicals"],
+  "Other algebra": ["Variable Fractions","Add Exponents","Neg. Exponents","(a−b)²","Factor First"]
+};
+
+// Fraction of session slots that should be retention picks from mastered concepts.
+const RETENTION_RATE = 0.05;
+
+// Promotion thresholds: a learned concept moves into `mastered` (and joins the
+// 5% retention rotation) once it crosses both bars in drill stats.
+const PROMO_MIN_QUESTIONS = 10;
+const PROMO_MIN_ACCURACY  = 0.85;
+
+// Returns the list of concepts that just crossed the mastery threshold,
+// and mutates ST.mastered in place. Caller is responsible for save() + UI.
+function checkPromotions() {
+  const learned  = new Set(ST.learnedConcepts);
+  const mastered = new Set(ST.mastered || []);
+  const promoted = [];
+  CONCEPTS.forEach(c => {
+    if (!learned.has(c) || mastered.has(c)) return;
+    const s = ST.conceptStats[c];
+    if (!s || s.total < PROMO_MIN_QUESTIONS) return;
+    if (s.right / s.total >= PROMO_MIN_ACCURACY) {
+      ST.mastered.push(c);
+      promoted.push(c);
+    }
+  });
+  return promoted;
+}
+
 let ST = (() => {
-  try { const s = localStorage.getItem(LS); return s ? JSON.parse(s) : defaultState(); }
-  catch(e) { return defaultState(); }
+  const def = defaultState();
+  try {
+    const s = localStorage.getItem(LS);
+    if (!s) return def;
+    // Merge with defaults so old saved state picks up new fields.
+    return { ...def, ...JSON.parse(s) };
+  } catch(e) { return def; }
 })();
 
 function save() {
@@ -613,42 +1025,73 @@ function conceptWeight(concept) {
 }
 
 function buildSession() {
-  // Reset used pool if we've exhausted all questions
-  if (ST.usedIds.length >= Q.length) ST.usedIds = [];
+  // Two pools:
+  //   ACTIVE    = learned but not yet mastered (the focal new concepts)
+  //   RETENTION = mastered (only ~5% of slots, just to keep them sharp)
+  const learned   = new Set(ST.learnedConcepts);
+  const mastered  = new Set(ST.mastered || []);
+  const isActive  = c => learned.has(c) && !mastered.has(c);
 
-  const available = Q.map((q, i) => ({q, i})).filter(x => !ST.usedIds.includes(x.i));
+  const allIdxs       = Q.map((q,i) => ({q, i}));
+  const activeIdxs    = allIdxs.filter(x => isActive(x.q.c));
+  const retentionIdxs = allIdxs.filter(x => mastered.has(x.q.c));
 
-  // Step 1: guarantee 1 question per concept from available pool
+  // If we don't have enough fresh active questions to fill ~95% of a session,
+  // reset the active used pool. The active bank is small (16 questions across
+  // both Divide concepts), so we'll cycle through every couple sessions.
+  const activeIdxSet = new Set(activeIdxs.map(x => x.i));
+  const minFresh = Math.ceil(SZ * (1 - RETENTION_RATE));
+  const freshActive = activeIdxs.filter(x => !ST.usedIds.includes(x.i)).length;
+  if (activeIdxs.length > 0 && freshActive < minFresh) {
+    ST.usedIds = ST.usedIds.filter(i => !activeIdxSet.has(i));
+  }
+
   const session = [];
   const usedThisSession = new Set();
 
-  CONCEPTS.forEach(c => {
-    const pool = available.filter(x => x.q.c === c && !usedThisSession.has(x.i));
+  // Step 1: guarantee one question from each ACTIVE concept (focal practice).
+  const activeConcepts = [...new Set(activeIdxs.map(x => x.q.c))];
+  activeConcepts.forEach(c => {
+    const pool = activeIdxs.filter(x =>
+      x.q.c === c && !usedThisSession.has(x.i) && !ST.usedIds.includes(x.i));
     if (pool.length === 0) return;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     session.push(pick.q);
     usedThisSession.add(pick.i);
   });
 
-  // Step 2: fill remaining slots via weighted sampling
-  const remaining = SZ - session.length;
-  const candidates = available.filter(x => !usedThisSession.has(x.i));
+  // Step 2: fill remaining slots — RETENTION_RATE chance of pulling from
+  // mastered concepts (random pick), otherwise weighted active.
+  while (session.length < SZ) {
+    const activeAvail = activeIdxs.filter(x =>
+      !usedThisSession.has(x.i) && !ST.usedIds.includes(x.i));
+    const retentionAvail = retentionIdxs.filter(x => !usedThisSession.has(x.i));
 
-  for (let slot = 0; slot < remaining && candidates.length > 0; slot++) {
-    const totalW = candidates.reduce((s, x) => s + conceptWeight(x.q.c), 0);
-    let r = Math.random() * totalW;
-    let chosen = 0;
-    for (let i = 0; i < candidates.length; i++) {
-      r -= conceptWeight(candidates[i].q.c);
-      if (r <= 0) { chosen = i; break; }
+    // Force retention if active pool is empty for this session.
+    const wantRetention = activeAvail.length === 0
+      || (retentionAvail.length > 0 && Math.random() < RETENTION_RATE);
+
+    if (wantRetention && retentionAvail.length > 0) {
+      const pick = retentionAvail[Math.floor(Math.random() * retentionAvail.length)];
+      session.push(pick.q);
+      usedThisSession.add(pick.i);
+    } else if (activeAvail.length > 0) {
+      const totalW = activeAvail.reduce((s, x) => s + conceptWeight(x.q.c), 0);
+      let r = Math.random() * totalW;
+      let chosen = 0;
+      for (let i = 0; i < activeAvail.length; i++) {
+        r -= conceptWeight(activeAvail[i].q.c);
+        if (r <= 0) { chosen = i; break; }
+      }
+      session.push(activeAvail[chosen].q);
+      usedThisSession.add(activeAvail[chosen].i);
+    } else {
+      break; // both pools exhausted
     }
-    session.push(candidates[chosen].q);
-    usedThisSession.add(candidates[chosen].i);
-    candidates.splice(chosen, 1);
   }
 
-  // Record used IDs
-  ST.usedIds.push(...Array.from(usedThisSession));
+  // Record only active question indices to usedIds
+  ST.usedIds.push(...[...usedThisSession].filter(i => activeIdxSet.has(i)));
   save();
 
   return shuffle(session);
@@ -659,6 +1102,8 @@ function buildSession() {
 // ════════════════════════════════════════════════════════════════════════════
 
 const k = s => { try { return katex.renderToString(s, {throwOnError:false}); } catch(e) { return s; } };
+// Trusted renderer for the long-division box — needs trust:true so \htmlClass works
+const kbox = s => { try { return katex.renderToString(s, {throwOnError:false, displayMode:true, trust:true, strict:'ignore'}); } catch(e) { return s; } };
 const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
 const pct = (r, t) => t > 0 ? Math.round(r/t*100) : 0;
 const barColor = p => p >= 75 ? "#2A9E6B" : p >= 50 ? "#4A7FE5" : "#D94F4F";
@@ -1124,7 +1569,7 @@ function pick(idx, ok, q) {
   const ruleHTML = ok ? "" :
     `<div class="key-rule">
        <span class="label">📌 Key Rule — ${q.c}</span>
-       ${k(KEY_RULES[q.c] || "")}
+       ${renderStepText(KEY_RULES[q.c] || "")}
      </div>`;
 
   document.getElementById("fb").innerHTML =
@@ -1144,8 +1589,23 @@ async function renderScore() {
   ST.sessionCount++;
   save();
 
+  // After stats are saved this session, see if any concept just earned mastery.
+  const promoted = checkPromotions();
+  if (promoted.length) save();
+
   const p = pct(score, SZ);
   const msg = p===100?"Perfect! 🎯" : p>=80?"Great work! 💪" : p>=60?"Getting there 📈" : "Keep going!";
+
+  const promoBanner = promoted.length ? `
+    <div class="promo-banner">
+      <div class="promo-icon">🎉</div>
+      <div class="promo-title">Concept${promoted.length>1?'s':''} Mastered!</div>
+      <div class="promo-body">
+        Crossed the ${Math.round(PROMO_MIN_ACCURACY*100)}% bar on
+        <strong>${promoted.join(", ")}</strong>.
+        Now in your Passed section — you'll still see them ~5% of the time for retention.
+      </div>
+    </div>` : '';
 
   // Find weakest in this session
   let weakConcept = null, weakPct = 101;
@@ -1186,6 +1646,7 @@ async function renderScore() {
 
   const activeMin = Math.max(1, Math.round(activeMs / 60000));
   app().innerHTML = `
+    ${promoBanner}
     <div class="score-card">
       <div class="score-big">${score}/${SZ}</div>
       <div class="score-sub">Session ${ST.sessionCount} complete</div>
@@ -1253,36 +1714,369 @@ function resetAll() {
 }
 
 function showStart() {
-  // Compute current weaknesses for start screen
-  const weakConcepts = CONCEPTS
-    .filter(c => (ST.conceptStats[c]||{total:0}).total > 0)
-    .sort((a,b) => {
-      const sa=ST.conceptStats[a], sb=ST.conceptStats[b];
-      return pct(sa.right,sa.total) - pct(sb.right,sb.total);
-    }).slice(0,2);
+  const learned   = new Set(ST.learnedConcepts);
+  const mastered  = new Set(ST.mastered || []);
+  const unlearned = REQUIRES_LEARN.filter(c => !learned.has(c));
+  const isActive  = c => learned.has(c) && !mastered.has(c);
+
+  // Active concepts = learned ∖ mastered
+  const activeConcepts = CONCEPTS.filter(isActive);
+
+  // Active card: name + accuracy bar (or "no data yet")
+  const activeCard = c => {
+    const s = ST.conceptStats[c] || {right:0, total:0};
+    const p = s.total > 0 ? pct(s.right, s.total) : null;
+    const stat = p === null
+      ? `<span class="cstat-empty">no data yet</span>`
+      : `<span class="cstat" style="color:${barColor(p)}">${p}%</span>`;
+    return `<div class="concept-card concept-active">
+      <div class="cc-row">
+        <span class="cc-name">${c}</span>${stat}
+      </div>
+      ${p === null ? '' : `<div class="cc-bar"><div class="cc-bar-fill" style="width:${p}%;background:${barColor(p)}"></div></div>`}
+    </div>`;
+  };
+
+  // Passed card: name with green check
+  const passedCard = c => {
+    const s = ST.conceptStats[c];
+    const sub = s && s.total > 0
+      ? `<span class="cstat-sub">${pct(s.right, s.total)}% over ${s.total} q</span>`
+      : `<span class="cstat-sub">retention only</span>`;
+    return `<div class="concept-card concept-passed">
+      <span class="cc-check">✓</span>
+      <span class="cc-name">${c}</span>
+      ${sub}
+    </div>`;
+  };
+
+  const activeSection = activeConcepts.length > 0 ? `
+    <p class="section-label">📊 Active practice</p>
+    <div class="concept-list">${activeConcepts.map(activeCard).join('')}</div>
+  ` : '';
+
+  // Group passed concepts. Show a group only if at least one of its concepts
+  // is in `mastered` (so empty groups are hidden).
+  const groupSections = Object.entries(CONCEPT_GROUPS).map(([group, members]) => {
+    const passedMembers = members.filter(c => mastered.has(c));
+    if (passedMembers.length === 0) return '';
+    return `
+      <p class="section-label">${group} — passed ✓</p>
+      <div class="concept-list">${passedMembers.map(passedCard).join('')}</div>`;
+  }).join('');
+
+  const learnSection = unlearned.length > 0 ? `
+    <p class="section-label">📚 New concepts to learn</p>
+    ${unlearned.map(c => `
+      <button class="learn-card-cta" onclick="showLearnIntro('${c.replace(/'/g,"\\'")}')">
+        <span class="icon">📘</span>
+        <span class="body">
+          <strong>${c}</strong>
+          <span>${LEARN_CONTENT[c]?.intro?.split('.')[0] || 'Tap to start learning'}.</span>
+        </span>
+        <span class="arrow">›</span>
+      </button>`).join("")}
+  ` : '';
 
   app().innerHTML = `
     <div class="start-screen">
       <h2>Algebra 1 — Skills Drill</h2>
       <p>${STUDENT_NAME} &nbsp;·&nbsp; Session ${ST.sessionCount+1}
-        &nbsp;·&nbsp; Adaptive difficulty</p>
-      <div class="pill-row">
-        ${CONCEPTS.map(c => {
-          const s = ST.conceptStats[c];
-          const isWeak = s && s.total>0 && pct(s.right,s.total)<50;
-          return `<span class="pill ${isWeak?'weak-badge':''}">${c}${isWeak?' ⚠️':''}</span>`;
-        }).join("")}
-      </div>
-      ${weakConcepts.length > 0
-        ? `<p style="font-size:13px;color:#C07010">
-             Next session will focus on: <strong>${weakConcepts.join(", ")}</strong>
-           </p>`
-        : ""}
-      <button class="session-btn" style="margin-top:20px" onclick="startSession()">
+        &nbsp;·&nbsp; ${activeConcepts.length > 0 ? `Focusing on ${activeConcepts.length} new concept${activeConcepts.length>1?'s':''}` : 'Retention only'}</p>
+
+      ${activeSection}
+
+      <button class="session-btn" style="margin-top:14px" onclick="startSession()">
         ${ST.sessionCount===0 ? "Start Session 1" : `Continue — Session ${ST.sessionCount+1}`}
       </button>
+      <p class="retention-note">${activeConcepts.length > 0 ? `Mastered concepts mixed in at ~5% for retention.` : ''}</p>
+
+      ${learnSection}
+
+      ${groupSections}
+
       ${ST.sessionCount>0 ? `<button class="reset-btn" onclick="resetAll()">↺ Reset All Progress</button>` : ""}
     </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  LEARN MODE
+// ════════════════════════════════════════════════════════════════════════════
+
+const LEARN_STREAK_TARGET = 3;
+let learnState = null;
+// {concept, examplesLen, queue:[q...], qi, streak, answered, shuffChoices}
+
+// Renders a step that may contain inline LaTeX wrapped in $...$
+function renderStepText(s) {
+  return s.split("$").map((part, i) =>
+    i % 2 === 0 ? part : k(part)
+  ).join("");
+}
+
+function pinnedRuleHTML(concept) {
+  return `<div class="pinned-rule">
+    <span class="label">📌 Key Rule — ${concept}</span>
+    ${renderStepText(KEY_RULES[concept] || "")}
+  </div>`;
+}
+
+function showLearnIntro(concept) {
+  const data = LEARN_CONTENT[concept];
+  if (!data) return showStart();
+  app().innerHTML = `
+    <div class="header">
+      <h1>📚 Learn — ${concept}</h1>
+      <p>Walk through worked examples, then practice ${LEARN_STREAK_TARGET} in a row.</p>
+    </div>
+    ${pinnedRuleHTML(concept)}
+    <div class="card">
+      <p class="example-title">What this is</p>
+      <p class="learn-intro">${data.intro}</p>
+      <button class="next-btn" onclick="showLearnExample('${concept.replace(/'/g,"\\'")}', 0)">
+        See worked example →
+      </button>
+    </div>
+    <button class="learn-back" onclick="showStart()">← Back</button>`;
+}
+
+// Cache the active example so highlightStep can look up step.math without re-rendering everything
+let _currentExample = null;
+
+function showLearnExample(concept, idx) {
+  const data = LEARN_CONTENT[concept];
+  if (!data) return showStart();
+  const ex = data.examples[idx];
+  if (!ex) return showStart();
+  _currentExample = ex;
+  const last = idx === data.examples.length - 1;
+  const cescaped = concept.replace(/'/g,"\\'");
+
+  app().innerHTML = `
+    <div class="header">
+      <h1>📚 ${concept}</h1>
+      <p>Example ${idx+1} of ${data.examples.length}</p>
+    </div>
+    ${pinnedRuleHTML(concept)}
+    <div class="card">
+      <p class="example-title">${ex.title || 'Worked example'}</p>
+      <div class="example-problem" id="exq"></div>
+      <div class="focus-card" id="focus-card">
+        <span class="focus-hint">Tap a step below to see the operation</span>
+      </div>
+      ${ex.boxLatex ? `<div class="box-katex" id="lvbox"></div>` : ""}
+      <div class="learn-steps">
+        ${ex.steps.map((s, i) => `
+          <button type="button" class="learn-step-clickable"
+                  data-step="${i+1}" onclick="highlightStep(${i+1})">
+            <span class="learn-step-name">${s.name}</span>
+            <span class="learn-step-math" id="step-math-${i+1}"></span>
+          </button>`).join("")}
+      </div>
+      <div class="learn-result" id="exr"></div>
+      <div class="learn-nav">
+        <button class="learn-nav-btn learn-prev"
+                onclick="showLearnExample('${cescaped}', ${idx-1})"
+                ${idx === 0 ? 'disabled' : ''}>← Previous</button>
+        <button class="learn-nav-btn learn-next"
+                onclick="${last ? `startLearnPractice('${cescaped}')` : `showLearnExample('${cescaped}', ${idx+1})`}">
+          ${last ? 'Try Practice →' : 'Next Example →'}
+        </button>
+      </div>
+    </div>
+    <button class="learn-back" onclick="showStart()">← Back to home</button>`;
+
+  document.getElementById("exq").innerHTML = k(ex.problem);
+  if (ex.boxLatex) document.getElementById("lvbox").innerHTML = kbox(ex.boxLatex);
+  ex.steps.forEach((s, i) => {
+    const el = document.getElementById(`step-math-${i+1}`);
+    if (el) el.innerHTML = k(s.math);
+  });
+  document.getElementById("exr").innerHTML = k(ex.result);
+}
+
+// Highlights .lv-N spans inside the box, marks the step active in the list,
+// and pops the step's math operation into the focus card up top.
+function highlightStep(n) {
+  document.querySelectorAll('.lv-step').forEach(el => el.classList.remove('highlighted','flash'));
+  document.querySelectorAll('.learn-step-clickable').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lv-step.lv-' + n).forEach(el => {
+    el.classList.add('highlighted','flash');
+  });
+  const btn = document.querySelector('.learn-step-clickable[data-step="'+n+'"]');
+  if (btn) btn.classList.add('active');
+  // Update focus card
+  const card = document.getElementById('focus-card');
+  if (card && _currentExample && _currentExample.steps[n-1]) {
+    const step = _currentExample.steps[n-1];
+    card.classList.add('focus-card-active','flash');
+    card.innerHTML = `
+      <div class="focus-card-name">${step.name}</div>
+      <div class="focus-card-math">${k(step.math)}</div>`;
+    setTimeout(() => card.classList.remove('flash'), 600);
+  }
+}
+
+function startLearnPractice(concept) {
+  const pool = Q.filter(q => q.c === concept);
+  if (pool.length === 0) return showStart();
+  learnState = {
+    concept,
+    queue: shuffle(pool),
+    qi: 0,
+    streak: 0,
+    answered: false,
+    shuffChoices: []
+  };
+  renderLearnQ();
+}
+
+function renderLearnQ() {
+  if (!learnState) return showStart();
+  // Recycle the pool if exhausted
+  if (learnState.qi >= learnState.queue.length) {
+    learnState.queue = shuffle(Q.filter(q => q.c === learnState.concept));
+    learnState.qi = 0;
+  }
+  const q = learnState.queue[learnState.qi];
+  learnState.shuffChoices = shuffle(q.ch.map(c => ({l:c, ok:c===q.a})));
+  learnState.answered = false;
+
+  // Streak dots (filled = consecutive correct)
+  const dots = Array.from({length: LEARN_STREAK_TARGET}, (_, i) =>
+    `<span class="streak-dot ${i < learnState.streak ? 'filled' : ''}"></span>`).join("");
+
+  app().innerHTML = `
+    <div class="header">
+      <h1>📚 Practice — ${learnState.concept}</h1>
+      <p>Get ${LEARN_STREAK_TARGET} in a row to master this concept.</p>
+    </div>
+    <div class="streak-row">
+      ${dots} <span style="margin-left:6px">${learnState.streak}/${LEARN_STREAK_TARGET}</span>
+    </div>
+    ${pinnedRuleHTML(learnState.concept)}
+    <div class="card">
+      <span class="badge">${q.c}</span>
+      <div class="question" id="qd"></div>
+      <div class="work-area">
+        <div class="work-header">
+          <span>Show your work</span>
+          <button class="work-clear" onclick="clearLearnCanvas()">Clear</button>
+        </div>
+        <canvas id="wc" class="work-canvas"></canvas>
+      </div>
+      <button class="reveal-btn" id="reveal" onclick="revealLearnChoices()">
+        I have my answer — show choices ↓
+      </button>
+      <p class="reveal-hint">Work the problem first. You'll see the choices once you commit.</p>
+      <div class="choices" id="cs" style="display:none;"></div>
+      <div id="fb"></div>
+      <div id="nw"></div>
+    </div>
+    <button class="learn-back" onclick="exitLearnPractice()">← Save & exit</button>`;
+
+  document.getElementById("qd").innerHTML = k(q.q);
+  setupCanvas();
+}
+
+function clearLearnCanvas() {
+  // Reuse drill's clear (it gates on `answered` global; flip it briefly)
+  const wasAnswered = answered;
+  answered = learnState ? learnState.answered : answered;
+  clearCanvas();
+  answered = wasAnswered;
+}
+
+function revealLearnChoices() {
+  if (!learnState) return;
+  const btn = document.getElementById("reveal");
+  if (!btn) return;
+  btn.remove();
+  const hint = document.querySelector(".reveal-hint");
+  if (hint) hint.remove();
+  const cs = document.getElementById("cs");
+  cs.style.display = "grid";
+
+  learnState.shuffChoices.forEach((c, i) => {
+    const cbtn = document.createElement("button");
+    cbtn.className = "cbtn";
+    cbtn.innerHTML = k(c.l);
+    cbtn.onclick = () => learnPick(i, c.ok);
+    cs.appendChild(cbtn);
+  });
+}
+
+function learnPick(idx, ok) {
+  if (!learnState || learnState.answered) return;
+  learnState.answered = true;
+  const cv = document.getElementById("wc");
+  if (cv) cv.classList.add("disabled");
+
+  if (ok) learnState.streak++;
+  else    learnState.streak = 0;
+
+  // Persist progress (so a refresh mid-streak doesn't lose state)
+  ST.learnProgress[learnState.concept] = { streak: learnState.streak };
+  save();
+
+  document.querySelectorAll(".cbtn").forEach((b, i) => {
+    b.disabled = true;
+    if (i === idx) b.classList.add(ok ? "correct" : "wrong");
+    if (learnState.shuffChoices[i].ok && !ok) b.classList.add("reveal");
+  });
+
+  const q = learnState.queue[learnState.qi];
+  const ruleHTML = ok ? "" : `<div class="key-rule">
+    <span class="label">📌 Remember</span>
+    ${renderStepText(KEY_RULES[learnState.concept] || "")}
+  </div>`;
+
+  document.getElementById("fb").innerHTML =
+    `<div class="feedback ${ok?'correct':'wrong'}">
+       ${ok ? `✓ Correct!` : `✗ Not quite — streak resets.`}
+       &ensp;${k(q.h)}
+     </div>${ruleHTML}`;
+
+  // Mastery check
+  if (learnState.streak >= LEARN_STREAK_TARGET) {
+    document.getElementById("nw").innerHTML =
+      `<button class="next-btn" onclick="showLearnComplete('${learnState.concept.replace(/'/g,"\\'")}')">
+         🎉 Concept mastered — see results →
+       </button>`;
+  } else {
+    document.getElementById("nw").innerHTML =
+      `<button class="next-btn" onclick="advanceLearn()">Next Question →</button>`;
+  }
+}
+
+function advanceLearn() {
+  if (!learnState) return;
+  learnState.qi++;
+  renderLearnQ();
+}
+
+function exitLearnPractice() {
+  // Streak is already persisted, just go back home
+  learnState = null;
+  showStart();
+}
+
+function showLearnComplete(concept) {
+  if (!ST.learnedConcepts.includes(concept)) {
+    ST.learnedConcepts.push(concept);
+  }
+  delete ST.learnProgress[concept];
+  save();
+  learnState = null;
+
+  app().innerHTML = `
+    <div class="mastery-screen">
+      <div class="mastery-icon">🎉</div>
+      <div class="mastery-title">${concept} — Learned!</div>
+      <p class="mastery-sub">Nice work. This concept is now part of your regular drill rotation, so you'll keep seeing it mixed in with everything else.</p>
+    </div>
+    <button class="session-btn" onclick="startSession()">Start a Drill Session →</button>
+    <button class="learn-back" onclick="showStart()">← Back to home</button>`;
 }
 
 showStart();
