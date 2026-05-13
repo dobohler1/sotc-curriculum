@@ -451,6 +451,126 @@ const ANALYSIS_RUBRIC =
 '  • Divided exponents (got x^(7/3) — same root error as in §2)\n' +
 '  • Subtracted in wrong order (3-7 = -4, got x⁻⁴ instead of x⁴)\n' +
 '  • Forgot the result equals 1 when exponents are equal (x⁵/x⁵ = 1, students often write x⁰ and stop without resolving)\n\n' +
+'### 7. (a−b)² — Binomial Squaring with Radicals (e.g., (√7 - √2)² = 9 - 2√14)\n\n' +
+'The CORRECT method: (a-b)² = a² - 2ab + b². ALWAYS three terms. The middle term is DOUBLE the product. With radicals, (√7-√2)² = 7 - 2√14 + 2 = 9 - 2√14. The middle term gets dropped most often when one of the binomial pieces is itself a radical, because it "looks like" √a · √b = √(ab) is too messy to compute.\n\n' +
+'Common mistakes:\n' +
+'  • Dropped the middle term: wrote (a-b)² = a²-b² (FOILed as difference of squares — the textbook trap)\n' +
+'  • Forgot the doubling: wrote a²-ab+b² instead of a²-2ab+b² (got the cross-product but missed the 2)\n' +
+'  • Wrong sign on the middle term (used +2ab on (a-b)²)\n' +
+'  • For radical binomials: did not multiply radicands correctly (√7·√2 → √9 or √7+√2 instead of √14)\n' +
+'  • For multi-coefficient binomials like (2x-3)²: forgot to double the cross-product correctly — got 6x instead of 12x for the middle\n' +
+'  • Squared each piece in isolation: wrote (a-b)² as (a²)(-)(b²) — never realized the middle term exists\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Dropped the middle term — (a-b)² treated as difference of squares"\n' +
+'  - "Cross-product caught but not doubled — wrote ab instead of 2ab"\n\n' +
+'### 8. Factor First — Multi-Step Variable Fraction Reduction\n\n' +
+'The CORRECT method: (1) Reduce the coefficient fraction. (2) For EACH variable independently, combine ALL its exponents — from the numerator, from the denominator (which flips its sign), AND from any outside power (which multiplies). (3) Negative final exponents move across the fraction bar. The hardest part is keeping track of all the exponent contributions to a single variable across multiple operations.\n\n' +
+'Common mistakes:\n' +
+'  • Reduced the coefficient correctly but missed an exponent contribution (especially the outside power applied to the whole fraction)\n' +
+'  • Mishandled power-of-power: (x⁻¹)² → x⁻¹ instead of x⁻² (forgot the 2 multiplies in)\n' +
+'  • Applied operations sequentially without recombining: got intermediate forms then stopped before final simplification\n' +
+'  • Forgot to flip negative exponents to the denominator at the END\n' +
+'  • Tried to do all the algebra mentally — output has jumbled exponents that do not match any single coherent rule\n' +
+'  • Mixed up which variable gets which exponent in multi-variable problems\n\n' +
+'### 9. Divide Monomials (e.g., -8m⁴ ÷ 24m¹¹)\n\n' +
+'The CORRECT method: (1) Divide coefficients as a fraction and reduce (-8/24 = -1/3). (2) Subtract exponents (4 - 11 = -7). (3) If the result is negative, flip the variable to the denominator. Final: -1/(3m⁷).\n\n' +
+'Common mistakes:\n' +
+'  • Divided coefficients but ADDED exponents (mixed division rule with multiplication rule)\n' +
+'  • Subtracted exponents in wrong order (bottom - top instead of top - bottom)\n' +
+'  • Got the right exponent number but did not flip to denominator when negative (left as -m⁷/3 instead of -1/(3m⁷))\n' +
+'  • Lost the negative sign on the coefficient (sign vanished partway through work)\n' +
+'  • Treated like cancellation by struck-through symbols rather than identifying the exponent rule — work looks like crossing out without justification\n\n' +
+'### 10. Divide Polynomials — Long Division\n\n' +
+'The CORRECT method: polynomial long division. Each step: divide leading terms → multiply that quotient back through the entire divisor → subtract → bring down next term. Stop when remainder has lower degree than divisor. If the dividend has terms out of order (e.g., 5y + y² + 4), REORDER first. If a degree is missing, INSERT a 0·x^n placeholder before dividing.\n\n' +
+'Common mistakes:\n' +
+'  • Failed to reorder: e.g., dividing (5y + y² + 4) by (2 + y) without first standardizing to (y² + 5y + 4) ÷ (y + 2). Work shows division but the alignment is wrong.\n' +
+'  • Failed to insert missing-degree placeholder: 4m² + 13 needs 4m² + 0m + 13 to divide cleanly by 2m - 1\n' +
+'  • Subtraction sign errors: forgot to distribute the negative when subtracting the multiplied-back row\n' +
+'  • Division at top of column wrong: 4m²/2m → wrote 2 instead of 2m (lost the variable)\n' +
+'  • Stopped too early — left a remainder whose degree is still ≥ divisor\n' +
+'  • Wrote only the remainder as the answer (forgot quotient + remainder/divisor format)\n\n' +
+'### 11. Factor Trinomials (a=1) — e.g., x² - 17x + 72\n\n' +
+'The CORRECT method: find two numbers whose PRODUCT is c and SUM is b. Sign logic: when c>0 both numbers share the sign of b; when c<0 the numbers have opposite signs and the larger absolute value takes the sign of b. Write as (x ± m)(x ± n).\n\n' +
+'Common mistakes:\n' +
+'  • Picked a pair with the right PRODUCT but wrong SUM (e.g., x²+15x+44: chose (x+2)(x+22) — product 44 ✓ but sum 24, not 15)\n' +
+'  • Picked a pair with the right SUM but wrong PRODUCT (e.g., x²+15x+44: chose (x+7)(x+8) — sum 15 ✓ but product 56, not 44)\n' +
+'  • Sign error: both negative when one should be positive (or vice versa) — most common with c<0\n' +
+'  • Got the right numbers but swapped which was negative (e.g., (x-9)(x+2) when (x+9)(x-2) was right)\n' +
+'  • Tried to apply ZPP without an equal sign present\n' +
+'  • Showed trial-and-error scratch work but did not converge on a final answer (working-memory limit)\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Found a factor pair that multiplies but does not sum — close but the wrong split"\n' +
+'  - "Sign error on the constant pair — both should be negative for this trinomial"\n\n' +
+'### 12. Factor Trinomials (a≠1) — e.g., 6s² - s - 5\n\n' +
+'The CORRECT method: AC method — multiply a·c, find two numbers with that product whose sum is b, split the middle term into those two pieces, then factor by grouping. OR trial: distribute possible factor pairs of a across binomials and FOIL-check the middle term.\n\n' +
+'Common mistakes:\n' +
+'  • Ignored the leading coefficient — wrote (s + something)(s + something) as if a=1\n' +
+'  • Wrong leading split: used (3s)(2s) when (6s)(s) was right (or vice versa)\n' +
+'  • Sign error on one of the inner constants — got the magnitudes right but signs mixed\n' +
+'  • Constants swapped between binomials: e.g., wrote (6s+1)(s-5) when (6s+5)(s-1) was right (same product but wrong middle term)\n' +
+'  • AC method went wrong: found a pair with the right PRODUCT (a·c) but wrong SUM (b)\n' +
+'  • Wrote expanded form (the original) as the answer — did not finish the task of factoring\n' +
+'  • Trial-factoring scratch work shows multiple attempts that did not get checked back against the middle term — working-memory limit\n\n' +
+'### 13. Zero-Product Property — e.g., (x-5)(x+3) = 0\n\n' +
+'The CORRECT method: if A·B = 0, then A=0 OR B=0 (could be both — but at minimum one). Set each factor to zero separately and solve. If a factor is like 3x+1, solve for x: 3x = -1 → x = -1/3. Each branch gives a valid solution; report all.\n\n' +
+'Common mistakes:\n' +
+'  • Sign-not-flipped: wrote x=5, 3 from (x-5)(x+3) — kept signs as they appear, did not subtract/flip to isolate x\n' +
+'  • Solved only one branch (forgot ZPP yields multiple solutions)\n' +
+'  • Forgot to divide by coefficient when isolating (3x+1=0 → wrote x=-1 instead of x=-1/3)\n' +
+'  • Applied ZPP to a non-zero RHS: e.g., for (x-3)(x+4)=12 set x-3=12 — fundamental misconception, ZPP requires RHS=0\n' +
+'  • Multiplied the factors out instead of using ZPP (made the problem harder, then often abandoned)\n' +
+'  • Thinks BOTH factors must equal zero simultaneously (writes contradictions like "x=5 AND x=-3 both must be true")\n' +
+'  • Conceptual gap: cannot explain WHY ZPP works — the teacher may have skipped the textbook section\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Applied ZPP correctly but did not flip signs when isolating x — wrote x=5 from x-5=0 instead of x=5"\n' +
+'  - "Tried to use ZPP on a non-zero RHS — does not yet see that the property requires the product to equal zero"\n\n' +
+'### 14. Solve Quadratics by Factoring — e.g., 2x² - 3x - 35 = 0\n\n' +
+'The CORRECT method: THREE steps. (1) Move all terms to one side so RHS = 0. (2) Factor the resulting polynomial. (3) Apply ZPP — set each factor to zero, solve for x. The most common failure is procedural: holding the trial-factor strategy depletes working memory and the student forgets the ZPP step.\n\n' +
+'Common mistakes:\n' +
+'  • Stopped after factoring — wrote the factored form (e.g., "(2x+7)(x-5)=0") as the final answer without applying ZPP. Strategy was right; final step dropped due to working-memory exhaustion. DIAGNOSTIC SIGNAL: a "miss: factored-but-didnt-apply-zpp" flag is on the wrong-answer distractor for these problems specifically because this is so common.\n' +
+'  • Did not move to standard form before applying ZPP: e.g., for s(s+1)=72 set s=0 or s=-1 directly, ignoring the 72\n' +
+'  • Factored correctly but made sign errors during ZPP application\n' +
+'  • Forgot to distribute before rearranging: e.g., a² + 3(a-7) = 33 treated as a² + 3a - 7 = 33\n' +
+'  • Divided the equation by x to "simplify" — lost the x=0 root\n' +
+'  • Sign error during rearrangement (moved term across the equals sign but did not flip its sign)\n' +
+'  • Could factor independently and could apply ZPP independently, but could not chain the two within one problem under time pressure\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Factored to (2x+7)(x-5) correctly but stopped — did not apply ZPP. Strategy right; working memory ran out before the final step."\n' +
+'  - "Treated the equation as if already in ZPP form before moving everything to one side"\n\n' +
+'### 15. Add/Subtract Polynomials — e.g., (3x²-8) - (4x³+x²-15x+1)\n\n' +
+'The CORRECT method: distribute any leading negative across ALL terms of the subtracted polynomial first. Then combine ONLY LIKE TERMS — terms that share BOTH the same variable AND the same exponent. Different exponents = different terms, always.\n\n' +
+'Common mistakes:\n' +
+'  • THE P²+P=P³ TRAP: applied the multiplication-exponent rule to addition. Student sees p² + p, adds the exponents to get p³. Fundamental misconception that exponents add only when multiplying same bases. DIAGNOSTIC: tagged distractors with miss: added-exponents-on-addition specifically test for this.\n' +
+'  • Combined unlike terms by treating different exponents as the same (3x² + 4x → 7x² or 7x)\n' +
+'  • Forgot to distribute the leading negative across ALL terms of the second polynomial: e.g., (6c²+3c+9) - (3c-5) → 6c²+3c+9-3c-5 instead of 6c²+3c+9-3c+5 (the -5 should become +5)\n' +
+'  • Lost a term during rearrangement (especially in long polynomials)\n' +
+'  • Got the rule right but arithmetic slip on coefficients (3-8 = -4, etc.)\n' +
+'  • Wrote terms out of degree order (cosmetic — not wrong but harder to verify, and a signal of low fluency)\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Added exponents on UNLIKE terms — p²+p=p³ trap. Exponents only add on multiplication of same bases."\n' +
+'  - "Forgot to distribute the minus across the second polynomial"\n\n' +
+'### 16. Multiply Special Products — Binomial Squaring (e.g., (6x+5)², (3m-7n)²)\n\n' +
+'The CORRECT method: (a±b)² = a² ± 2ab + b². ALWAYS THREE terms. The middle term is DOUBLE the product. Square the coefficient FULLY: (3x)² = 9x², not 3x². For leading-negative cases like (-x-2y)², recognize that (-x-2y)² = (x+2y)² — negating the entire binomial does not change the square.\n\n' +
+'Common mistakes:\n' +
+'  • Dropped the middle term: wrote a² + b² (FOILed as difference of squares — most common error across all binomial squaring concepts)\n' +
+'  • Forgot to double: wrote a² + ab + b² instead of a² + 2ab + b² (cross-product is there but missing the factor of 2)\n' +
+'  • Forgot to square the coefficient: (6x)² → 6x² instead of 36x² (treated the coefficient as if it were outside the square)\n' +
+'  • Sign error on middle term: +2ab on (a-b)²\n' +
+'  • Squared a leading negative wrong: wrote (-x-2y)² as -(x+2y)² or -x²-4xy-4y² (negated instead of squaring positive)\n' +
+'  • Mishandled multi-variable binomials: forgot one of the coefficients when computing 2·a·b\n\n' +
+'### 17. Difference of Squares — e.g., (t+4)(t-4), (3m+11n)(3m-11n)\n\n' +
+'The CORRECT method: (a+b)(a-b) = a² - b². TWO terms only, NO middle term. Square each piece independently. Coefficients square FULLY: (2x)² = 4x², not 2x². Pattern works for fractions, decimals, multi-variable, and even conjugate pairs around a negative leading term.\n\n' +
+'Common mistakes:\n' +
+'  • FOILed the product instead of recognizing the pattern, often resulting in an extra (and incorrect) middle term\n' +
+'  • Sign error: wrote a² + b² (forgot the minus from the difference)\n' +
+'  • Forgot to square the coefficient: (2x+1)(2x-1) → 2x² - 1 instead of 4x² - 1\n' +
+'  • Decimal squaring errors: 0.7² → 1.4 instead of 0.49 (treated as doubling instead of multiplying by itself)\n' +
+'  • Fraction squaring errors: (1/2)² → 1/2 instead of 1/4\n' +
+'  • Reversed pattern: wrote b² - a² instead of a² - b² (got the magnitudes right but sign of result inverted)\n' +
+'  • For leading-negative conjugates like (-8m+n)(-8m-n): did not recognize as a (-8m)² - n² pattern\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Forgot to square the coefficient — 2x left as 2x² when it should be 4x²"\n' +
+'  - "FOILed instead of using the pattern — got an extra middle term"\n\n' +
 '═══════════════════════════════════════════════════════════════════════════\n' +
 'OUTPUT SCHEMA AND TONE\n' +
 '═══════════════════════════════════════════════════════════════════════════\n\n' +
