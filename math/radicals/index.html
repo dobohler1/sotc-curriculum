@@ -749,7 +749,860 @@ const Q = [
 {c:"Divide Polynomials",
  q:"(6h^2+5-2h^3)\\div(h-3)", a:"-2h^2+\\dfrac{5}{h-3}",
  ch:["-2h^2+\\dfrac{5}{h-3}","-2h^2+5","-2h^2-5","-2h^2"],
- h:"Rewrite:\\ -2h^3+6h^2+0h+5.\\ -2h^3\\div h=-2h^2;\\ -2h^2(h-3)=-2h^3+6h^2;\\ rem\\ 5"}
+ h:"Rewrite:\\ -2h^3+6h^2+0h+5.\\ -2h^3\\div h=-2h^2;\\ -2h^2(h-3)=-2h^3+6h^2;\\ rem\\ 5"},
+
+// ── Concept 9: Factor Trinomials (a=1) (10) ─────────────────────────────────
+// Choices use the NEW object form: {l: label, ok: true} or {l: label, miss: "slug"}
+// The legacy string form is still supported by the renderer for older entries.
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product"],
+ q:"x^2+4x+3", a:"(x+1)(x+3)",
+ ch:[
+   {l:"(x+1)(x+3)", ok:true},
+   {l:"(x-1)(x-3)", miss:"sign-error"},
+   {l:"(x+1)(x-3)", miss:"mixed-signs"},
+   {l:"(x+2)(x+2)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"Need\\ two\\ numbers:\\ product=3,\\ sum=4\\ \\Rightarrow\\ 1\\ and\\ 3"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product"],
+ q:"a^2+6a+8", a:"(a+2)(a+4)",
+ ch:[
+   {l:"(a+2)(a+4)", ok:true},
+   {l:"(a-2)(a-4)", miss:"sign-error"},
+   {l:"(a+1)(a+8)", miss:"product-correct-sum-wrong"},
+   {l:"(a+3)(a+3)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=8,\\ sum=6\\ \\Rightarrow\\ 2\\ and\\ 4"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"b^2-17b+72", a:"(b-8)(b-9)",
+ ch:[
+   {l:"(b-8)(b-9)", ok:true},
+   {l:"(b+8)(b+9)", miss:"sign-error"},
+   {l:"(b-6)(b-12)", miss:"product-correct-sum-wrong"},
+   {l:"(b-7)(b-10)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=72,\\ sum=-17.\\ Both\\ negative\\ \\Rightarrow\\ -8\\ and\\ -9"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"s^2-10s+16", a:"(s-2)(s-8)",
+ ch:[
+   {l:"(s-2)(s-8)", ok:true},
+   {l:"(s+2)(s+8)", miss:"sign-error"},
+   {l:"(s-4)(s-4)", miss:"product-correct-sum-wrong"},
+   {l:"(s-5)(s-5)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=16,\\ sum=-10\\ \\Rightarrow\\ -2\\ and\\ -8"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"z^2+8z-48", a:"(z+12)(z-4)",
+ ch:[
+   {l:"(z+12)(z-4)", ok:true},
+   {l:"(z-12)(z+4)", miss:"swapped-signs"},
+   {l:"(z+12)(z+4)", miss:"sign-error"},
+   {l:"(z+6)(z-8)", miss:"product-correct-sum-wrong"}
+ ],
+ h:"product=-48,\\ sum=+8.\\ Bigger\\ \\#\\ positive\\ \\Rightarrow\\ +12,\\ -4"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"y^2-7y-18", a:"(y-9)(y+2)",
+ ch:[
+   {l:"(y-9)(y+2)", ok:true},
+   {l:"(y+9)(y-2)", miss:"swapped-signs"},
+   {l:"(y-9)(y-2)", miss:"sign-error"},
+   {l:"(y-6)(y+3)", miss:"product-correct-sum-wrong"}
+ ],
+ h:"product=-18,\\ sum=-7.\\ Bigger\\ \\#\\ negative\\ \\Rightarrow\\ -9,\\ +2"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"n^2-9n+14", a:"(n-2)(n-7)",
+ ch:[
+   {l:"(n-2)(n-7)", ok:true},
+   {l:"(n+2)(n+7)", miss:"sign-error"},
+   {l:"(n-1)(n-14)", miss:"product-correct-sum-wrong"},
+   {l:"(n-3)(n-6)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=14,\\ sum=-9\\ \\Rightarrow\\ -2\\ and\\ -7"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"x^2+3x-70", a:"(x+10)(x-7)",
+ ch:[
+   {l:"(x+10)(x-7)", ok:true},
+   {l:"(x-10)(x+7)", miss:"swapped-signs"},
+   {l:"(x+10)(x+7)", miss:"sign-error"},
+   {l:"(x+14)(x-5)", miss:"product-correct-sum-wrong"}
+ ],
+ h:"product=-70,\\ sum=+3.\\ Bigger\\ \\#\\ positive\\ \\Rightarrow\\ +10,\\ -7"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product","sign-tracking"],
+ q:"d^2-20d+99", a:"(d-9)(d-11)",
+ ch:[
+   {l:"(d-9)(d-11)", ok:true},
+   {l:"(d+9)(d+11)", miss:"sign-error"},
+   {l:"(d-3)(d-33)", miss:"product-correct-sum-wrong"},
+   {l:"(d-10)(d-10)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=99,\\ sum=-20\\ \\Rightarrow\\ -9\\ and\\ -11"},
+
+{c:"Factor Trinomials (a=1)",
+ attrs:["find-factor-pair","sum-and-product"],
+ q:"c^2+15c+44", a:"(c+4)(c+11)",
+ ch:[
+   {l:"(c+4)(c+11)", ok:true},
+   {l:"(c-4)(c-11)", miss:"sign-error"},
+   {l:"(c+2)(c+22)", miss:"product-correct-sum-wrong"},
+   {l:"(c+7)(c+8)", miss:"sum-correct-product-wrong"}
+ ],
+ h:"product=44,\\ sum=15\\ \\Rightarrow\\ 4\\ and\\ 11"},
+
+// ── Concept 10: Factor Trinomials (a≠1) (10) ────────────────────────────────
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"5w^2-6w+1", a:"(5w-1)(w-1)",
+ ch:[
+   {l:"(5w-1)(w-1)", ok:true},
+   {l:"(5w+1)(w+1)", miss:"sign-error"},
+   {l:"(5w-1)(w+1)", miss:"mixed-signs"},
+   {l:"(w-1)(w-5)", miss:"ignored-leading-coefficient"}
+ ],
+ h:"AC=5\\cdot 1=5.\\ Need\\ pair:\\ product=5,\\ sum=-6\\ \\Rightarrow\\ -1,\\ -5.\\ Split,\\ group."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"6s^2-s-5", a:"(6s+5)(s-1)",
+ ch:[
+   {l:"(6s+5)(s-1)", ok:true},
+   {l:"(6s-5)(s+1)", miss:"swapped-signs"},
+   {l:"(3s-5)(2s+1)", miss:"different-leading-split"},
+   {l:"(6s-1)(s+5)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=6\\cdot(-5)=-30.\\ Pair:\\ product=-30,\\ sum=-1\\ \\Rightarrow\\ -6,\\ 5."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"2c^2-7c+3", a:"(2c-1)(c-3)",
+ ch:[
+   {l:"(2c-1)(c-3)", ok:true},
+   {l:"(2c+1)(c+3)", miss:"sign-error"},
+   {l:"(2c-3)(c-1)", miss:"constant-pair-swapped"},
+   {l:"(2c+3)(c+1)", miss:"swapped-signs"}
+ ],
+ h:"AC=6.\\ Pair:\\ product=6,\\ sum=-7\\ \\Rightarrow\\ -1,\\ -6.\\ Split:\\ 2c^2-c-6c+3."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"3n^2-17n+10", a:"(3n-2)(n-5)",
+ ch:[
+   {l:"(3n-2)(n-5)", ok:true},
+   {l:"(3n+2)(n+5)", miss:"sign-error"},
+   {l:"(3n-5)(n-2)", miss:"constant-pair-swapped"},
+   {l:"(3n-1)(n-10)", miss:"product-correct-sum-wrong"}
+ ],
+ h:"AC=30.\\ Pair:\\ product=30,\\ sum=-17\\ \\Rightarrow\\ -2,\\ -15."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"10x^2-3x-27", a:"(5x-9)(2x+3)",
+ ch:[
+   {l:"(5x-9)(2x+3)", ok:true},
+   {l:"(5x+9)(2x-3)", miss:"swapped-signs"},
+   {l:"(10x-9)(x+3)", miss:"different-leading-split"},
+   {l:"(5x+3)(2x-9)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=-270.\\ Pair:\\ product=-270,\\ sum=-3\\ \\Rightarrow\\ -18,\\ 15.\\ Split:\\ 10x^2+15x-18x-27."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair"],
+ q:"4m^2+9m+5", a:"(4m+5)(m+1)",
+ ch:[
+   {l:"(4m+5)(m+1)", ok:true},
+   {l:"(4m-5)(m-1)", miss:"sign-error"},
+   {l:"(2m+5)(2m+1)", miss:"different-leading-split"},
+   {l:"(4m+1)(m+5)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=20.\\ Pair:\\ product=20,\\ sum=9\\ \\Rightarrow\\ 4,\\ 5.\\ Split:\\ 4m^2+4m+5m+5."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"3z^2+z-14", a:"(3z+7)(z-2)",
+ ch:[
+   {l:"(3z+7)(z-2)", ok:true},
+   {l:"(3z-7)(z+2)", miss:"swapped-signs"},
+   {l:"(3z+14)(z-1)", miss:"constant-pair-swapped"},
+   {l:"(3z+2)(z-7)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=-42.\\ Pair:\\ product=-42,\\ sum=1\\ \\Rightarrow\\ 7,\\ -6.\\ Split:\\ 3z^2-6z+7z-14."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"4a^2+9a-9", a:"(4a-3)(a+3)",
+ ch:[
+   {l:"(4a-3)(a+3)", ok:true},
+   {l:"(4a+3)(a-3)", miss:"swapped-signs"},
+   {l:"(2a-3)(2a+3)", miss:"different-leading-split"},
+   {l:"(4a-1)(a+9)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=-36.\\ Pair:\\ product=-36,\\ sum=9\\ \\Rightarrow\\ 12,\\ -3.\\ Split:\\ 4a^2+12a-3a-9."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair"],
+ q:"4n^2+16n+15", a:"(2n+3)(2n+5)",
+ ch:[
+   {l:"(2n+3)(2n+5)", ok:true},
+   {l:"(2n-3)(2n-5)", miss:"sign-error"},
+   {l:"(4n+3)(n+5)", miss:"different-leading-split"},
+   {l:"(4n+5)(n+3)", miss:"different-leading-split"}
+ ],
+ h:"AC=60.\\ Pair:\\ product=60,\\ sum=16\\ \\Rightarrow\\ 6,\\ 10.\\ Split:\\ 4n^2+6n+10n+15."},
+
+{c:"Factor Trinomials (a≠1)",
+ attrs:["ac-method","find-factor-pair","sign-tracking"],
+ q:"6y^2-5y-4", a:"(3y-4)(2y+1)",
+ ch:[
+   {l:"(3y-4)(2y+1)", ok:true},
+   {l:"(3y+4)(2y-1)", miss:"swapped-signs"},
+   {l:"(6y-4)(y+1)", miss:"different-leading-split"},
+   {l:"(3y-1)(2y+4)", miss:"constant-pair-swapped"}
+ ],
+ h:"AC=-24.\\ Pair:\\ product=-24,\\ sum=-5\\ \\Rightarrow\\ -8,\\ 3.\\ Split:\\ 6y^2+3y-8y-4."},
+
+// ── Concept 11: Zero-Product Property (8) ───────────────────────────────────
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip"],
+ q:"(x-5)(x+3)=0", a:"x=-3,\\ 5",
+ ch:[
+   {l:"x=-3,\\ 5", ok:true},
+   {l:"x=3,\\ 5", miss:"sign-not-flipped"},
+   {l:"x=-3,\\ -5", miss:"sign-error"},
+   {l:"x=-3", miss:"only-one-root"}
+ ],
+ h:"x-5=0\\Rightarrow x=5;\\ x+3=0\\Rightarrow x=-3"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip"],
+ q:"(y+9)(y-1)=0", a:"y=-9,\\ 1",
+ ch:[
+   {l:"y=-9,\\ 1", ok:true},
+   {l:"y=9,\\ -1", miss:"sign-not-flipped"},
+   {l:"y=9,\\ 1", miss:"mixed-signs"},
+   {l:"y=-9", miss:"only-one-root"}
+ ],
+ h:"y+9=0\\Rightarrow y=-9;\\ y-1=0\\Rightarrow y=1"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip"],
+ q:"(z-13)(z-14)=0", a:"z=13,\\ 14",
+ ch:[
+   {l:"z=13,\\ 14", ok:true},
+   {l:"z=-13,\\ -14", miss:"sign-error"},
+   {l:"z=-13,\\ 14", miss:"mixed-signs"},
+   {l:"z=27", miss:"added-the-roots"}
+ ],
+ h:"z-13=0\\Rightarrow z=13;\\ z-14=0\\Rightarrow z=14"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip"],
+ q:"(c+6)(c+8)=0", a:"c=-8,\\ -6",
+ ch:[
+   {l:"c=-8,\\ -6", ok:true},
+   {l:"c=6,\\ 8", miss:"sign-not-flipped"},
+   {l:"c=-6,\\ 8", miss:"mixed-signs"},
+   {l:"c=-6", miss:"only-one-root"}
+ ],
+ h:"c+6=0\\Rightarrow c=-6;\\ c+8=0\\Rightarrow c=-8"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip","fraction-solution"],
+ q:"(d-7)\\left(d+\\tfrac{4}{3}\\right)=0", a:"d=-\\tfrac{4}{3},\\ 7",
+ ch:[
+   {l:"d=-\\tfrac{4}{3},\\ 7", ok:true},
+   {l:"d=\\tfrac{4}{3},\\ -7", miss:"sign-not-flipped"},
+   {l:"d=-4,\\ 7", miss:"forgot-the-denominator"},
+   {l:"d=7", miss:"only-one-root"}
+ ],
+ h:"d-7=0\\Rightarrow d=7;\\ d+\\tfrac{4}{3}=0\\Rightarrow d=-\\tfrac{4}{3}"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip","solve-for-variable","fraction-solution"],
+ q:"(3x+1)(x+6)=0", a:"x=-6,\\ -\\tfrac{1}{3}",
+ ch:[
+   {l:"x=-6,\\ -\\tfrac{1}{3}", ok:true},
+   {l:"x=6,\\ \\tfrac{1}{3}", miss:"sign-not-flipped"},
+   {l:"x=-1,\\ -6", miss:"forgot-to-divide-coefficient"},
+   {l:"x=-6,\\ \\tfrac{1}{3}", miss:"mixed-signs"}
+ ],
+ h:"3x+1=0\\Rightarrow 3x=-1\\Rightarrow x=-\\tfrac{1}{3};\\ x+6=0\\Rightarrow x=-6"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip","solve-for-variable","fraction-solution"],
+ q:"(2y+5)(7y-5)=0", a:"y=-\\tfrac{5}{2},\\ \\tfrac{5}{7}",
+ ch:[
+   {l:"y=-\\tfrac{5}{2},\\ \\tfrac{5}{7}", ok:true},
+   {l:"y=\\tfrac{5}{2},\\ -\\tfrac{5}{7}", miss:"sign-not-flipped"},
+   {l:"y=-5,\\ 5", miss:"forgot-to-divide-coefficient"},
+   {l:"y=-\\tfrac{2}{5},\\ \\tfrac{7}{5}", miss:"flipped-coefficient-and-constant"}
+ ],
+ h:"2y+5=0\\Rightarrow y=-\\tfrac{5}{2};\\ 7y-5=0\\Rightarrow y=\\tfrac{5}{7}"},
+
+{c:"Zero-Product Property",
+ attrs:["set-each-to-zero","sign-flip","solve-for-variable","simplify-fraction","fraction-solution"],
+ q:"(8z-6)(12z+14)=0", a:"z=-\\tfrac{7}{6},\\ \\tfrac{3}{4}",
+ ch:[
+   {l:"z=-\\tfrac{7}{6},\\ \\tfrac{3}{4}", ok:true},
+   {l:"z=\\tfrac{7}{6},\\ -\\tfrac{3}{4}", miss:"sign-not-flipped"},
+   {l:"z=\\tfrac{6}{8},\\ -\\tfrac{14}{12}", miss:"didnt-simplify"},
+   {l:"z=6,\\ -14", miss:"forgot-to-divide-coefficient"}
+ ],
+ h:"8z=6\\Rightarrow z=\\tfrac{6}{8}=\\tfrac{3}{4};\\ 12z=-14\\Rightarrow z=-\\tfrac{14}{12}=-\\tfrac{7}{6}"},
+
+// — Conceptual ZPP checks (Ethan's teacher skipped this section of the textbook;
+//   these problems test whether he understands WHY ZPP works, not just how to apply it)
+{c:"Zero-Product Property",
+ attrs:["concept-check","zpp-meaning"],
+ q:"\\text{If } a \\cdot b = 0,\\ \\text{which must be true?}",
+ a:"a=0\\ \\text{or}\\ b=0",
+ ch:[
+   {l:"a=0\\ \\text{or}\\ b=0", ok:true},
+   {l:"a=0\\ \\text{and}\\ b=0", miss:"must-both-equal-zero"},
+   {l:"a=b", miss:"product-equals-confusion"},
+   {l:"a=0,\\ b\\neq 0", miss:"only-first-can-be-zero"}
+ ],
+ h:"Zero\\ times\\ anything\\ is\\ zero.\\ So\\ if\\ a\\cdot b=0,\\ at\\ least\\ one\\ factor\\ must\\ be\\ 0\\ (could\\ be\\ both)."},
+
+{c:"Zero-Product Property",
+ attrs:["concept-check","zpp-meaning","zpp-misapplied"],
+ q:"(x-3)(x+4)=12.\\ \\text{Are } x=3, x=-4 \\text{ the solutions?}",
+ a:"\\text{No — ZPP only works when RHS}=0",
+ ch:[
+   {l:"\\text{No — ZPP only works when RHS}=0", ok:true},
+   {l:"\\text{Yes — same logic as ZPP}", miss:"zpp-misapplied-to-nonzero"},
+   {l:"\\text{Only } x=3", miss:"partial-zpp"},
+   {l:"\\text{No — should be } x=-3, x=4", miss:"thinks-its-a-sign-error"}
+ ],
+ h:"ZPP\\ requires\\ \\text{RHS}=0.\\ First\\ expand:\\ x^2+x-12=12\\Rightarrow x^2+x-24=0,\\ THEN\\ factor\\ and\\ apply\\ ZPP."},
+
+{c:"Zero-Product Property",
+ attrs:["concept-check","zpp-meaning"],
+ q:"\\text{Why does the Zero-Product Property work?}",
+ a:"\\text{A product = 0 only if one factor = 0}",
+ ch:[
+   {l:"\\text{A product = 0 only if one factor = 0}", ok:true},
+   {l:"\\text{It's a memorized rule}", miss:"rule-without-reason"},
+   {l:"\\text{Both factors must equal 0}", miss:"must-both-equal-zero"},
+   {l:"\\text{It works for any product, not just 0}", miss:"overgeneralized-zpp"}
+ ],
+ h:"If\\ a\\cdot b=0\\ and\\ a\\neq 0,\\ divide\\ both\\ sides\\ by\\ a:\\ b=0.\\ So\\ one\\ of\\ them\\ HAS\\ to\\ be\\ 0."},
+
+// ── Concept 12: Solve Quadratics by Factoring (10) ──────────────────────────
+// Every entry includes the FACTORED FORM as a distractor (miss: factored-but-didnt-apply-zpp)
+// to catch the "stopped after factoring" pattern Ethan exhibits.
+{c:"Solve Quadratics by Factoring",
+ attrs:["factor-out-common","set-each-to-zero","zero-solution"],
+ q:"b^2+6b=0", a:"b=-6,\\ 0",
+ ch:[
+   {l:"b=-6,\\ 0", ok:true},
+   {l:"b=0,\\ 6", miss:"sign-not-flipped"},
+   {l:"b=-6", miss:"divided-by-variable-lost-zero"},
+   {l:"b(b+6)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Factor:\\ b(b+6)=0.\\ Now\\ APPLY\\ ZPP:\\ b=0\\ or\\ b=-6.\\ Factoring\\ isn't\\ the\\ answer\\ -\\ solving\\ is."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["rearrange-to-standard-form","factor-trinomial","set-each-to-zero"],
+ q:"s(s+1)=72", a:"s=-9,\\ 8",
+ ch:[
+   {l:"s=-9,\\ 8", ok:true},
+   {l:"s=0,\\ -1", miss:"didnt-set-to-zero"},
+   {l:"s=9,\\ -8", miss:"sign-error"},
+   {l:"(s+9)(s-8)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Move\\ to\\ one\\ side:\\ s^2+s-72=0\\Rightarrow(s+9)(s-8)=0.\\ Now\\ ZPP\\ \\Rightarrow\\ s=-9\\ or\\ 8."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["factor-trinomial","set-each-to-zero","solve-for-variable","fraction-solution"],
+ q:"2x^2-3x-35=0", a:"x=-\\tfrac{7}{2},\\ 5",
+ ch:[
+   {l:"x=-\\tfrac{7}{2},\\ 5", ok:true},
+   {l:"x=\\tfrac{7}{2},\\ -5", miss:"sign-not-flipped"},
+   {l:"x=-7,\\ 5", miss:"forgot-to-divide-coefficient"},
+   {l:"(2x+7)(x-5)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"(2x+7)(x-5)=0.\\ Set\\ each\\ factor\\ to\\ 0:\\ 2x=-7\\Rightarrow x=-\\tfrac{7}{2};\\ x=5."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["rearrange-to-standard-form","factor-trinomial","set-each-to-zero"],
+ q:"t(t-13)=30", a:"t=-2,\\ 15",
+ ch:[
+   {l:"t=-2,\\ 15", ok:true},
+   {l:"t=0,\\ 13", miss:"didnt-set-to-zero"},
+   {l:"t=2,\\ -15", miss:"sign-error"},
+   {l:"(t-15)(t+2)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Move:\\ t^2-13t-30=0\\Rightarrow(t-15)(t+2)=0\\Rightarrow t=15,\\ -2."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["rearrange-to-standard-form","factor-out-common","set-each-to-zero","zero-solution","fraction-solution"],
+ q:"28m^2=-8m", a:"m=-\\tfrac{2}{7},\\ 0",
+ ch:[
+   {l:"m=-\\tfrac{2}{7},\\ 0", ok:true},
+   {l:"m=\\tfrac{2}{7},\\ 0", miss:"sign-error"},
+   {l:"m=-\\tfrac{2}{7}", miss:"divided-by-variable-lost-zero"},
+   {l:"4m(7m+2)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Move:\\ 28m^2+8m=0\\Rightarrow 4m(7m+2)=0\\Rightarrow m=0\\ or\\ m=-\\tfrac{2}{7}."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["distribute","rearrange-to-standard-form","factor-trinomial","set-each-to-zero"],
+ q:"a^2+3(a-7)=33", a:"a=-9,\\ 6",
+ ch:[
+   {l:"a=-9,\\ 6", ok:true},
+   {l:"a=9,\\ -6", miss:"sign-error"},
+   {l:"a=-8,\\ 5", miss:"forgot-to-distribute"},
+   {l:"(a+9)(a-6)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Distribute:\\ a^2+3a-21=33\\Rightarrow a^2+3a-54=0\\Rightarrow(a+9)(a-6)=0\\Rightarrow a=-9,\\ 6."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["factor-trinomial","set-each-to-zero","solve-for-variable","fraction-solution"],
+ q:"3w^2+22w+7=0", a:"w=-7,\\ -\\tfrac{1}{3}",
+ ch:[
+   {l:"w=-7,\\ -\\tfrac{1}{3}", ok:true},
+   {l:"w=7,\\ \\tfrac{1}{3}", miss:"sign-not-flipped"},
+   {l:"w=-7,\\ -1", miss:"forgot-to-divide-coefficient"},
+   {l:"(3w+1)(w+7)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"(3w+1)(w+7)=0\\Rightarrow 3w=-1\\Rightarrow w=-\\tfrac{1}{3};\\ w=-7."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["distribute","rearrange-to-standard-form","factor-trinomial","set-each-to-zero"],
+ q:"b^2-6(b+8)=7", a:"b=-5,\\ 11",
+ ch:[
+   {l:"b=-5,\\ 11", ok:true},
+   {l:"b=5,\\ -11", miss:"sign-error"},
+   {l:"b=-6,\\ 8", miss:"didnt-set-to-zero"},
+   {l:"(b-11)(b+5)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Distribute:\\ b^2-6b-48=7\\Rightarrow b^2-6b-55=0\\Rightarrow(b-11)(b+5)=0\\Rightarrow b=11,\\ -5."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["rearrange-to-standard-form","factor-trinomial","set-each-to-zero","fraction-solution"],
+ q:"p(3p+14)=5", a:"p=-5,\\ \\tfrac{1}{3}",
+ ch:[
+   {l:"p=-5,\\ \\tfrac{1}{3}", ok:true},
+   {l:"p=0,\\ -\\tfrac{14}{3}", miss:"didnt-set-to-zero"},
+   {l:"p=5,\\ -\\tfrac{1}{3}", miss:"sign-error"},
+   {l:"(3p-1)(p+5)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Distribute:\\ 3p^2+14p=5\\Rightarrow 3p^2+14p-5=0\\Rightarrow(3p-1)(p+5)=0\\Rightarrow p=\\tfrac{1}{3},\\ -5."},
+
+{c:"Solve Quadratics by Factoring",
+ attrs:["distribute","rearrange-to-standard-form","factor-trinomial","set-each-to-zero","sign-tracking"],
+ q:"-m(m-24)=-180", a:"m=-6,\\ 30",
+ ch:[
+   {l:"m=-6,\\ 30", ok:true},
+   {l:"m=6,\\ -30", miss:"sign-error"},
+   {l:"m=0,\\ 24", miss:"didnt-set-to-zero"},
+   {l:"(m-30)(m+6)=0", miss:"factored-but-didnt-apply-zpp"}
+ ],
+ h:"Distribute:\\ -m^2+24m=-180\\Rightarrow m^2-24m-180=0\\Rightarrow(m-30)(m+6)=0\\Rightarrow m=30,\\ -6."},
+
+// ── Concept 13: Add/Subtract Polynomials (11) ───────────────────────────────
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","simple-monomial"],
+ q:"8b - 5b", a:"3b",
+ ch:[
+   {l:"3b", ok:true},
+   {l:"13b", miss:"added-instead-of-subtracted"},
+   {l:"3b^2", miss:"multiplied-instead-of-added"},
+   {l:"3", miss:"dropped-a-term"}
+ ],
+ h:"Same\\ variable\\ b:\\ 8-5=3\\Rightarrow 8b-5b=3b"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking","multi-variable"],
+ q:"14cd - 23cd", a:"-9cd",
+ ch:[
+   {l:"-9cd", ok:true},
+   {l:"9cd", miss:"sign-error"},
+   {l:"-9c^2d^2", miss:"multiplied-instead-of-added"},
+   {l:"-9", miss:"dropped-a-term"}
+ ],
+ h:"Same\\ like\\ term\\ cd:\\ 14-23=-9"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","simple-monomial"],
+ q:"4z^5 + 9z^5", a:"13z^5",
+ ch:[
+   {l:"13z^5", ok:true},
+   {l:"13z^{10}", miss:"multiplied-instead-of-added"},
+   {l:"36z^5", miss:"multiplied-instead-of-added"},
+   {l:"13z", miss:"dropped-a-term"}
+ ],
+ h:"Same\\ like\\ term\\ z^5:\\ 4+9=13"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking","multi-variable"],
+ q:"-2x^2y + 5x^2y", a:"3x^2y",
+ ch:[
+   {l:"3x^2y", ok:true},
+   {l:"-3x^2y", miss:"sign-error"},
+   {l:"7x^2y", miss:"added-instead-of-subtracted"},
+   {l:"3x^4y^2", miss:"multiplied-instead-of-added"}
+ ],
+ h:"Same\\ like\\ term\\ x^2y:\\ -2+5=3"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking"],
+ q:"(h^2 + 4h - 4) + (5h^2 - 8h + 2)", a:"6h^2 - 4h - 2",
+ ch:[
+   {l:"6h^2 - 4h - 2", ok:true},
+   {l:"6h^2 + 12h - 2", miss:"sign-error"},
+   {l:"6h^2 - 4h - 6", miss:"sign-error"},
+   {l:"5h^4 - 32h^2 - 8", miss:"multiplied-instead-of-added"}
+ ],
+ h:"By\\ degree:\\ (1+5)h^2+(4-8)h+(-4+2)=6h^2-4h-2"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking","organize-by-degree"],
+ q:"(4m^2 - m + 2) + (-3m^2 + 10m + 7)", a:"m^2 + 9m + 9",
+ ch:[
+   {l:"m^2 + 9m + 9", ok:true},
+   {l:"7m^2 + 9m + 9", miss:"sign-error"},
+   {l:"m^2 - 11m + 9", miss:"sign-error"},
+   {l:"m^2 + 9m + 14", miss:"multiplied-instead-of-added"}
+ ],
+ h:"(4-3)m^2+(-1+10)m+(2+7)=m^2+9m+9"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking","distribute-negative"],
+ q:"(6c^2 + 3c + 9) - (3c - 5)", a:"6c^2 + 14",
+ ch:[
+   {l:"6c^2 + 14", ok:true},
+   {l:"6c^2 + 6c + 4", miss:"forgot-to-distribute"},
+   {l:"6c^2 + 6c + 14", miss:"sign-error"},
+   {l:"6c^2 + 4", miss:"forgot-to-distribute"}
+ ],
+ h:"Distribute\\ the\\ minus:\\ 6c^2+3c+9-3c+5=6c^2+14"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","distribute-negative","organize-by-degree"],
+ q:"(3x^2 - 8) - (4x^3 + x^2 - 15x + 1)", a:"-4x^3 + 2x^2 + 15x - 9",
+ ch:[
+   {l:"-4x^3 + 2x^2 + 15x - 9", ok:true},
+   {l:"4x^3 + 4x^2 - 15x - 7", miss:"forgot-to-distribute"},
+   {l:"-4x^3 + 2x^2 - 15x - 9", miss:"sign-error"},
+   {l:"-4x^3 + 4x^2 + 15x - 9", miss:"sign-error"}
+ ],
+ h:"Distribute:\\ -4x^3+(3-1)x^2+15x+(-8-1)=-4x^3+2x^2+15x-9"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","distribute-negative","sign-tracking"],
+ q:"(-n^2 + 2n) - (2n^3 - n^2 + n + 12)", a:"-2n^3 + n - 12",
+ ch:[
+   {l:"-2n^3 + n - 12", ok:true},
+   {l:"2n^3 - 2n^2 + 3n + 12", miss:"forgot-to-distribute"},
+   {l:"-2n^3 - 2n^2 + n - 12", miss:"sign-error"},
+   {l:"-2n^3 + 3n - 12", miss:"sign-error"}
+ ],
+ h:"-n^2+2n-2n^3+n^2-n-12=-2n^3+0n^2+n-12"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","distribute-negative","organize-by-degree"],
+ q:"(4d - 6d^3 + 3d^2) - (9d^3 + 7d - 2)", a:"-15d^3 + 3d^2 - 3d + 2",
+ ch:[
+   {l:"-15d^3 + 3d^2 - 3d + 2", ok:true},
+   {l:"3d^3 + 3d^2 + 11d - 2", miss:"forgot-to-distribute"},
+   {l:"-15d^3 + 3d^2 + 11d + 2", miss:"sign-error"},
+   {l:"-15d^3 + 3d^2 - 3d - 2", miss:"sign-error"}
+ ],
+ h:"-6d^3-9d^3=-15d^3;\\ 4d-7d=-3d;\\ 0-(-2)=+2"},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["combine-like-terms","sign-tracking","organize-by-degree"],
+ q:"(9p^2 - 6p^3 + 3 - 11p) + (7p^3 - 3p^2 + 4)", a:"p^3 + 6p^2 - 11p + 7",
+ ch:[
+   {l:"p^3 + 6p^2 - 11p + 7", ok:true},
+   {l:"-13p^3 + 6p^2 - 11p + 7", miss:"sign-error"},
+   {l:"p^3 + 12p^2 - 11p + 7", miss:"combined-unlike-terms"},
+   {l:"p^3 + 6p^2 + 11p + 7", miss:"sign-error"}
+ ],
+ h:"(-6+7)p^3+(9-3)p^2-11p+(3+4)=p^3+6p^2-11p+7"},
+
+// — Unlike-term recognition (catches "p^2 + p = p^3" exponent-rule overreach)
+{c:"Add/Subtract Polynomials",
+ attrs:["recognize-unlike-terms","exponent-rule-discipline"],
+ q:"p^2 + p", a:"p^2 + p",
+ ch:[
+   {l:"p^2 + p", ok:true},
+   {l:"p^3", miss:"added-exponents-on-addition"},
+   {l:"2p^2", miss:"treated-as-like-terms"},
+   {l:"2p^3", miss:"added-coefficients-and-exponents"}
+ ],
+ h:"Unlike\\ terms\\ (p^2\\ and\\ p^1)\\ \\textbf{cannot}\\ be\\ combined.\\ Exponents\\ only\\ ADD\\ when\\ MULTIPLYING:\\ p^2\\cdot p=p^3,\\ NOT\\ p^2+p."},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["recognize-unlike-terms","exponent-rule-discipline"],
+ q:"3x^2 + 4x", a:"3x^2 + 4x",
+ ch:[
+   {l:"3x^2 + 4x", ok:true},
+   {l:"7x^3", miss:"added-exponents-on-addition"},
+   {l:"7x^2", miss:"treated-as-like-terms"},
+   {l:"7x", miss:"dropped-exponent"}
+ ],
+ h:"x^2\\ and\\ x\\ are\\ unlike\\ terms\\ \\Rightarrow\\ \\textbf{cannot}\\ combine.\\ Exponents\\ add\\ only\\ on\\ MULTIPLICATION:\\ x^2\\cdot x=x^3."},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["recognize-unlike-terms","combine-like-terms","exponent-rule-discipline"],
+ q:"2m^2 + 6m + m", a:"2m^2 + 7m",
+ ch:[
+   {l:"2m^2 + 7m", ok:true},
+   {l:"9m^3", miss:"added-exponents-on-addition"},
+   {l:"9m^2", miss:"treated-as-like-terms"},
+   {l:"2m^3 + 7m", miss:"raised-exponent-when-combining"}
+ ],
+ h:"Only\\ m\\ terms\\ combine:\\ 6m+m=7m.\\ The\\ m^2\\ stays\\ alone\\ \\Rightarrow\\ 2m^2+7m."},
+
+{c:"Add/Subtract Polynomials",
+ attrs:["recognize-unlike-terms","exponent-rule-discipline"],
+ q:"5y^3 + 5y", a:"5y^3 + 5y",
+ ch:[
+   {l:"5y^3 + 5y", ok:true},
+   {l:"10y^4", miss:"added-exponents-on-addition"},
+   {l:"10y^3", miss:"treated-as-like-terms"},
+   {l:"10y", miss:"dropped-exponent"}
+ ],
+ h:"Same\\ coefficient,\\ different\\ exponent\\ \\Rightarrow\\ STILL\\ unlike\\ terms.\\ Cannot\\ combine."},
+
+// ── Concept 14: Multiply Special Products (10) ──────────────────────────────
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","multi-variable"],
+ q:"(r+9s)^2", a:"r^2+18rs+81s^2",
+ ch:[
+   {l:"r^2+18rs+81s^2", ok:true},
+   {l:"r^2+81s^2", miss:"dropped-middle-term"},
+   {l:"r^2+9rs+81s^2", miss:"forgot-to-double-product"},
+   {l:"r^2+18rs+9s^2", miss:"forgot-to-square-coefficient"}
+ ],
+ h:"(a+b)^2=a^2+2ab+b^2.\\ r^2,\\ 2(r)(9s)=18rs,\\ (9s)^2=81s^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","square-coefficient"],
+ q:"(6x+5)^2", a:"36x^2+60x+25",
+ ch:[
+   {l:"36x^2+60x+25", ok:true},
+   {l:"36x^2+25", miss:"dropped-middle-term"},
+   {l:"6x^2+60x+25", miss:"forgot-to-square-coefficient"},
+   {l:"36x^2+30x+25", miss:"forgot-to-double-product"}
+ ],
+ h:"(a+b)^2=a^2+2ab+b^2.\\ (6x)^2=36x^2,\\ 2(6x)(5)=60x,\\ 5^2=25"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","multi-variable","square-coefficient"],
+ q:"(3m-7n)^2", a:"9m^2-42mn+49n^2",
+ ch:[
+   {l:"9m^2-42mn+49n^2", ok:true},
+   {l:"9m^2+42mn+49n^2", miss:"sign-error"},
+   {l:"9m^2-21mn+49n^2", miss:"forgot-to-double-product"},
+   {l:"9m^2-42mn-49n^2", miss:"sign-error"}
+ ],
+ h:"(a-b)^2=a^2-2ab+b^2.\\ (3m)^2=9m^2,\\ 2(3m)(7n)=42mn,\\ (7n)^2=49n^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","square-coefficient"],
+ q:"(13-2x)^2", a:"169-52x+4x^2",
+ ch:[
+   {l:"169-52x+4x^2", ok:true},
+   {l:"169+4x^2", miss:"dropped-middle-term"},
+   {l:"169-26x+4x^2", miss:"forgot-to-double-product"},
+   {l:"169-52x+2x^2", miss:"forgot-to-square-coefficient"}
+ ],
+ h:"(a-b)^2=a^2-2ab+b^2.\\ 13^2=169,\\ 2(13)(2x)=52x,\\ (2x)^2=4x^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","multi-variable","square-coefficient"],
+ q:"(3x+8y)^2", a:"9x^2+48xy+64y^2",
+ ch:[
+   {l:"9x^2+48xy+64y^2", ok:true},
+   {l:"9x^2+64y^2", miss:"dropped-middle-term"},
+   {l:"9x^2+24xy+64y^2", miss:"forgot-to-double-product"},
+   {l:"3x^2+48xy+8y^2", miss:"forgot-to-square-coefficient"}
+ ],
+ h:"(3x)^2=9x^2,\\ 2(3x)(8y)=48xy,\\ (8y)^2=64y^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","multi-variable","square-coefficient"],
+ q:"(2r-12s)^2", a:"4r^2-48rs+144s^2",
+ ch:[
+   {l:"4r^2-48rs+144s^2", ok:true},
+   {l:"4r^2+48rs+144s^2", miss:"sign-error"},
+   {l:"4r^2-24rs+144s^2", miss:"forgot-to-double-product"},
+   {l:"4r^2+144s^2", miss:"dropped-middle-term"}
+ ],
+ h:"(2r)^2=4r^2,\\ 2(2r)(12s)=48rs,\\ (12s)^2=144s^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","multi-variable"],
+ q:"(-x-2y)^2", a:"x^2+4xy+4y^2",
+ ch:[
+   {l:"x^2+4xy+4y^2", ok:true},
+   {l:"-x^2-4xy-4y^2", miss:"squared-the-negative-wrong"},
+   {l:"x^2-4xy+4y^2", miss:"sign-error"},
+   {l:"x^2+4y^2", miss:"dropped-middle-term"}
+ ],
+ h:"(-x-2y)^2=(x+2y)^2.\\ x^2,\\ 2(x)(2y)=4xy,\\ (2y)^2=4y^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","multi-variable","square-coefficient"],
+ q:"(2a-3b)^2", a:"4a^2-12ab+9b^2",
+ ch:[
+   {l:"4a^2-12ab+9b^2", ok:true},
+   {l:"4a^2+9b^2", miss:"dropped-middle-term"},
+   {l:"4a^2-6ab+9b^2", miss:"forgot-to-double-product"},
+   {l:"4a^2+12ab+9b^2", miss:"sign-error"}
+ ],
+ h:"(2a)^2=4a^2,\\ 2(2a)(3b)=12ab,\\ (3b)^2=9b^2"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","square-coefficient"],
+ q:"(5p+4)^2", a:"25p^2+40p+16",
+ ch:[
+   {l:"25p^2+40p+16", ok:true},
+   {l:"25p^2+16", miss:"dropped-middle-term"},
+   {l:"5p^2+40p+16", miss:"forgot-to-square-coefficient"},
+   {l:"25p^2+20p+16", miss:"forgot-to-double-product"}
+ ],
+ h:"(5p)^2=25p^2,\\ 2(5p)(4)=40p,\\ 4^2=16"},
+
+{c:"Multiply Special Products",
+ attrs:["expand-binomial","double-product","sign-tracking","multi-variable"],
+ q:"(-3m+n)^2", a:"9m^2-6mn+n^2",
+ ch:[
+   {l:"9m^2-6mn+n^2", ok:true},
+   {l:"9m^2+6mn+n^2", miss:"sign-error"},
+   {l:"9m^2+n^2", miss:"dropped-middle-term"},
+   {l:"-9m^2-6mn+n^2", miss:"squared-the-negative-wrong"}
+ ],
+ h:"(-3m+n)^2=(3m-n)^2.\\ (3m)^2=9m^2,\\ 2(3m)(n)=6mn,\\ n^2"},
+
+// ── Concept 15: Difference of Squares (10) ──────────────────────────────────
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-each-term","sign-tracking"],
+ q:"(t+4)(t-4)", a:"t^2-16",
+ ch:[
+   {l:"t^2-16", ok:true},
+   {l:"t^2+16", miss:"sign-error"},
+   {l:"t^2-8t-16", miss:"foil-not-pattern"},
+   {l:"t^2-8", miss:"forgot-to-square-second-term"}
+ ],
+ h:"(a+b)(a-b)=a^2-b^2.\\ t^2-4^2=t^2-16"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient"],
+ q:"(2x+1)(2x-1)", a:"4x^2-1",
+ ch:[
+   {l:"4x^2-1", ok:true},
+   {l:"2x^2-1", miss:"forgot-to-square-coefficient"},
+   {l:"4x^2+1", miss:"sign-error"},
+   {l:"4x^2-4x-1", miss:"foil-not-pattern"}
+ ],
+ h:"(2x)^2-1^2=4x^2-1"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-each-term","sign-tracking"],
+ q:"(7+w)(7-w)", a:"49-w^2",
+ ch:[
+   {l:"49-w^2", ok:true},
+   {l:"w^2-49", miss:"reversed-pattern"},
+   {l:"49+w^2", miss:"sign-error"},
+   {l:"49-14w-w^2", miss:"foil-not-pattern"}
+ ],
+ h:"7^2-w^2=49-w^2"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient","fraction-coefficient"],
+ q:"\\left(4g+\\tfrac{1}{2}\\right)\\left(4g-\\tfrac{1}{2}\\right)", a:"16g^2-\\tfrac{1}{4}",
+ ch:[
+   {l:"16g^2-\\dfrac{1}{4}", ok:true},
+   {l:"16g^2-\\dfrac{1}{2}", miss:"fraction-error"},
+   {l:"4g^2-\\dfrac{1}{4}", miss:"forgot-to-square-coefficient"},
+   {l:"16g^2+\\dfrac{1}{4}", miss:"sign-error"}
+ ],
+ h:"(4g)^2-(\\tfrac{1}{2})^2=16g^2-\\tfrac{1}{4}"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient","decimal-coefficient"],
+ q:"(9-0.7t)(9+0.7t)", a:"81-0.49t^2",
+ ch:[
+   {l:"81-0.49t^2", ok:true},
+   {l:"81-1.4t^2", miss:"decimal-error"},
+   {l:"81-0.7t^2", miss:"forgot-to-square-coefficient"},
+   {l:"81+0.49t^2", miss:"sign-error"}
+ ],
+ h:"9^2-(0.7t)^2=81-0.49t^2"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient","decimal-coefficient"],
+ q:"(2s-1.1)(2s+1.1)", a:"4s^2-1.21",
+ ch:[
+   {l:"4s^2-1.21", ok:true},
+   {l:"4s^2-2.2", miss:"decimal-error"},
+   {l:"2s^2-1.21", miss:"forgot-to-square-coefficient"},
+   {l:"4s^2+1.21", miss:"sign-error"}
+ ],
+ h:"(2s)^2-(1.1)^2=4s^2-1.21"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-each-term","multi-variable","sign-tracking"],
+ q:"(3m+11n)(3m-11n)", a:"9m^2-121n^2",
+ ch:[
+   {l:"9m^2-121n^2", ok:true},
+   {l:"3m^2-11n^2", miss:"forgot-to-square-coefficient"},
+   {l:"9m^2+121n^2", miss:"sign-error"},
+   {l:"9m^2-66mn-121n^2", miss:"foil-not-pattern"}
+ ],
+ h:"(3m)^2-(11n)^2=9m^2-121n^2"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient","multi-variable"],
+ q:"(4a-10b)(4a+10b)", a:"16a^2-100b^2",
+ ch:[
+   {l:"16a^2-100b^2", ok:true},
+   {l:"4a^2-10b^2", miss:"forgot-to-square-coefficient"},
+   {l:"16a^2+100b^2", miss:"sign-error"},
+   {l:"1600a^2b^2", miss:"squared-product"}
+ ],
+ h:"(4a)^2-(10b)^2=16a^2-100b^2"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-each-term","leading-negative","sign-tracking"],
+ q:"(-8m+n)(-8m-n)", a:"64m^2-n^2",
+ ch:[
+   {l:"64m^2-n^2", ok:true},
+   {l:"-64m^2-n^2", miss:"leading-negative-error"},
+   {l:"n^2-64m^2", miss:"reversed-pattern"},
+   {l:"64m^2+n^2", miss:"sign-error"}
+ ],
+ h:"Conjugate\\ around\\ -8m:\\ (-8m)^2-n^2=64m^2-n^2"},
+
+{c:"Difference of Squares",
+ attrs:["recognize-pattern","square-coefficient","fraction-coefficient"],
+ q:"\\left(\\tfrac{1}{4}+5a\\right)\\left(\\tfrac{1}{4}-5a\\right)", a:"\\tfrac{1}{16}-25a^2",
+ ch:[
+   {l:"\\dfrac{1}{16}-25a^2", ok:true},
+   {l:"\\dfrac{1}{4}-25a^2", miss:"forgot-to-square-coefficient"},
+   {l:"\\dfrac{1}{16}-5a^2", miss:"forgot-to-square-coefficient"},
+   {l:"25a^2-\\dfrac{1}{16}", miss:"reversed-pattern"}
+ ],
+ h:"(\\tfrac{1}{4})^2-(5a)^2=\\tfrac{1}{16}-25a^2"}
 ];
 
 // Per-concept "key rule" shown when Ethan misses a question.
@@ -763,11 +1616,18 @@ const KEY_RULES = {
   "(a−b)²":             "$(a-b)^2 = a^2 - 2ab + b^2$. ALWAYS three terms — never drop the middle!",
   "Factor First":       "1) Reduce the coefficient fraction. 2) For each variable, combine ALL its exponents (top, bottom flips, outside powers).",
   "Divide Monomials":   "Same base $\\Rightarrow$ SUBTRACT exponents (top − bottom). Negative result $\\Rightarrow$ variable moves to the denominator.",
-  "Divide Polynomials": "Long division: divide leading terms $\\to$ multiply back $\\to$ subtract $\\to$ bring down. Repeat until what's left has lower degree than the divisor."
+  "Divide Polynomials": "Long division: divide leading terms $\\to$ multiply back $\\to$ subtract $\\to$ bring down. Repeat until what's left has lower degree than the divisor.",
+  "Factor Trinomials (a=1)":      "Two numbers that MULTIPLY to $c$ and ADD to $b$. Both negative when $c>0,\\ b<0$. Opposite signs when $c<0$ — the bigger number takes the sign of $b$.",
+  "Factor Trinomials (a≠1)":      "AC method: multiply $a\\cdot c$. Find two #s with that product whose sum is $b$. Split the middle term, then factor by grouping.",
+  "Zero-Product Property":        "If $A\\cdot B = 0$, then $A=0$ OR $B=0$. Set EACH factor to zero separately. If $A$ is like $3x+1$, solve for $x$: $3x=-1\\Rightarrow x=-\\tfrac{1}{3}$.",
+  "Solve Quadratics by Factoring":"1) Move everything to one side so the RHS$=0$. 2) Factor. 3) Set each factor $=0$. NEVER set a factor equal to a non-zero value.",
+  "Add/Subtract Polynomials":     "Distribute any leading $-$ across ALL terms. Combine only LIKE terms (same variable AND same exponent).",
+  "Multiply Special Products":    "$(a\\pm b)^2 = a^2 \\pm 2ab + b^2$. THREE terms — middle is double the product. Square coefficients fully: $(3x)^2 = 9x^2$, not $3x^2$.",
+  "Difference of Squares":        "$(a+b)(a-b) = a^2 - b^2$. Two terms only, NO middle. Square each side."
 };
 
 const CONCEPTS = [...new Set(Q.map(q => q.c))];
-const SZ = 8; // questions per session
+const SZ = 10; // questions per session  (bumped from 8 — 9 active concepts post-Quadratics expansion)
 const STUDENT_ID = "ethan";
 
 // Base priority per concept (higher = more frequent).
@@ -780,11 +1640,21 @@ const BASE_WEIGHT = {
   "Neg. Exponents":     0.20,  // mastered — retention only
   "Add Exponents":      0.20,  // mastered — retention only
   "Divide Monomials":   0.85,  // newly learned — rehearse heavily
-  "Divide Polynomials": 0.95   // newly learned — rehearse heavily
+  "Divide Polynomials": 0.95,  // newly learned — rehearse heavily
+  // New Quadratics/Polynomials unit — May 2026, drill-heavy until accuracy is up.
+  "Factor Trinomials (a=1)":       0.95,
+  "Factor Trinomials (a≠1)":       0.95,
+  "Zero-Product Property":         0.85,
+  "Solve Quadratics by Factoring": 0.95,
+  "Add/Subtract Polynomials":      0.70,
+  "Multiply Special Products":     0.80,
+  "Difference of Squares":         0.75
 };
 
 // Concepts that are NEW (must complete Learn mode before drilling).
 // Pre-existing concepts are assumed mastered enough to drill day-one.
+// The May 2026 Quadratics unit skips Learn for now — drills straight in
+// since Ethan is being tested in class on these concepts this week.
 const REQUIRES_LEARN = ["Divide Monomials", "Divide Polynomials"];
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -948,10 +1818,13 @@ function defaultState() {
     usedIds: [],        // question indices shown so far (active pool only)
     sessionCount: 0,
     // Concepts the student has completed in Learn mode (or that don't need it).
-    // The pre-existing 6 are assumed mastered enough to drill day-one.
+    // The pre-existing 6 + the new Quadratics unit drop straight into drilling.
     learnedConcepts: [
       "Like Radicals","Variable Fractions","Add Exponents",
-      "Neg. Exponents","(a−b)²","Factor First"
+      "Neg. Exponents","(a−b)²","Factor First",
+      "Add/Subtract Polynomials","Multiply Special Products","Difference of Squares",
+      "Factor Trinomials (a=1)","Factor Trinomials (a≠1)",
+      "Zero-Product Property","Solve Quadratics by Factoring"
     ],
     // Concepts already mastered — kept on a 5% retention rotation only.
     // New concepts (after Learn mode) start as ACTIVE, not mastered, and earn
@@ -968,7 +1841,11 @@ function defaultState() {
 // How concepts are grouped on the start screen.
 const CONCEPT_GROUPS = {
   "Radicals":      ["Like Radicals"],
-  "Other algebra": ["Variable Fractions","Add Exponents","Neg. Exponents","(a−b)²","Factor First"]
+  "Other algebra": ["Variable Fractions","Add Exponents","Neg. Exponents","(a−b)²","Factor First"],
+  "Polynomials":   ["Add/Subtract Polynomials","Multiply Special Products","Difference of Squares",
+                    "Divide Monomials","Divide Polynomials"],
+  "Quadratics":    ["Factor Trinomials (a=1)","Factor Trinomials (a≠1)",
+                    "Zero-Product Property","Solve Quadratics by Factoring"]
 };
 
 // Fraction of session slots that should be retention picks from mastered concepts.
@@ -1003,7 +1880,14 @@ let ST = (() => {
     const s = localStorage.getItem(LS);
     if (!s) return def;
     // Merge with defaults so old saved state picks up new fields.
-    return { ...def, ...JSON.parse(s) };
+    const merged = { ...def, ...JSON.parse(s) };
+    // Migration: ensure any concept newly added to defaultState.learnedConcepts
+    // gets unioned into the persisted array (otherwise saved state would lock
+    // out new concepts from ever entering the drill rotation).
+    def.learnedConcepts.forEach(c => {
+      if (!merged.learnedConcepts.includes(c)) merged.learnedConcepts.push(c);
+    });
+    return merged;
   } catch(e) { return def; }
 })();
 
@@ -1049,16 +1933,22 @@ function buildSession() {
   const session = [];
   const usedThisSession = new Set();
 
-  // Step 1: guarantee one question from each ACTIVE concept (focal practice).
-  const activeConcepts = [...new Set(activeIdxs.map(x => x.q.c))];
-  activeConcepts.forEach(c => {
+  // Step 1: guarantee one question from each ACTIVE concept (focal practice),
+  // but leave at least 2 slots for weighted fill + retention. With many active
+  // concepts, we sort by descending weight so the highest-priority concepts
+  // are guaranteed first; lower-priority ones get picked up by weighted fill.
+  const activeConcepts = [...new Set(activeIdxs.map(x => x.q.c))]
+    .sort((a, b) => conceptWeight(b) - conceptWeight(a));
+  const guaranteeCap = Math.max(1, SZ - 2);
+  for (const c of activeConcepts) {
+    if (session.length >= guaranteeCap) break;
     const pool = activeIdxs.filter(x =>
       x.q.c === c && !usedThisSession.has(x.i) && !ST.usedIds.includes(x.i));
-    if (pool.length === 0) return;
+    if (pool.length === 0) continue;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     session.push(pick.q);
     usedThisSession.add(pick.i);
-  });
+  }
 
   // Step 2: fill remaining slots — RETENTION_RATE chance of pulling from
   // mastered concepts (random pick), otherwise weighted active.
@@ -1161,9 +2051,11 @@ async function uploadWork(sessionData, pdfDataUrl) {
   const work = session.map((q, i) => ({
     qNum: i + 1,
     concept: q.c,
+    attrs: q.attrs || [],
     question: q.q,
     answer: q.a,
     chosen: perQuestion[i]?.chosen || null,
+    miss: perQuestion[i]?.miss || null,
     correct: !!sessionData.perQuestion[i]?.correct,
     secondsBeforeReveal: perQuestion[i]?.secondsBeforeReveal ?? null,
     pngDataUrl: workShown[i] || null
@@ -1474,10 +2366,20 @@ function startSession() {
   renderQ();
 }
 
+// Normalize a question's `ch` field to objects with {l, ok, miss?}.
+// Supports legacy string entries (ok inferred by string-equality with q.a)
+// and the new object form ({l, ok} | {l, miss}).
+function normalizeChoices(q) {
+  return q.ch.map(c => {
+    if (typeof c === "string") return { l: c, ok: c === q.a, miss: null };
+    return { l: c.l, ok: !!c.ok, miss: c.miss || null };
+  });
+}
+
 function renderQ() {
   if (qi >= session.length) { renderScore(); return; }
   const q = session[qi];
-  shuffChoices = shuffle(q.ch.map(c => ({l:c, ok:c===q.a})));
+  shuffChoices = shuffle(normalizeChoices(q));
   const p = Math.round((qi/SZ)*100);
   const wt = conceptWeight(q.c);
   const isWeak = wt > 0.5;
@@ -1542,6 +2444,7 @@ function pick(idx, ok, q) {
   perQuestion[qi] = {
     correct: ok,
     chosen: shuffChoices[idx].l,
+    miss: ok ? null : (shuffChoices[idx].miss || null),
     secondsBeforeReveal: secondsBeforeReveal
   };
   answered = true;
@@ -1939,7 +2842,7 @@ function renderLearnQ() {
     learnState.qi = 0;
   }
   const q = learnState.queue[learnState.qi];
-  learnState.shuffChoices = shuffle(q.ch.map(c => ({l:c, ok:c===q.a})));
+  learnState.shuffChoices = shuffle(normalizeChoices(q));
   learnState.answered = false;
 
   // Streak dots (filled = consecutive correct)
