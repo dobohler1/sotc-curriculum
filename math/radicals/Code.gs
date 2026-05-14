@@ -583,6 +583,49 @@ const ANALYSIS_RUBRIC =
 'Diagnostic phrasing:\n' +
 '  - "Forgot to square the coefficient — 2x left as 2x² when it should be 4x²"\n' +
 '  - "FOILed instead of using the pattern — got an extra middle term"\n\n' +
+
+'### 18. Multiply Polynomials — General Distribution (e.g., (4x²-5x-3)(x-2), (2x-5)(x²+3x-2))\n\n' +
+'The CORRECT method: distribute every term of the first polynomial across every term of the second, then combine LIKE terms. For (binomial × binomial) this is FOIL. For (binomial × trinomial) it produces 6 product terms before combining. Track signs carefully on every product AND when combining like terms.\n\n' +
+'Common mistakes:\n' +
+'  • Sign-drop on combine: e.g., -8x² + (-5x²) written as -3x² or +13x² (lost the leading negative, or treated as subtraction)\n' +
+'  • Sign error on individual product: e.g., -3 · -2 written as -6 instead of +6\n' +
+'  • Missed a distribution term: only multiplied some pairs (forgot one of the 6 products in a bin×tri)\n' +
+'  • FOIL-only on a binomial × trinomial: just multiplied first × first and last × last, skipping the middle products\n' +
+'  • Forgot to combine like terms: shows the 6 product terms but never collapses them\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Sign-drop when combining like terms — the two x² products are both negative, so combining gives -13x², not -3x²"\n' +
+'  - "Missed a distribution — only multiplied the first × first and last × last; the middle products are missing"\n\n' +
+
+'### 19. Applied Quadratics — Vertical Motion (h = -16t² + vt + s)\n\n' +
+'The CORRECT method: read the problem to identify s (starting/released-from height) and v (initial velocity: 0 if dropped/released, positive if thrown UP, negative if thrown DOWN). For "find height at time t", plug t in and compute. For "when does it hit the ground", set h=0 and solve the quadratic (reject negative t).\n\n' +
+'Common mistakes:\n' +
+'  • Doesn\'t identify what s and v mean: leaves v blank, or plugs the height into v\n' +
+'  • Forgets that "released" or "dropped" means v=0 (uses some made-up velocity)\n' +
+'  • Wrong sign on velocity for thrown-down problems (uses positive v when it should be negative)\n' +
+'  • For "hit the ground" problems, forgets to set h=0 — just plugs s into the answer\n' +
+'  • Drops the negative on the 16t² term: +16t² instead of -16t²\n' +
+'  • Picks the negative root for time-to-ground (e.g., gives t=-1 when t=4 is the physical answer)\n' +
+'  • Arithmetic slip on the squaring or final addition\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Didn\'t identify v — for a released/dropped ball, v=0 always"\n' +
+'  - "Forgot to set h=0 for ground impact — plugged in s instead"\n' +
+'  - "Wrong sign on velocity — thrown down means v is negative in this formula"\n\n' +
+
+'### 20. Applied Quadratics — Area Word Problems (rectangle A=L·W; triangle A=½·b·h)\n\n' +
+'The CORRECT method: set the area formula equal to the given area number. Expand the product, move everything to one side so RHS=0, factor the quadratic, solve via Zero-Product Property. Reject negative x if it produces a negative dimension. Read the question carefully: it asks for x OR for the actual dimensions.\n\n' +
+'Common mistakes:\n' +
+'  • Can\'t translate the words into an equation: writes the area but never sets it equal to the area number\n' +
+'  • For triangles, forgets the ½ — sets b·h = area instead of ½·b·h = area\n' +
+'  • Solves (x+a)(x-b) = N as if it were = 0 (gives x=-a, x=b — wrong)\n' +
+'  • Expands but doesn\'t set = 0 before factoring (factors x² + bx - c directly when the equation is x² + bx - c = N)\n' +
+'  • Picks both roots without rejecting the negative-dimension one\n' +
+'  • Gives the value of x when the question asked for the dimensions (or vice versa)\n' +
+'  • Multiplied the polynomial dimensions wrong in setup\n\n' +
+'Diagnostic phrasing:\n' +
+'  - "Forgot to move everything to one side — you can\'t use Zero-Product when the equation is (x+a)(x-b) = 18, only when = 0"\n' +
+'  - "Triangle area is ½ base × height — multiply by 2 first to clear the fraction"\n' +
+'  - "Question asked for dimensions, not x — substitute back: width = x-2 = 2 m, length = x+5 = 9 m"\n\n' +
+
 '═══════════════════════════════════════════════════════════════════════════\n' +
 'OUTPUT SCHEMA AND TONE\n' +
 '═══════════════════════════════════════════════════════════════════════════\n\n' +

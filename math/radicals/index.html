@@ -735,7 +735,7 @@ const Q = [
  ch:["-\\tfrac{1}{3m^7}","-\\tfrac{m^7}{3}","\\tfrac{1}{3m^7}","-\\tfrac{m^{15}}{3}"],
  h:"\\tfrac{-8}{24}=-\\tfrac{1}{3};\\ m^{4-11}=m^{-7}\\Rightarrow\\tfrac{1}{m^7}"},
 
-// ── Concept 8: Divide Polynomials (8) ──────────────────────────────────────
+// ── Concept 8: Divide Polynomials (13) ─────────────────────────────────────
 {c:"Divide Polynomials",
  q:"(8x^3-12x^2+16x)\\div 4x", a:"2x^2-3x+4",
  ch:["2x^2-3x+4","2x^3-3x^2+4x","2x^2+3x+4","2x^2-3x"],
@@ -775,6 +775,62 @@ const Q = [
  q:"(6h^2+5-2h^3)\\div(h-3)", a:"-2h^2+\\dfrac{5}{h-3}",
  ch:["-2h^2+\\dfrac{5}{h-3}","-2h^2+5","-2h^2-5","-2h^2"],
  h:"Rewrite:\\ -2h^3+6h^2+0h+5.\\ -2h^3\\div h=-2h^2;\\ -2h^2(h-3)=-2h^3+6h^2;\\ rem\\ 5"},
+
+// ── 5 added 2026-05-14: reorder + missing-term variety (Test Problem 5 pattern) ──
+{c:"Divide Polynomials",
+ attrs:["reorder-divisor","long-division","remainder","sign-tracking"],
+ q:"(-10a+a^2+12)\\div(-2+a)", a:"a-8-\\dfrac{4}{a-2}",
+ ch:[
+   {l:"a-8-\\dfrac{4}{a-2}", ok:true},
+   {l:"a-8", miss:"forgot-remainder"},
+   {l:"a-8+\\dfrac{4}{a-2}", miss:"sign-error-on-remainder"},
+   {l:"a-12-\\dfrac{4}{a-2}", miss:"sign-drop-when-combining"}
+ ],
+ h:"Reorder:\\ (a^2-10a+12)\\div(a-2).\\ a^2\\div a=a;\\ a(a-2)=a^2-2a;\\ rem\\ -8a+12.\\ -8a\\div a=-8;\\ -8(a-2)=-8a+16;\\ rem\\ -4"},
+
+{c:"Divide Polynomials",
+ attrs:["reorder-dividend","long-division"],
+ q:"(3+2y^2+5y)\\div(y+1)", a:"2y+3",
+ ch:[
+   {l:"2y+3", ok:true},
+   {l:"2y-3", miss:"sign-error"},
+   {l:"2y+4", miss:"multiplication-error-in-step"},
+   {l:"y+5", miss:"forgot-to-reorder-dividend"}
+ ],
+ h:"Reorder:\\ (2y^2+5y+3)\\div(y+1).\\ 2y^2\\div y=2y;\\ 2y(y+1)=2y^2+2y;\\ rem\\ 3y+3.\\ 3y\\div y=3;\\ 3(y+1)=3y+3;\\ rem\\ 0"},
+
+{c:"Divide Polynomials",
+ attrs:["missing-term","long-division","sign-tracking"],
+ q:"(x^3-7x-6)\\div(x-3)", a:"x^2+3x+2",
+ ch:[
+   {l:"x^2+3x+2", ok:true},
+   {l:"x^2-7x-2", miss:"forgot-missing-term-placeholder"},
+   {l:"x^2+3x-2", miss:"sign-error"},
+   {l:"x^2-3x+2", miss:"sign-error"}
+ ],
+ h:"Insert\\ 0x^2:\\ x^3+0x^2-7x-6.\\ x^3\\div x=x^2;\\ x^2(x-3)=x^3-3x^2;\\ rem\\ 3x^2-7x-6.\\ 3x^2\\div x=3x;\\ 3x(x-3)=3x^2-9x;\\ rem\\ 2x-6.\\ 2x\\div x=2;\\ rem\\ 0"},
+
+{c:"Divide Polynomials",
+ attrs:["reorder-dividend","long-division"],
+ q:"(-10+3x+x^2)\\div(x-2)", a:"x+5",
+ ch:[
+   {l:"x+5", ok:true},
+   {l:"x-5", miss:"sign-error"},
+   {l:"2x+5", miss:"picked-wrong-coefficient"},
+   {l:"x+3", miss:"arithmetic-error"}
+ ],
+ h:"Reorder:\\ (x^2+3x-10)\\div(x-2).\\ x^2\\div x=x;\\ x(x-2)=x^2-2x;\\ rem\\ 5x-10.\\ 5x\\div x=5;\\ 5(x-2)=5x-10;\\ rem\\ 0"},
+
+{c:"Divide Polynomials",
+ attrs:["missing-term","long-division"],
+ q:"(x^3-27)\\div(x-3)", a:"x^2+3x+9",
+ ch:[
+   {l:"x^2+3x+9", ok:true},
+   {l:"x^2+9", miss:"forgot-missing-term-placeholder"},
+   {l:"x^2-3x+9", miss:"sign-error"},
+   {l:"x^2+3x-9", miss:"sign-error"}
+ ],
+ h:"Insert\\ 0x^2,\\ 0x:\\ x^3+0x^2+0x-27.\\ x^3\\div x=x^2;\\ x^2(x-3)=x^3-3x^2;\\ rem\\ 3x^2+0x-27.\\ 3x^2\\div x=3x;\\ 3x(x-3)=3x^2-9x;\\ rem\\ 9x-27.\\ 9x\\div x=9;\\ rem\\ 0"},
 
 // ── Concept 9: Factor Trinomials (a=1) (10) ─────────────────────────────────
 // Choices use the NEW object form: {l: label, ok: true} or {l: label, miss: "slug"}
@@ -1413,7 +1469,7 @@ const Q = [
  q:"(r+9s)^2", a:"r^2+18rs+81s^2",
  ch:[
    {l:"r^2+18rs+81s^2", ok:true},
-   {l:"r^2+81s^2", miss:"dropped-middle-term"},
+   {l:"r^2+162s^2", miss:"middle-term-as-square-not-double-product"},
    {l:"r^2+9rs+81s^2", miss:"forgot-to-double-product"},
    {l:"r^2+18rs+9s^2", miss:"forgot-to-square-coefficient"}
  ],
@@ -1446,7 +1502,7 @@ const Q = [
  q:"(13-2x)^2", a:"169-52x+4x^2",
  ch:[
    {l:"169-52x+4x^2", ok:true},
-   {l:"169+4x^2", miss:"dropped-middle-term"},
+   {l:"169+8x^2", miss:"middle-term-as-square-not-double-product"},
    {l:"169-26x+4x^2", miss:"forgot-to-double-product"},
    {l:"169-52x+2x^2", miss:"forgot-to-square-coefficient"}
  ],
@@ -1457,7 +1513,7 @@ const Q = [
  q:"(3x+8y)^2", a:"9x^2+48xy+64y^2",
  ch:[
    {l:"9x^2+48xy+64y^2", ok:true},
-   {l:"9x^2+64y^2", miss:"dropped-middle-term"},
+   {l:"9x^2+128y^2", miss:"middle-term-as-square-not-double-product"},
    {l:"9x^2+24xy+64y^2", miss:"forgot-to-double-product"},
    {l:"3x^2+48xy+8y^2", miss:"forgot-to-square-coefficient"}
  ],
@@ -1490,7 +1546,7 @@ const Q = [
  q:"(2a-3b)^2", a:"4a^2-12ab+9b^2",
  ch:[
    {l:"4a^2-12ab+9b^2", ok:true},
-   {l:"4a^2+9b^2", miss:"dropped-middle-term"},
+   {l:"4a^2+18b^2", miss:"middle-term-as-square-not-double-product"},
    {l:"4a^2-6ab+9b^2", miss:"forgot-to-double-product"},
    {l:"4a^2+12ab+9b^2", miss:"sign-error"}
  ],
@@ -1501,7 +1557,7 @@ const Q = [
  q:"(5p+4)^2", a:"25p^2+40p+16",
  ch:[
    {l:"25p^2+40p+16", ok:true},
-   {l:"25p^2+16", miss:"dropped-middle-term"},
+   {l:"25p^2+32", miss:"middle-term-as-square-not-double-product"},
    {l:"5p^2+40p+16", miss:"forgot-to-square-coefficient"},
    {l:"25p^2+20p+16", miss:"forgot-to-double-product"}
  ],
@@ -1627,7 +1683,305 @@ const Q = [
    {l:"\\dfrac{1}{16}-5a^2", miss:"forgot-to-square-coefficient"},
    {l:"25a^2-\\dfrac{1}{16}", miss:"reversed-pattern"}
  ],
- h:"(\\tfrac{1}{4})^2-(5a)^2=\\tfrac{1}{16}-25a^2"}
+ h:"(\\tfrac{1}{4})^2-(5a)^2=\\tfrac{1}{16}-25a^2"},
+
+// ── Concept 16: Multiply Polynomials (8) ────────────────────────────────────
+// Added 2026-05-14: general binomial × binomial and binomial × trinomial
+// (not the (a±b)² or (a+b)(a-b) shortcuts — those live in concepts 14 & 15).
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(4x^2-5x-3)(x-2)",
+ a:"4x^3-13x^2+7x+6",
+ ch:[
+   {l:"4x^3-13x^2+7x+6", ok:true},
+   {l:"4x^3-3x^2+7x+6", miss:"sign-drop-when-combining"},
+   {l:"4x^3-13x^2-7x+6", miss:"sign-error-on-product"},
+   {l:"4x^3-13x^2+7x-6", miss:"sign-error-on-product"}
+ ],
+ h:"Distribute: 4x^2 \\cdot (x-2)=4x^3-8x^2.\\ -5x \\cdot (x-2)=-5x^2+10x.\\ -3 \\cdot (x-2)=-3x+6.\\ Combine like terms: 4x^3+(-8-5)x^2+(10-3)x+6=4x^3-13x^2+7x+6."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(2x-3)(3x+5)",
+ a:"6x^2+x-15",
+ ch:[
+   {l:"6x^2+x-15", ok:true},
+   {l:"6x^2-x-15", miss:"sign-drop-when-combining"},
+   {l:"6x^2+x+15", miss:"sign-error-on-product"},
+   {l:"6x^2-15", miss:"multiplied-only-first-terms"}
+ ],
+ h:"FOIL: 2x \\cdot 3x=6x^2.\\ 2x \\cdot 5=10x.\\ -3 \\cdot 3x=-9x.\\ -3 \\cdot 5=-15.\\ Combine: 6x^2+(10-9)x-15=6x^2+x-15."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(5x+2)(x-4)",
+ a:"5x^2-18x-8",
+ ch:[
+   {l:"5x^2-18x-8", ok:true},
+   {l:"5x^2+18x-8", miss:"sign-drop-when-combining"},
+   {l:"5x^2-18x+8", miss:"sign-error-on-product"},
+   {l:"5x^2-22x-8", miss:"sign-error-on-distribution"}
+ ],
+ h:"FOIL: 5x \\cdot x=5x^2.\\ 5x \\cdot (-4)=-20x.\\ 2 \\cdot x=2x.\\ 2 \\cdot (-4)=-8.\\ Combine: 5x^2+(-20+2)x-8=5x^2-18x-8."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(3x-7)(2x-1)",
+ a:"6x^2-17x+7",
+ ch:[
+   {l:"6x^2-17x+7", ok:true},
+   {l:"6x^2+17x+7", miss:"sign-drop-when-combining"},
+   {l:"6x^2-17x-7", miss:"sign-error-on-product"},
+   {l:"6x^2-11x+7", miss:"sign-error-on-distribution"}
+ ],
+ h:"FOIL: 3x \\cdot 2x=6x^2.\\ 3x \\cdot (-1)=-3x.\\ -7 \\cdot 2x=-14x.\\ -7 \\cdot (-1)=+7.\\ Combine: 6x^2+(-3-14)x+7=6x^2-17x+7."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(x+6)(2x^2-x-4)",
+ a:"2x^3+11x^2-10x-24",
+ ch:[
+   {l:"2x^3+11x^2-10x-24", ok:true},
+   {l:"2x^3+11x^2+10x-24", miss:"sign-drop-when-combining"},
+   {l:"2x^3+11x^2-10x+24", miss:"sign-error-on-product"},
+   {l:"2x^3+11x^2-10x", miss:"missed-a-distribution-term"}
+ ],
+ h:"Distribute: x \\cdot (2x^2-x-4)=2x^3-x^2-4x.\\ 6 \\cdot (2x^2-x-4)=12x^2-6x-24.\\ Combine: 2x^3+(-1+12)x^2+(-4-6)x-24=2x^3+11x^2-10x-24."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(2x-5)(x^2+3x-2)",
+ a:"2x^3+x^2-19x+10",
+ ch:[
+   {l:"2x^3+x^2-19x+10", ok:true},
+   {l:"2x^3+x^2+19x+10", miss:"sign-drop-when-combining"},
+   {l:"2x^3+x^2-19x-10", miss:"sign-error-on-product"},
+   {l:"2x^3+11x^2-19x+10", miss:"sign-error-on-distribution"}
+ ],
+ h:"Distribute: 2x \\cdot (x^2+3x-2)=2x^3+6x^2-4x.\\ -5 \\cdot (x^2+3x-2)=-5x^2-15x+10.\\ Combine: 2x^3+(6-5)x^2+(-4-15)x+10=2x^3+x^2-19x+10."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","combine-like-terms","sign-tracking"],
+ q:"(4x+3)(2x-7)",
+ a:"8x^2-22x-21",
+ ch:[
+   {l:"8x^2-22x-21", ok:true},
+   {l:"8x^2+22x-21", miss:"sign-drop-when-combining"},
+   {l:"8x^2-22x+21", miss:"sign-error-on-product"},
+   {l:"8x^2-21", miss:"multiplied-only-first-terms"}
+ ],
+ h:"FOIL: 4x \\cdot 2x=8x^2.\\ 4x \\cdot (-7)=-28x.\\ 3 \\cdot 2x=6x.\\ 3 \\cdot (-7)=-21.\\ Combine: 8x^2+(-28+6)x-21=8x^2-22x-21."},
+
+{c:"Multiply Polynomials",
+ attrs:["distribute-all-terms","sign-tracking"],
+ q:"-3x(2x^2-4x+7)",
+ a:"-6x^3+12x^2-21x",
+ ch:[
+   {l:"-6x^3+12x^2-21x", ok:true},
+   {l:"-6x^3-12x^2-21x", miss:"sign-error-on-product"},
+   {l:"-6x^3-12x^2+21x", miss:"sign-error-on-distribution"},
+   {l:"-6x^3+12x^2", miss:"missed-a-distribution-term"}
+ ],
+ h:"Distribute -3x to every term: -3x \\cdot 2x^2=-6x^3.\\ -3x \\cdot (-4x)=+12x^2.\\ -3x \\cdot 7=-21x.\\ Result: -6x^3+12x^2-21x."},
+
+// ── Concept 17: Applied Quadratics — Vertical Motion (8) ────────────────────
+// Added 2026-05-14: word problems using h = -16t^2 + vt + s.
+// Variety: dropped/released (v=0), thrown up (v>0), thrown down (v<0);
+// question types alternate between "find height at time t" and "find time to ground".
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","plug-and-chug","released-means-v0"],
+ q:"A ball is dropped from a height of 144\\text{ ft}. Use h=-16t^2+vt+s. Find the height after t=2\\text{ seconds}.",
+ a:"80\\text{ ft}",
+ ch:[
+   {l:"80\\text{ ft}", ok:true},
+   {l:"144\\text{ ft}", miss:"forgot-to-plug-t"},
+   {l:"112\\text{ ft}", miss:"forgot-released-means-v0"},
+   {l:"208\\text{ ft}", miss:"sign-error-on-16t-squared"}
+ ],
+ h:"Dropped \\Rightarrow v=0,\\ s=144.\\ h=-16(2)^2+0(2)+144=-64+144=80"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","released-means-v0","didnt-set-h-zero"],
+ q:"A rock is released from a height of 400\\text{ ft}. Use h=-16t^2+vt+s. When does it hit the ground?",
+ a:"t=5\\text{ seconds}",
+ ch:[
+   {l:"t=5\\text{ seconds}", ok:true},
+   {l:"t=25\\text{ seconds}", miss:"arithmetic-error"},
+   {l:"t=400\\text{ seconds}", miss:"didnt-set-h-zero"},
+   {l:"t=-5\\text{ seconds}", miss:"picked-negative-root"}
+ ],
+ h:"Released \\Rightarrow v=0,\\ s=400.\\ Set h=0:\\ -16t^2+400=0 \\Rightarrow t^2=\\dfrac{400}{16}=25 \\Rightarrow t=5"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","didnt-set-h-zero","picked-negative-root"],
+ q:"A ball is thrown upward at 48\\text{ ft/s} from a height of 64\\text{ ft}. Use h=-16t^2+vt+s. When does it hit the ground?",
+ a:"t=4\\text{ seconds}",
+ ch:[
+   {l:"t=4\\text{ seconds}", ok:true},
+   {l:"t=-1\\text{ second}", miss:"picked-negative-root"},
+   {l:"t=64\\text{ seconds}", miss:"didnt-set-h-zero"},
+   {l:"t=3\\text{ seconds}", miss:"arithmetic-error"}
+ ],
+ h:"v=48,\\ s=64.\\ Set h=0:\\ -16t^2+48t+64=0 \\Rightarrow -16(t^2-3t-4)=0 \\Rightarrow -16(t-4)(t+1)=0 \\Rightarrow t=4"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","plug-and-chug"],
+ q:"A ball is thrown upward at 32\\text{ ft/s} from a height of 48\\text{ ft}. Use h=-16t^2+vt+s. Find the height after t=1\\text{ second}.",
+ a:"64\\text{ ft}",
+ ch:[
+   {l:"64\\text{ ft}", ok:true},
+   {l:"48\\text{ ft}", miss:"forgot-to-plug-t"},
+   {l:"96\\text{ ft}", miss:"sign-error-on-16t-squared"},
+   {l:"32\\text{ ft}", miss:"v-s-swapped"}
+ ],
+ h:"v=32,\\ s=48.\\ h=-16(1)^2+32(1)+48=-16+32+48=64"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","plug-and-chug","negative-velocity"],
+ q:"A ball is thrown downward at 16\\text{ ft/s} from a height of 96\\text{ ft}. Use h=-16t^2+vt+s (so v=-16). Find the height after t=2\\text{ seconds}.",
+ a:"0\\text{ ft}",
+ ch:[
+   {l:"0\\text{ ft}", ok:true},
+   {l:"64\\text{ ft}", miss:"wrong-sign-on-velocity"},
+   {l:"96\\text{ ft}", miss:"forgot-to-plug-t"},
+   {l:"128\\text{ ft}", miss:"sign-error-on-16t-squared"}
+ ],
+ h:"Thrown down \\Rightarrow v=-16,\\ s=96.\\ h=-16(2)^2+(-16)(2)+96=-64-32+96=0"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","plug-and-chug","released-means-v0"],
+ q:"A ball is released from a height of 225\\text{ ft}. Use h=-16t^2+vt+s. Find the height after t=3\\text{ seconds}.",
+ a:"81\\text{ ft}",
+ ch:[
+   {l:"81\\text{ ft}", ok:true},
+   {l:"225\\text{ ft}", miss:"forgot-to-plug-t"},
+   {l:"-144\\text{ ft}", miss:"dropped-positive-s"},
+   {l:"369\\text{ ft}", miss:"sign-error-on-16t-squared"}
+ ],
+ h:"Released \\Rightarrow v=0,\\ s=225.\\ h=-16(3)^2+0(3)+225=-144+225=81"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","didnt-set-h-zero","picked-negative-root"],
+ q:"A ball is thrown upward at 64\\text{ ft/s} from a height of 80\\text{ ft}. Use h=-16t^2+vt+s. When does it hit the ground?",
+ a:"t=5\\text{ seconds}",
+ ch:[
+   {l:"t=5\\text{ seconds}", ok:true},
+   {l:"t=-1\\text{ second}", miss:"picked-negative-root"},
+   {l:"t=80\\text{ seconds}", miss:"didnt-set-h-zero"},
+   {l:"t=4\\text{ seconds}", miss:"arithmetic-error"}
+ ],
+ h:"v=64,\\ s=80.\\ Set h=0:\\ -16t^2+64t+80=0 \\Rightarrow -16(t^2-4t-5)=0 \\Rightarrow -16(t-5)(t+1)=0 \\Rightarrow t=5"},
+
+{c:"Applied Quadratics — Vertical Motion",
+ attrs:["identify-variables","didnt-set-h-zero","negative-velocity"],
+ q:"A ball is thrown downward at 32\\text{ ft/s} from a height of 128\\text{ ft}. Use h=-16t^2+vt+s (so v=-32). When does it hit the ground?",
+ a:"t=2\\text{ seconds}",
+ ch:[
+   {l:"t=2\\text{ seconds}", ok:true},
+   {l:"t=-4\\text{ seconds}", miss:"picked-negative-root"},
+   {l:"t=128\\text{ seconds}", miss:"didnt-set-h-zero"},
+   {l:"t=4\\text{ seconds}", miss:"wrong-sign-on-velocity"}
+ ],
+ h:"Thrown down \\Rightarrow v=-32,\\ s=128.\\ Set h=0:\\ -16t^2-32t+128=0 \\Rightarrow -16(t^2+2t-8)=0 \\Rightarrow -16(t+4)(t-2)=0 \\Rightarrow t=2"},
+
+// ── Concept 18: Applied Quadratics — Area (8) ───────────────────────────────
+// Added 2026-05-14: word problems where a shape has polynomial dimensions
+// and the area is given. Mix of rectangles (A=L·W) and triangles (A=½·b·h).
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","rectangle-area","factor-trinomial","reject-negative-dimension"],
+ q:"The area of a rectangle is 16\\text{ sq m}. Its length is (x+5) and its width is (x-1). Find the dimensions.",
+ a:"\\text{Width }=2\\text{ m},\\ \\text{Length }=8\\text{ m}",
+ ch:[
+   {l:"\\text{Width }=2,\\ \\text{Length }=8", ok:true},
+   {l:"x=3", miss:"gave-x-instead-of-dimension"},
+   {l:"x=3\\text{ and }x=-7", miss:"picked-both-roots"},
+   {l:"\\text{Width }=-8,\\ \\text{Length }=-2", miss:"picked-negative-dimension"}
+ ],
+ h:"(x+5)(x-1)=16 \\Rightarrow x^2+4x-5=16 \\Rightarrow x^2+4x-21=0 \\Rightarrow (x+7)(x-3)=0 \\Rightarrow x=3.\\ \\text{Width}=x-1=2,\\ \\text{Length}=x+5=8."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","rectangle-area","factor-trinomial","reject-negative-dimension"],
+ q:"A rectangle has area 21\\text{ sq ft}. Its length is (x+3) and its width is (x-1). Find the value of x.",
+ a:"x=4",
+ ch:[
+   {l:"x=4", ok:true},
+   {l:"x^2+2x-24=0", miss:"expanded-but-didnt-factor"},
+   {l:"x=4\\text{ and }x=-6", miss:"picked-both-roots"},
+   {l:"x=-3\\text{ and }x=1", miss:"forgot-to-set-equation-zero"}
+ ],
+ h:"(x+3)(x-1)=21 \\Rightarrow x^2+2x-3=21 \\Rightarrow x^2+2x-24=0 \\Rightarrow (x+6)(x-4)=0 \\Rightarrow x=4 \\text{ (reject } x=-6\\text{)}."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","rectangle-area","factor-trinomial","reject-negative-dimension","coefficient-on-x"],
+ q:"The area of a rectangle is 14\\text{ sq cm}. Its length is (2x+1) and its width is (x-1). Find the dimensions.",
+ a:"\\text{Width }=2\\text{ cm},\\ \\text{Length }=7\\text{ cm}",
+ ch:[
+   {l:"\\text{Width }=2,\\ \\text{Length }=7", ok:true},
+   {l:"x=3", miss:"gave-x-instead-of-dimension"},
+   {l:"2x^2-x-15=0", miss:"expanded-but-didnt-factor"},
+   {l:"\\text{Width }=1,\\ \\text{Length }=3", miss:"multiplied-wrong"}
+ ],
+ h:"(2x+1)(x-1)=14 \\Rightarrow 2x^2-x-1=14 \\Rightarrow 2x^2-x-15=0 \\Rightarrow (2x+5)(x-3)=0 \\Rightarrow x=3.\\ \\text{Width}=x-1=2,\\ \\text{Length}=2x+1=7."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","rectangle-area","factor-trinomial","reject-negative-dimension"],
+ q:"A rectangular garden has area 24\\text{ sq yd}. Its length is (x+7) and its width is (x-3). Find the value of x.",
+ a:"x=5",
+ ch:[
+   {l:"x=5", ok:true},
+   {l:"x=5\\text{ and }x=-9", miss:"picked-both-roots"},
+   {l:"x^2+4x-45=0", miss:"expanded-but-didnt-factor"},
+   {l:"x=-7\\text{ and }x=3", miss:"forgot-to-set-equation-zero"}
+ ],
+ h:"(x+7)(x-3)=24 \\Rightarrow x^2+4x-21=24 \\Rightarrow x^2+4x-45=0 \\Rightarrow (x+9)(x-5)=0 \\Rightarrow x=5 \\text{ (reject } x=-9\\text{)}."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","rectangle-area","factor-trinomial","reject-negative-dimension","coefficient-on-x"],
+ q:"The area of a rectangle is 21\\text{ sq in}. Its length is (2x+3) and its width is (x+1). Find the dimensions.",
+ a:"\\text{Width }=3\\text{ in},\\ \\text{Length }=7\\text{ in}",
+ ch:[
+   {l:"\\text{Width }=3,\\ \\text{Length }=7", ok:true},
+   {l:"x=2", miss:"gave-x-instead-of-dimension"},
+   {l:"2x^2+5x-18=0", miss:"expanded-but-didnt-factor"},
+   {l:"\\text{Width }=-\\tfrac{7}{2},\\ \\text{Length }=-6", miss:"picked-negative-dimension"}
+ ],
+ h:"(2x+3)(x+1)=21 \\Rightarrow 2x^2+5x+3=21 \\Rightarrow 2x^2+5x-18=0 \\Rightarrow (2x+9)(x-2)=0 \\Rightarrow x=2.\\ \\text{Width}=x+1=3,\\ \\text{Length}=2x+3=7."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","triangle-area","factor-trinomial","reject-negative-dimension"],
+ q:"A triangle has area 16\\text{ sq m}. Its base is (x+3) and its height is (x-1). Find the value of x.",
+ a:"x=5",
+ ch:[
+   {l:"x=5", ok:true},
+   {l:"x=4", miss:"triangle-forgot-half"},
+   {l:"x=5\\text{ and }x=-7", miss:"picked-both-roots"},
+   {l:"x^2+2x-35=0", miss:"expanded-but-didnt-factor"}
+ ],
+ h:"\\tfrac{1}{2}(x+3)(x-1)=16 \\Rightarrow (x+3)(x-1)=32 \\Rightarrow x^2+2x-3=32 \\Rightarrow x^2+2x-35=0 \\Rightarrow (x+7)(x-5)=0 \\Rightarrow x=5."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","triangle-area","factor-trinomial","reject-negative-dimension"],
+ q:"A triangular sail has area 9\\text{ sq ft}. Its base is (x+5) and its height is (x-2). Find the dimensions.",
+ a:"\\text{Base }=9\\text{ ft},\\ \\text{Height }=2\\text{ ft}",
+ ch:[
+   {l:"\\text{Base }=9,\\ \\text{Height }=2", ok:true},
+   {l:"x=4", miss:"gave-x-instead-of-dimension"},
+   {l:"\\text{Base }=8,\\ \\text{Height }=1", miss:"triangle-forgot-half"},
+   {l:"\\text{Base }=-2,\\ \\text{Height }=-9", miss:"picked-negative-dimension"}
+ ],
+ h:"\\tfrac{1}{2}(x+5)(x-2)=9 \\Rightarrow (x+5)(x-2)=18 \\Rightarrow x^2+3x-10=18 \\Rightarrow x^2+3x-28=0 \\Rightarrow (x+7)(x-4)=0 \\Rightarrow x=4.\\ \\text{Base}=x+5=9,\\ \\text{Height}=x-2=2."},
+
+{c:"Applied Quadratics — Area",
+ attrs:["translate-word-to-equation","triangle-area","factor-trinomial","reject-negative-dimension","coefficient-on-x"],
+ q:"A triangle has area 10\\text{ sq cm}. Its base is (2x-1) and its height is (x+1). Find the value of x.",
+ a:"x=3",
+ ch:[
+   {l:"x=3", ok:true},
+   {l:"x=3\\text{ and }x=-\\tfrac{7}{2}", miss:"picked-both-roots"},
+   {l:"2x^2+x-21=0", miss:"expanded-but-didnt-factor"},
+   {l:"\\text{Base }=5,\\ \\text{Height }=4", miss:"gave-x-instead-of-dimension"}
+ ],
+ h:"\\tfrac{1}{2}(2x-1)(x+1)=10 \\Rightarrow (2x-1)(x+1)=20 \\Rightarrow 2x^2+x-1=20 \\Rightarrow 2x^2+x-21=0 \\Rightarrow (2x+7)(x-3)=0 \\Rightarrow x=3."}
 ];
 
 // Per-concept "key rule" shown when Ethan misses a question.
@@ -1648,7 +2002,10 @@ const KEY_RULES = {
   "Solve Quadratics by Factoring":"1) Move everything to one side so the RHS$=0$. 2) Factor. 3) Set each factor $=0$. NEVER set a factor equal to a non-zero value.",
   "Add/Subtract Polynomials":     "Distribute any leading $-$ across ALL terms. Combine only LIKE terms (same variable AND same exponent).",
   "Multiply Special Products":    "$(a\\pm b)^2 = a^2 \\pm 2ab + b^2$. THREE terms — middle is double the product. Square coefficients fully: $(3x)^2 = 9x^2$, not $3x^2$.",
-  "Difference of Squares":        "$(a+b)(a-b) = a^2 - b^2$. Two terms only, NO middle. Square each side."
+  "Difference of Squares":        "$(a+b)(a-b) = a^2 - b^2$. Two terms only, NO middle. Square each side.",
+  "Multiply Polynomials":         "Distribute EVERY term of the first poly by EVERY term of the second. Then combine like terms — watch the signs carefully when adding negative coefficients (e.g., $-8x^2 + (-5x^2) = -13x^2$, not $-3x^2$).",
+  "Applied Quadratics — Vertical Motion": "$h=-16t^2+vt+s$. $s$ = starting height. $v$ = initial velocity (0 if dropped/released, $+$ if thrown up, $-$ if thrown down). For 'when does it hit the ground', set $h=0$ and solve. Reject negative $t$.",
+  "Applied Quadratics — Area":    "Area formula = given area (rectangle: $L\\cdot W$; triangle: $\\tfrac{1}{2} b h$). Expand, move everything to one side ($=0$), factor, solve. Reject negative roots — dimensions must be positive. Read the question: x or the dimensions?"
 };
 
 const CONCEPTS = [...new Set(Q.map(q => q.c))];
@@ -1673,7 +2030,11 @@ const BASE_WEIGHT = {
   "Solve Quadratics by Factoring": 0.95,
   "Add/Subtract Polynomials":      0.70,
   "Multiply Special Products":     0.80,
-  "Difference of Squares":         0.75
+  "Difference of Squares":         0.75,
+  // Added 2026-05-14 from practice-test gap analysis — test today, drill-heavy.
+  "Multiply Polynomials":                 0.90,
+  "Applied Quadratics — Vertical Motion": 0.95,
+  "Applied Quadratics — Area":            0.95
 };
 
 // Concepts that are NEW (must complete Learn mode before drilling).
@@ -1849,7 +2210,11 @@ function defaultState() {
       "Neg. Exponents","(a−b)²","Factor First",
       "Add/Subtract Polynomials","Multiply Special Products","Difference of Squares",
       "Factor Trinomials (a=1)","Factor Trinomials (a≠1)",
-      "Zero-Product Property","Solve Quadratics by Factoring"
+      "Zero-Product Property","Solve Quadratics by Factoring",
+      // Added 2026-05-14 — drill direct (no Learn) since test is today.
+      "Multiply Polynomials",
+      "Applied Quadratics — Vertical Motion",
+      "Applied Quadratics — Area"
     ],
     // Concepts already mastered — kept on a 5% retention rotation only.
     // New concepts (after Learn mode) start as ACTIVE, not mastered, and earn
@@ -1867,10 +2232,11 @@ function defaultState() {
 const CONCEPT_GROUPS = {
   "Radicals":      ["Like Radicals"],
   "Other algebra": ["Variable Fractions","Add Exponents","Neg. Exponents","(a−b)²","Factor First"],
-  "Polynomials":   ["Add/Subtract Polynomials","Multiply Special Products","Difference of Squares",
+  "Polynomials":   ["Add/Subtract Polynomials","Multiply Polynomials","Multiply Special Products","Difference of Squares",
                     "Divide Monomials","Divide Polynomials"],
   "Quadratics":    ["Factor Trinomials (a=1)","Factor Trinomials (a≠1)",
-                    "Zero-Product Property","Solve Quadratics by Factoring"]
+                    "Zero-Product Property","Solve Quadratics by Factoring"],
+  "Applied":       ["Applied Quadratics — Vertical Motion","Applied Quadratics — Area"]
 };
 
 // Fraction of session slots that should be retention picks from mastered concepts.
