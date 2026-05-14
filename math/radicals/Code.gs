@@ -38,7 +38,10 @@ const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_MODEL   = 'claude-opus-4-7';
 
 // Abuse protection limits
-const DAILY_SESSION_CAP        = 30;   // hard cap on doPost calls per UTC day
+// NOTE: doPost is now called per-question (gateWork + analyzeOne) in addition to
+// the per-session upload. ~15 calls/session is typical (10 gate + 4 analyze + 1 upload).
+// Cap protects against runaway loops; counter only bumps on session uploads.
+const DAILY_SESSION_CAP        = 500;  // hard cap on doPost calls per UTC day
 const PER_STUDENT_MONTHLY_CAP  = 50;   // soft cap: above this, AI analysis disables but drill still works
 
 /**
@@ -87,10 +90,19 @@ function doPost(e) {
     }
 
     // ── Layer 2: hard daily cap on doPost calls (anti-runaway) ──
+    // Cap protects all action types; only the session-upload bumps the counter.
     const dayCap = checkDailyCap();
     if (!dayCap.ok) {
       return json({ ok: false, error: 'daily_limit_reached', limit: dayCap.limit });
     }
+
+    // ── Action dispatch ──
+    // gateWork: Haiku verifies handwriting is meaningful work for this problem
+    //           BEFORE we let the student see the multiple choices.
+    // analyzeOne: Opus does the same per-question vision analysis used for
+    //             email reports, but for inline display after a wrong answer.
+    if (data.action === 'gateWork')   return handleGateWork(data);
+    if (data.action === 'analyzeOne') return handleAnalyzeOne(data);
 
     // ── Layer 3: per-student monthly soft cap on AI ANALYSIS ──
     // Drill data still saves; analysis is what gets disabled.
@@ -808,4 +820,157 @@ function verifySecret(data) {
   const expected = PropertiesService.getScriptProperties().getProperty('WEBHOOK_SECRET');
   if (!expected) return true;  // not configured → don't enforce
   return data && data.secret === expected;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  ACTION HANDLERS — per-question webhook actions called from the drill
+// ════════════════════════════════════════════════════════════════════════════
+
+// Rubric for the work-gate check. Uses Haiku 4.5 (fast + cheap) since the
+// decision is binary: did the student show meaningful work, or just scribble?
+// Be lenient — students get frustrated by over-rejection.
+const GATE_RUBRIC =
+'You evaluate whether a student showed meaningful handwritten work for a specific algebra problem. The student must show at least ONE substantive step toward a solution before we open the multiple-choice answers.\n\n' +
+'CRITERIA (be lenient — students get frustrated by over-rejection):\n' +
+'  ACCEPT if you see:\n' +
+'    • One or more steps of arithmetic, algebra, factoring, or simplification\n' +
+'    • A relevant partial answer or attempt at the final answer\n' +
+'    • Setup work (e.g., listing factor pairs, distributing, writing the problem rewritten in a useful form)\n' +
+'    • Genuine engagement even if the work is wrong\n' +
+'  REJECT only if:\n' +
+'    • The canvas is blank or near-blank\n' +
+'    • Only the original problem is rewritten with no progress\n' +
+'    • Random scribbles, doodles, single letters, or marks that are not mathematical operations\n' +
+'    • A bare numerical guess with no work supporting it\n\n' +
+'When rejecting, the message should be ONE short, kid-friendly sentence that suggests what to write — specific to the concept if you can be specific. Examples:\n' +
+'  • "Try writing the first step — what two numbers multiply to 14 and sum to -9?"\n' +
+'  • "Show me one move toward the answer before we open the choices."\n' +
+'  • "Even an attempt — try simplifying one of the radicals first."\n\n' +
+'When accepting, message can be simply "Looks good — opening choices."\n\n' +
+'Output JSON ONLY matching the schema. No prose outside the JSON.';
+
+/**
+ * gateWork action: examine the canvas image and decide whether the student
+ * has shown enough work to unlock the multiple-choice answers.
+ *
+ * Input: { action: 'gateWork', student, concept, question, pngDataUrl }
+ * Output: { ok: true, allow: bool, reason: slug, message: string }
+ *
+ * Fail-open: any API error returns allow=true so we never block on infra.
+ */
+function handleGateWork(data) {
+  const apiKey = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
+  if (!apiKey) return json({ ok: true, allow: true, reason: 'no_api_key_failopen' });
+
+  if (!data.pngDataUrl) {
+    return json({ ok: true, allow: false, reason: 'no_canvas',
+                  message: 'Show your work on the canvas before we open the choices.' });
+  }
+  const m = data.pngDataUrl.match(/^data:image\/png;base64,(.+)$/);
+  if (!m) return json({ ok: true, allow: true, reason: 'unparseable_failopen' });
+  const pngBase64 = m[1];
+
+  const userText =
+    'Concept: ' + (data.concept || '(unknown)') + '\n' +
+    'Question (LaTeX): ' + (data.question || '(unknown)') + '\n\n' +
+    'Look at the handwriting in the image. Decide: did the student show meaningful work? Return JSON only.';
+
+  const payload = {
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 200,
+    system: [{ type: 'text', text: GATE_RUBRIC, cache_control: { type: 'ephemeral' } }],
+    messages: [{
+      role: 'user',
+      content: [
+        { type: 'image', source: { type: 'base64', media_type: 'image/png', data: pngBase64 } },
+        { type: 'text', text: userText }
+      ]
+    }],
+    output_config: {
+      format: {
+        type: 'json_schema',
+        schema: {
+          type: 'object',
+          properties: {
+            allow:   { type: 'boolean' },
+            reason:  { type: 'string' },
+            message: { type: 'string' }
+          },
+          required: ['allow', 'reason', 'message'],
+          additionalProperties: false
+        }
+      }
+    }
+  };
+
+  try {
+    const resp = UrlFetchApp.fetch(ANTHROPIC_API_URL, {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+    if (resp.getResponseCode() !== 200) {
+      return json({ ok: true, allow: true, reason: 'api_error_failopen',
+                    detail: resp.getResponseCode() });
+    }
+    const respData = JSON.parse(resp.getContentText());
+    const textBlock = (respData.content || []).find(function (b) { return b.type === 'text'; });
+    if (!textBlock) return json({ ok: true, allow: true, reason: 'no_text_block_failopen' });
+    const parsed = JSON.parse(textBlock.text);
+    return json({
+      ok: true,
+      allow:   !!parsed.allow,
+      reason:  parsed.reason || 'unknown',
+      message: parsed.message || ''
+    });
+  } catch (err) {
+    return json({ ok: true, allow: true, reason: 'exception_failopen', detail: String(err) });
+  }
+}
+
+/**
+ * analyzeOne action: same vision analysis used for end-of-session emails,
+ * but called per-question right after a wrong answer is picked. Returns
+ * the structured analysis JSON.
+ *
+ * Input: { action: 'analyzeOne', student, concept, question, answer, chosen,
+ *          correct, miss, pngDataUrl }
+ * Output: { ok: true, error_type, what_happened, coaching_note, next_step }
+ *         OR { ok: false, error: string }
+ *
+ * Fail-soft: any error returns ok:false; the frontend hides the inline
+ * analysis block but the generic hint + Key Rule remain visible.
+ */
+function handleAnalyzeOne(data) {
+  const apiKey = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
+  if (!apiKey) return json({ ok: false, error: 'no_api_key' });
+
+  if (!data.pngDataUrl) return json({ ok: false, error: 'no_canvas' });
+  const m = data.pngDataUrl.match(/^data:image\/png;base64,(.+)$/);
+  if (!m) return json({ ok: false, error: 'unparseable_canvas' });
+
+  // Respect per-student monthly cap for inline analysis too — when paused,
+  // student still gets the generic Key Rule, just no AI commentary.
+  const studentCap = checkStudentMonthlyCap(data.student);
+  if (!studentCap.ok) return json({ ok: false, error: 'monthly_cap_reached' });
+
+  const item = {
+    concept:  data.concept,
+    question: data.question,
+    answer:   data.answer,
+    chosen:   data.chosen,
+    correct:  !!data.correct
+  };
+
+  const result = analyzeWork(item, m[1]);
+  if (result.error) return json({ ok: false, error: result.error });
+  return json({
+    ok: true,
+    error_type:    result.error_type,
+    what_happened: result.what_happened,
+    coaching_note: result.coaching_note,
+    next_step:     result.next_step
+  });
 }

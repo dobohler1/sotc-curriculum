@@ -102,6 +102,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .reveal-btn:active{background:#E5E5DF;}
 .reveal-hint{font-size:11.5px;color:var(--muted);text-align:center;
   margin-top:6px;font-style:italic;}
+.reveal-btn:disabled{cursor:default;opacity:0.7;}
+.reveal-btn .reveal-spinner{display:inline-block;
+  animation:reveal-pulse 1.5s ease-in-out infinite;margin-right:6px;}
+@keyframes reveal-pulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+
+/* Gate-block: shown when Claude rejects the canvas as not-real-work */
+.gate-block{background:#FFF4E5;color:#7A4D00;
+  border-left:3px solid #C07010;border-radius:8px;
+  padding:11px 13px;margin:10px 0 0;font-size:13.5px;line-height:1.55;}
+.gate-block .gate-label{display:block;font-size:10.5px;font-weight:700;
+  letter-spacing:0.05em;color:#C07010;margin-bottom:3px;text-transform:uppercase;}
+
+/* AI inline-analysis block: appears below Key Rule after wrong answers */
+.ai-analysis-pending,.ai-analysis-loaded{margin-top:10px;
+  padding:12px 14px;background:#F0F4FF;border-left:3px solid #4A7FE5;
+  border-radius:8px;font-size:13px;line-height:1.55;color:#1a1a1a;}
+.ai-analysis-pending{display:flex;align-items:center;gap:8px;color:#2A4A8A;
+  font-style:italic;}
+.ai-analysis-pending .ai-spinner{animation:reveal-pulse 1.5s ease-in-out infinite;}
+.ai-section{margin-bottom:8px;}
+.ai-section:last-child{margin-bottom:0;}
+.ai-label{display:block;font-size:10.5px;font-weight:700;
+  color:#4A7FE5;text-transform:uppercase;letter-spacing:0.05em;
+  margin-bottom:3px;}
+.ai-body{font-size:13px;line-height:1.55;color:#1a1a1a;margin:0;}
 .start-screen h2{font-size:22px;font-weight:600;margin-bottom:8px;}
 .start-screen p{font-size:15px;color:var(--muted);margin-bottom:6px;line-height:1.6;}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0;}
@@ -2416,12 +2441,78 @@ function renderQ() {
   setupCanvas();
 }
 
-function revealChoices() {
-  const btn = document.getElementById("reveal");
-  if (!btn) return;                                  // already revealed (idempotent)
-  secondsBeforeReveal = Math.round((Date.now() - revealStartTime) / 1000);
+// AI work-gate: before revealing the choices, send the canvas to Claude Haiku
+// for a sanity check. Fail-open on any error so we never block the student on
+// infrastructure. The `disabled` flag prevents double-firing while in flight.
+async function gateWork(q, pngDataUrl) {
+  if (!WEBHOOK_URL) return { allow: true, reason: 'no_webhook' };
+  if (!pngDataUrl)  return { allow: false, reason: 'no_canvas',
+    message: 'Show your work on the canvas before we open the choices.' };
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);  // 12s — Haiku is fast
+  try {
+    const resp = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        secret: WEBHOOK_SECRET,
+        action: "gateWork",
+        student: STUDENT_NAME,
+        concept: q.c,
+        question: q.q,
+        pngDataUrl: pngDataUrl
+      })
+    });
+    const data = await resp.json();
+    return {
+      allow: data.allow !== false,   // default to allow if response is unclear
+      reason: data.reason || 'unknown',
+      message: data.message || ''
+    };
+  } catch (err) {
+    console.warn("gateWork failed (fail-open):", err);
+    return { allow: true, reason: 'fetch_error_failopen' };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
-  // Hide the reveal button + hint, show the choices grid
+async function revealChoices() {
+  const btn = document.getElementById("reveal");
+  if (!btn || btn.disabled) return;                  // already revealed or in flight
+
+  // Clear any previous gate-block message so it doesn't linger from a prior reject.
+  const stale = document.getElementById("gate-msg");
+  if (stale) stale.remove();
+
+  // Capture canvas state BEFORE flipping anything, then start the gate check.
+  const pngDataUrl = captureCanvas();
+
+  btn.disabled = true;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="reveal-spinner">⏳</span> Checking your work…';
+
+  const result = await gateWork(session[qi], pngDataUrl);
+
+  if (!result.allow) {
+    // Blocked — surface the coaching message and re-enable the button so the
+    // student can add more work and try again.
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+    const card = btn.parentElement;
+    const msg = document.createElement("div");
+    msg.id = "gate-msg";
+    msg.className = "gate-block";
+    msg.innerHTML = `<span class="gate-label">📝 Show your work</span>${
+      escapeHTML(result.message || 'Try writing at least one step before we open the choices.')
+    }`;
+    card.insertBefore(msg, btn);
+    return;
+  }
+
+  // Allowed — proceed with the original reveal flow.
+  secondsBeforeReveal = Math.round((Date.now() - revealStartTime) / 1000);
   btn.remove();
   const hint = document.querySelector(".reveal-hint");
   if (hint) hint.remove();
@@ -2436,6 +2527,12 @@ function revealChoices() {
     cbtn.onclick = () => pick(i, c.ok, q);
     cs.appendChild(cbtn);
   });
+}
+
+function escapeHTML(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 function pick(idx, ok, q) {
@@ -2468,11 +2565,15 @@ function pick(idx, ok, q) {
     if (shuffChoices[i].ok && !ok) b.classList.add("reveal");
   });
 
-  // Key-rule reminder when wrong
+  // Key-rule reminder when wrong + placeholder for AI analysis (filled async).
   const ruleHTML = ok ? "" :
     `<div class="key-rule">
        <span class="label">📌 Key Rule — ${q.c}</span>
        ${renderStepText(KEY_RULES[q.c] || "")}
+     </div>
+     <div id="ai-analysis" class="ai-analysis-pending">
+       <span class="ai-spinner">🔍</span>
+       <span>Looking at your work…</span>
      </div>`;
 
   document.getElementById("fb").innerHTML =
@@ -2483,6 +2584,73 @@ function pick(idx, ok, q) {
     `<button class="next-btn" onclick="adv()">
        ${qi+1<SZ?"Next Question →":"See My Score"}
      </button>`;
+
+  // Fire per-question AI analysis on wrong answers — non-blocking. Student can
+  // hit Next at any time; the analysis fills in when ready, or hides on failure.
+  if (!ok) {
+    fireAnalysis(q, perQuestion[qi], qi).catch(err => {
+      console.warn("fireAnalysis failed:", err);
+      const ai = document.getElementById("ai-analysis");
+      if (ai) ai.style.display = "none";
+    });
+  }
+}
+
+async function fireAnalysis(q, pq, capturedQi) {
+  const hideAI = () => {
+    const ai = document.getElementById("ai-analysis");
+    if (ai) ai.style.display = "none";
+  };
+  if (!WEBHOOK_URL) { hideAI(); return; }
+  const pngDataUrl = workShown[capturedQi];
+  if (!pngDataUrl) { hideAI(); return; }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25000);  // 25s — Opus can be slow
+  try {
+    const resp = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        secret: WEBHOOK_SECRET,
+        action: "analyzeOne",
+        student: STUDENT_NAME,
+        concept: q.c,
+        question: q.q,
+        answer: q.a,
+        chosen: pq.chosen,
+        correct: pq.correct,
+        miss: pq.miss,
+        pngDataUrl: pngDataUrl
+      })
+    });
+    const data = await resp.json();
+    // If the student already advanced past this question, ai-analysis is gone —
+    // bail silently.
+    const ai = document.getElementById("ai-analysis");
+    if (!ai || qi !== capturedQi) return;
+
+    if (data.ok && data.what_happened) {
+      ai.classList.remove("ai-analysis-pending");
+      ai.classList.add("ai-analysis-loaded");
+      ai.innerHTML = `
+        <div class="ai-section">
+          <span class="ai-label">🔍 What I see in your work</span>
+          <p class="ai-body">${escapeHTML(data.what_happened)}</p>
+        </div>
+        <div class="ai-section">
+          <span class="ai-label">📍 Try this next time</span>
+          <p class="ai-body">${escapeHTML(data.next_step || '')}</p>
+        </div>`;
+    } else {
+      ai.style.display = "none";
+    }
+  } catch (err) {
+    console.warn("analyzeOne fetch failed:", err);
+    hideAI();
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function adv() { qi++; answered=false; renderQ(); }
