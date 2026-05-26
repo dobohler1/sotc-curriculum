@@ -19,6 +19,12 @@ math/ATRoster.csv
 # Student assessment submissions with grades
 JohnMuir/reference/ForGrade_*.pdf
 
+# Certificates / rosters containing student names (PII)
+JohnMuir/certificates/cert_sumobot.html
+JohnMuir/certificates/cert_sumobot.pdf
+JohnMuir/certificates/class_roster_sheet.html
+JohnMuir/certificates/class_roster_sheet.pdf
+
 # Allen Temple — sensitive / internal files
 # Only allenTemple/registration/ and allenTemple/emails/ should be committed
 # Everything else contains PII, financials, contracts, or internal docs

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SOTC Award Certificates — John Muir SumoBot</title>
+  <style>
+    @page { size: 11in 8.5in; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: Georgia, "Times New Roman", serif; background: #f0f0f0; }
+
+    .certificate {
+      width: 11in; height: 8.5in; margin: 0 auto; background: #fff;
+      position: relative; overflow: hidden; page-break-after: always;
+      display: flex; align-items: flex-start; justify-content: center;
+    }
+    .certificate:last-child { page-break-after: auto; }
+
+    .border-outer { position: absolute; inset: 0.3in; border: 3px solid #0d1b2a; }
+    .border-inner { position: absolute; inset: 0.4in; border: 1px solid #0d1b2a; }
+
+    .corner-accent { position: absolute; width: 60px; height: 60px; border-color: #d4a017; border-style: solid; }
+    .corner-accent.tl { top: 0.25in; left: 0.25in; border-width: 4px 0 0 4px; }
+    .corner-accent.tr { top: 0.25in; right: 0.25in; border-width: 4px 4px 0 0; }
+    .corner-accent.bl { bottom: 0.25in; left: 0.25in; border-width: 0 0 4px 4px; }
+    .corner-accent.br { bottom: 0.25in; right: 0.25in; border-width: 0 4px 4px 0; }
+
+    .content { text-align: center; padding: 1.85in 1in 0.35in; z-index: 1; width: 100%; }
+
+    .award-emblem { font-size: 46pt; line-height: 1; margin-bottom: 8pt; }
+
+    .award-eyebrow { font-size: 12pt; letter-spacing: 4px; text-transform: uppercase; color: #b8860b; font-weight: bold; margin-bottom: 4pt; }
+    .award-title { font-size: 38pt; font-weight: bold; color: #0d1b2a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 22pt; }
+
+    .awarded-to { font-size: 13pt; letter-spacing: 3px; text-transform: uppercase; color: #666; margin-bottom: 6pt; }
+
+    .winner-name {
+      font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      border-bottom: 2px solid #d4a017; display: inline-block;
+      padding: 0 40pt 6pt; margin-bottom: 24pt; min-width: 5.5in; height: 44pt;
+    }
+
+    .description { font-size: 12.5pt; line-height: 1.8; color: #333; max-width: 7.5in; margin: 0 auto 30pt; font-style: italic; }
+
+    .orgs { display: flex; justify-content: center; gap: 50pt; margin-bottom: 20pt; }
+    .org { text-align: center; }
+    .org-line { width: 180pt; border-bottom: 1px solid #333; margin-bottom: 4pt; height: 24pt; }
+    .org-name { font-size: 10pt; font-weight: bold; color: #0d1b2a; text-transform: uppercase; letter-spacing: 1px; }
+    .org-role { font-size: 8pt; color: #888; margin-top: 2pt; }
+
+    .date-line { font-size: 10pt; color: #666; margin-top: 8pt; letter-spacing: 1px; }
+
+    .logo-wrap { position: absolute; top: 0.55in; left: 50%; transform: translateX(-50%); line-height: 0; }
+    .logo-wrap img { width: 95px; height: auto; display: block; }
+
+    @media print {
+      body { background: #fff; }
+      .certificate { margin: 0; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <template id="award-template">
+    <div class="certificate">
+      <div class="border-outer"></div>
+      <div class="border-inner"></div>
+      <div class="corner-accent tl"></div>
+      <div class="corner-accent tr"></div>
+      <div class="corner-accent bl"></div>
+      <div class="corner-accent br"></div>
+
+      <div class="logo-wrap"><img src="sotc_logo.png" alt="Science on the Court"></div>
+
+      <div class="content">
+        <div class="award-emblem" data-emblem></div>
+        <div class="award-eyebrow">SumoBot Demo Day &bull; 2026</div>
+        <div class="award-title" data-title></div>
+
+        <div class="awarded-to">Awarded to</div>
+        <div class="winner-name">&nbsp;</div>
+
+        <div class="description" data-desc></div>
+
+        <div class="orgs">
+          <div class="org">
+            <div class="org-line"></div>
+            <div class="org-name">Coach Gauthier Hebert</div>
+            <div class="org-role">Lead Instructor</div>
+          </div>
+          <div class="org">
+            <div class="org-line"></div>
+            <div class="org-name">Dorian Bohler</div>
+            <div class="org-role">Executive Director, Science on the Court</div>
+          </div>
+        </div>
+
+        <div class="date-line">John Muir Middle School &bull; San Leandro, California &bull; May 28, 2026</div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    const awards = [
+      {
+        emblem: "🏆",
+        title: "Coach's Cup",
+        desc: "For outstanding growth, effort, and heart — the student who showed up, worked hardest, and never gave up across the whole year.",
+      },
+      {
+        emblem: "🔧",
+        title: "Best Built Robot",
+        desc: "For the cleanest, smartest engineering in the class — a robot designed and built with real craftsmanship and ingenuity.",
+      },
+      {
+        emblem: "🥇",
+        title: "Sumo Champion",
+        desc: "Champion of the year-end SumoBot tournament — last robot standing in the ring after a single-elimination battle.",
+      },
+    ];
+
+    const template = document.getElementById('award-template');
+    awards.forEach(a => {
+      const clone = template.content.cloneNode(true);
+      clone.querySelector('[data-emblem]').textContent = a.emblem;
+      clone.querySelector('[data-title]').textContent = a.title;
+      clone.querySelector('[data-desc]').textContent = a.desc;
+      document.body.appendChild(clone);
+    });
+  </script>
+</body>
+</html>
