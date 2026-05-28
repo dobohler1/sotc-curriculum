@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Day — SumoBot Championship Scoreboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0d1b2a; color: #fff; min-height: 100vh; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 22px 28px 40px; }
+
+  .topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  h1 { font-size: 44px; font-weight: 900; letter-spacing: -1px; color: #ffd60a; line-height: 1; }
+  .sub { font-size: 18px; color: #8ecae6; margin-top: 6px; }
+  .reset { background: #2a1414; color: #ff9b9b; border: 2px solid #5f2a2a; border-radius: 8px; padding: 9px 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .reset:hover { background: #3a1a1a; }
+
+  .body { display: grid; grid-template-columns: 1.25fr 1fr; gap: 22px; margin-top: 22px; }
+  @media (max-width: 900px) { .body { grid-template-columns: 1fr; } }
+
+  .panel { background: #1b2838; border: 2px solid #2a3f5f; border-radius: 12px; padding: 18px 20px; }
+  .panel h2 { font-size: 22px; color: #ffd60a; margin-bottom: 12px; }
+
+  /* Pools */
+  .pools { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 640px) { .pools { grid-template-columns: 1fr; } }
+  .pool-head { font-size: 14px; color: #8ecae6; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 10px; }
+
+  .match { background: #0d1b2a; border: 1px solid #2a3f5f; border-radius: 8px; padding: 8px; margin: 8px 0; }
+  .teams { display: flex; align-items: stretch; gap: 6px; }
+  .tbtn { flex: 1; background: #16263a; border: 2px solid #2a3f5f; border-radius: 6px; padding: 9px 10px; font-size: 16px; color: #cdd9e8; cursor: pointer; text-align: center; transition: all .12s; }
+  .tbtn:hover { border-color: #4a648a; }
+  .tbtn.win { background: #14331f; border-color: #69db7c; color: #b6f0c4; font-weight: 700; }
+  .tbtn.win::before { content: "\2713 "; color: #69db7c; }
+  .tbtn.lose { opacity: .5; }
+  .vs { display: flex; align-items: center; color: #6a7a8a; font-size: 13px; padding: 0 2px; }
+
+  .tiebreak { display: none; margin-top: 7px; align-items: center; gap: 10px; font-size: 13px; color: #8ecae6; }
+  .match.decided .tiebreak { display: flex; }
+  .tiebreak label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+  .tiebreak input[type=number] { width: 56px; background: #0d1b2a; border: 1px solid #2a3f5f; border-radius: 5px; color: #fff; padding: 3px 6px; font-size: 13px; }
+  .tiebreak input[type=number]:disabled { opacity: .35; }
+
+  /* Standings */
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 15px; }
+  th { text-align: left; color: #8ecae6; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 6px 8px; border-bottom: 1px solid #2a3f5f; }
+  th.num, td.num { text-align: center; }
+  td { padding: 8px; border-bottom: 1px solid #1f2f45; color: #cdd9e8; }
+  tr.leader td { color: #fff; font-weight: 700; }
+  tr.leader td:first-child::before { content: "\265B "; color: #ffd60a; }
+  .tieflag { color: #ffb703; font-weight: 700; font-size: 12px; }
+
+  /* Final */
+  .final-card { background: #0d1b2a; border: 2px solid #ffd60a; border-radius: 10px; padding: 16px; }
+  .finalist { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 6px; }
+  .finalist .name { font-size: 19px; font-weight: 700; color: #fff; }
+  .finalist .name.tbd { color: #6a7a8a; font-weight: 400; font-style: italic; }
+  .pips { display: flex; gap: 6px; align-items: center; }
+  .pip { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #4a648a; }
+  .pip.on { background: #69db7c; border-color: #69db7c; }
+  .round-btn { background: #16263a; border: 2px solid #2a3f5f; border-radius: 6px; color: #8ecae6; font-size: 13px; font-weight: 700; padding: 6px 12px; cursor: pointer; }
+  .round-btn:hover:not(:disabled) { border-color: #69db7c; color: #b6f0c4; }
+  .round-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .finalist.win .name { color: #ffd60a; }
+  .vs-divider { text-align: center; color: #6a7a8a; font-size: 13px; padding: 4px 0; }
+
+  .champ { margin-top: 14px; text-align: center; border: 2px solid #ffd60a; border-radius: 10px; background: #2a2410; padding: 16px; }
+  .champ .lbl { font-size: 13px; color: #8ecae6; text-transform: uppercase; letter-spacing: 2px; }
+  .champ .name { font-size: 30px; font-weight: 900; color: #ffd60a; margin-top: 4px; }
+  .champ .name.pending { font-size: 22px; color: #6a7a8a; font-weight: 400; }
+
+  /* Rules strip */
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+  .rules ul { list-style: none; }
+  .rules li { font-size: 14px; line-height: 1.45; padding: 3px 0 3px 20px; position: relative; color: #cdd9e8; }
+  .rules li::before { content: "\25B8"; position: absolute; left: 0; color: #ffd60a; }
+  .ok { color: #69db7c; font-weight: 700; }
+  .hot { color: #ff6b6b; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <h1>SUMOBOT CHAMPIONSHIP</h1>
+      <p class="sub">Two pools (odd / even) &middot; Round-robin pools, best-of-3 final &middot; 5 teams &middot; Tap to score &mdash; live standings</p>
+    </div>
+    <button class="reset" onclick="resetAll()">&#8635; Reset scoreboard</button>
+  </div>
+
+  <div class="body">
+
+    <!-- LEFT: Pools + standings -->
+    <div>
+      <div class="panel">
+        <h2>Pool Play</h2>
+        <div class="pools">
+          <div>
+            <div class="pool-head">Odd Pool &middot; Seeds 1 &middot; 3 &middot; 5</div>
+            <div id="pool-odd-matches"></div>
+            <div class="pool-head" style="margin-top:14px;">Standings</div>
+            <div id="pool-odd-standings"></div>
+          </div>
+          <div>
+            <div class="pool-head">Even Pool &middot; Seeds 2 &middot; 4</div>
+            <div id="pool-even-matches"></div>
+            <div class="pool-head" style="margin-top:14px;">Standings</div>
+            <div id="pool-even-standings"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Final + rules -->
+    <div>
+      <div class="panel">
+        <h2>Championship Final &middot; Best of 3</h2>
+        <div class="final-card" id="final-card"></div>
+        <div class="champ" id="champ"></div>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <h2>Rules &amp; Tiebreakers</h2>
+        <div class="rules">
+          <ul>
+            <li><strong>Pool match:</strong> single 30-sec round.</li>
+            <li><strong>Final:</strong> best of 3 rounds.</li>
+            <li><strong>3-2-1-SUMO</strong> &mdash; both press Play.</li>
+            <li><span class="ok">Hands off</span> after start.</li>
+            <li>Tweaks OK between rounds, <span class="hot">no rebuilds</span>.</li>
+          </ul>
+          <ul>
+            <li><strong>Win a round:</strong> push opponent fully out, or be closest to center at time.</li>
+            <li><strong>Stuck 10 sec:</strong> other bot wins.</li>
+            <li><strong>Pool winner:</strong> best record.</li>
+            <li><strong>Tie &rarr; speed of victory:</strong> <span class="ok">push-out</span> beats a decision; faster push-out ranks higher.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const TEAMS = {
+  1: "Vincent",
+  2: "Winston",
+  3: "Jacob & Xavier",
+  4: "William & Brandon",
+  5: "Abel & Dylan",
+};
+const POOLS = {
+  odd:  { label: "Odd",  seeds: [1, 3, 5] },
+  even: { label: "Even", seeds: [2, 4] },
+};
+const MATCHES = [
+  { id: "O1", pool: "odd",  a: 1, b: 3 },
+  { id: "O2", pool: "odd",  a: 1, b: 5 },
+  { id: "O3", pool: "odd",  a: 3, b: 5 },
+  { id: "E1", pool: "even", a: 2, b: 4 },
+];
+const STORE_KEY = "sumobot_demoday_v1";
+
+const blank = () => ({
+  matches: {},          // id -> { winner, pushout, time }
+  final: { rounds: [] } // array of "odd" | "even"
+});
+
+let state = load();
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) return Object.assign(blank(), JSON.parse(raw));
+  } catch (e) {}
+  return blank();
+}
+function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+function teamLabel(id) { return "#" + id + " " + TEAMS[id]; }
+
+function setWinner(matchId, teamId) {
+  const cur = state.matches[matchId];
+  if (cur && cur.winner === teamId) {
+    delete state.matches[matchId];          // tap winner again to clear
+  } else {
+    state.matches[matchId] = { winner: teamId, pushout: cur ? cur.pushout : false, time: cur ? cur.time : null };
+  }
+  save(); render();
+}
+function setPushout(matchId, val) {
+  const m = state.matches[matchId]; if (!m) return;
+  m.pushout = val; if (!val) m.time = null;
+  save(); render();
+}
+function setTime(matchId, val) {
+  const m = state.matches[matchId]; if (!m) return;
+  m.time = val === "" ? null : Number(val);
+  save(); render();
+}
+
+function poolMatches(pool) { return MATCHES.filter(m => m.pool === pool); }
+
+// Standings with speed-of-victory tiebreak.
+function standings(pool) {
+  const rows = POOLS[pool].seeds.map(id => ({
+    id, wins: 0, losses: 0, pushWins: 0, fastest: Infinity
+  }));
+  const byId = Object.fromEntries(rows.map(r => [r.id, r]));
+  poolMatches(pool).forEach(m => {
+    const res = state.matches[m.id];
+    if (!res || !res.winner) return;
+    const loser = res.winner === m.a ? m.b : m.a;
+    byId[res.winner].wins++;
+    byId[loser].losses++;
+    if (res.pushout) {
+      byId[res.winner].pushWins++;
+      if (res.time != null && res.time < byId[res.winner].fastest) byId[res.winner].fastest = res.time;
+    }
+  });
+  rows.sort((x, y) =>
+    y.wins - x.wins ||
+    y.pushWins - x.pushWins ||
+    x.fastest - y.fastest
+  );
+  // Determine leader + whether the lead is a genuine (unbroken) tie.
+  let leaderId = null, tied = false;
+  const played = poolMatches(pool).every(m => state.matches[m.id]);
+  if (rows.length) {
+    const top = rows[0], second = rows[1];
+    const tieKey = r => [r.wins, r.pushWins, r.fastest].join("|");
+    if (!second || tieKey(top) !== tieKey(second)) leaderId = top.id;
+    else { tied = true; }
+  }
+  return { rows, leaderId: played ? leaderId : null, tied: played && tied };
+}
+
+function poolWinner(pool) { return standings(pool).leaderId; }
+
+function championState() {
+  const odd = state.final.rounds.filter(r => r === "odd").length;
+  const even = state.final.rounds.filter(r => r === "even").length;
+  let champ = null;
+  if (odd >= 2) champ = "odd";
+  else if (even >= 2) champ = "even";
+  return { odd, even, champ };
+}
+
+/* ---------- render ---------- */
+function render() {
+  ["odd", "even"].forEach(pool => {
+    renderMatches(pool);
+    renderStandings(pool);
+  });
+  renderFinal();
+  renderChamp();
+}
+
+function renderMatches(pool) {
+  const host = document.getElementById("pool-" + pool + "-matches");
+  host.innerHTML = "";
+  poolMatches(pool).forEach(m => {
+    const res = state.matches[m.id];
+    const decided = !!(res && res.winner);
+    const card = document.createElement("div");
+    card.className = "match" + (decided ? " decided" : "");
+    const cls = id => res && res.winner ? (res.winner === id ? "tbtn win" : "tbtn lose") : "tbtn";
+    card.innerHTML =
+      '<div class="teams">' +
+        '<button class="' + cls(m.a) + '" onclick="setWinner(\'' + m.id + '\',' + m.a + ')">' + teamLabel(m.a) + '</button>' +
+        '<div class="vs">vs</div>' +
+        '<button class="' + cls(m.b) + '" onclick="setWinner(\'' + m.id + '\',' + m.b + ')">' + teamLabel(m.b) + '</button>' +
+      '</div>' +
+      '<div class="tiebreak">' +
+        '<label><input type="checkbox" ' + (res && res.pushout ? "checked" : "") +
+          ' onchange="setPushout(\'' + m.id + '\',this.checked)"> Push-out</label>' +
+        '<label>Time <input type="number" min="0" step="0.1" placeholder="s" ' +
+          (res && res.pushout ? "" : "disabled") + ' value="' + (res && res.time != null ? res.time : "") + '"' +
+          ' onchange="setTime(\'' + m.id + '\',this.value)"> s</label>' +
+      '</div>';
+    host.appendChild(card);
+  });
+}
+
+function renderStandings(pool) {
+  const host = document.getElementById("pool-" + pool + "-standings");
+  const s = standings(pool);
+  let html = '<table><thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">PO</th><th class="num">Fast</th></tr></thead><tbody>';
+  s.rows.forEach(r => {
+    const leader = r.id === s.leaderId;
+    html += '<tr class="' + (leader ? "leader" : "") + '">' +
+      '<td>' + teamLabel(r.id) + '</td>' +
+      '<td class="num">' + r.wins + '</td>' +
+      '<td class="num">' + r.losses + '</td>' +
+      '<td class="num">' + r.pushWins + '</td>' +
+      '<td class="num">' + (r.fastest === Infinity ? "&mdash;" : r.fastest + "s") + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table>';
+  if (s.tied) html += '<div class="tieflag">&#9888; Tie on speed too &mdash; coach decides the pool winner.</div>';
+  host.innerHTML = html;
+}
+
+function renderFinal() {
+  const host = document.getElementById("final-card");
+  const oddW = poolWinner("odd"), evenW = poolWinner("even");
+  const cs = championState();
+  const nameCell = (id, side, score, isChamp) => {
+    const known = id != null;
+    return '<div class="finalist' + (isChamp ? " win" : "") + '">' +
+        '<span class="name' + (known ? "" : " tbd") + '">' + (known ? teamLabel(id) : side + " Pool Winner — TBD") + '</span>' +
+        '<span class="pips">' +
+          '<span class="pip' + (score >= 1 ? " on" : "") + '"></span>' +
+          '<span class="pip' + (score >= 2 ? " on" : "") + '"></span>' +
+          '<button class="round-btn" ' + (known && !cs.champ ? "" : "disabled") +
+            ' onclick="addRound(\'' + side.toLowerCase() + '\')">+ round</button>' +
+        '</span>' +
+      '</div>';
+  };
+  host.innerHTML =
+    nameCell(oddW, "Odd", cs.odd, cs.champ === "odd") +
+    '<div class="vs-divider">vs</div>' +
+    nameCell(evenW, "Even", cs.even, cs.champ === "even") +
+    (state.final.rounds.length ? '<div class="vs-divider"><button class="round-btn" onclick="undoRound()">&#8630; undo round</button></div>' : "");
+}
+
+function renderChamp() {
+  const host = document.getElementById("champ");
+  const cs = championState();
+  const winnerPool = cs.champ;
+  if (winnerPool) {
+    const id = poolWinner(winnerPool);
+    host.innerHTML = '<div class="lbl">&#9819; Champion</div><div class="name">' + teamLabel(id) + '</div>';
+  } else {
+    host.innerHTML = '<div class="lbl">&#9819; Champion</div><div class="name pending">First to 2 rounds</div>';
+  }
+}
+
+function addRound(side) {
+  const cs = championState(); if (cs.champ) return;
+  if ((side === "odd" && !poolWinner("odd")) || (side === "even" && !poolWinner("even"))) return;
+  state.final.rounds.push(side);
+  save(); render();
+}
+function undoRound() { state.final.rounds.pop(); save(); render(); }
+
+function resetAll() {
+  if (!confirm("Clear all scores and start over?")) return;
+  state = blank(); save(); render();
+}
+
+render();
+</script>
+</body>
+</html>
