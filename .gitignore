@@ -12,6 +12,9 @@ math/data/
 JohnMuir/data/
 *.csv
 
+# CRM — contains contact PII, never commit
+management/crm/
+
 # Email lists
 math/SquarespaceEmailList.csv
 math/ATRoster.csv
@@ -46,3 +49,9 @@ allenTemple/*.pdf
 .env
 *.env
 credentials*
+
+# Reading program — book source is copyrighted, never commit to a public repo.
+# Only the built exam pages under reading/misunderstood/ are web-facing.
+reading/*.pdf
+reading/*.md
+reading/exam/
