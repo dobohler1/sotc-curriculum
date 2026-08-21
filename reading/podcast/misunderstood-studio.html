@@ -1,0 +1,617 @@
+<title>Misunderstood Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --bg:        #F4F3EE;
+    --surface:   #FDFCF9;
+    --surface-2: #ECEAE2;
+    --ink:       #131C2E;
+    --ink-soft:  #4A5266;
+    --ink-faint: #8B90A0;
+    --line:      #D8D6CC;
+    --line-hard: #B9B6A9;
+    --accent:    #C8102E;
+    --accent-ink:#FFFFFF;
+    --gold:      #8A6721;
+    --gold-bg:   #F3E8CE;
+    --go:        #1F7A4D;
+    --go-bg:     #E3EFE7;
+    --stop-bg:   #F6E3E1;
+
+    --display: 'Barlow Condensed', 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+    --body: 'Source Serif 4', Charter, Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --rail: 5.5rem;
+    --measure: 34rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #0E131C;
+      --surface:   #18202E;
+      --surface-2: #212A3A;
+      --ink:       #E9E7DE;
+      --ink-soft:  #A9AEBD;
+      --ink-faint: #757B8B;
+      --line:      #2C3548;
+      --line-hard: #3E4A63;
+      --accent:    #EC4054;
+      --accent-ink:#12060A;
+      --gold:      #D9A94E;
+      --gold-bg:   #33290F;
+      --go:        #4CB782;
+      --go-bg:     #123021;
+      --stop-bg:   #3A1B1C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:        #0E131C;
+    --surface:   #18202E;
+    --surface-2: #212A3A;
+    --ink:       #E9E7DE;
+    --ink-soft:  #A9AEBD;
+    --ink-faint: #757B8B;
+    --line:      #2C3548;
+    --line-hard: #3E4A63;
+    --accent:    #EC4054;
+    --accent-ink:#12060A;
+    --gold:      #D9A94E;
+    --gold-bg:   #33290F;
+    --go:        #4CB782;
+    --go-bg:     #123021;
+    --stop-bg:   #3A1B1C;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; padding: 0 1.25rem 6rem; }
+
+  /* ---------- masthead ---------- */
+  .masthead { padding: 3.5rem 0 0; }
+  .onair {
+    display: inline-flex; align-items: center; gap: .5rem;
+    border: 1px solid var(--accent); color: var(--accent);
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    letter-spacing: .22em; font-size: .78rem; padding: .3rem .7rem .25rem;
+  }
+  .onair .lamp {
+    width: .5rem; height: .5rem; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 0 var(--accent);
+    animation: breathe 3.2s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .onair .lamp { animation: none; opacity: 1; } }
+
+  h1 {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    font-size: clamp(3.2rem, 12vw, 6.5rem); line-height: .86; letter-spacing: -.005em;
+    margin: 1.1rem 0 0; text-wrap: balance;
+  }
+  h1 .sub { display: block; color: var(--accent); }
+  .deck {
+    font-size: 1.18rem; color: var(--ink-soft); max-width: 30rem;
+    margin: 1.4rem 0 0; text-wrap: pretty;
+  }
+  .stamp {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-faint); margin-top: 1.6rem;
+  }
+  #wave { display: block; width: 100%; height: 62px; margin: 2rem 0 0; }
+
+  /* ---------- track sections ---------- */
+  section { border-top: 1px solid var(--line); padding: 2.6rem 0 0; margin-top: 2.6rem; }
+  .track { display: grid; grid-template-columns: var(--rail) 1fr; gap: 1.5rem; align-items: start; }
+  .tnum {
+    font-family: var(--mono); font-size: .74rem; letter-spacing: .06em;
+    color: var(--ink-faint); padding-top: .45rem; text-transform: uppercase;
+    border-right: 1px solid var(--line); min-height: 2rem;
+  }
+  h2 {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    font-size: clamp(1.7rem, 4.5vw, 2.4rem); line-height: 1.02; letter-spacing: .005em;
+    margin: 0 0 .2rem; text-wrap: balance;
+  }
+  .h2note { color: var(--ink-faint); font-size: .95rem; margin: 0 0 1.4rem; }
+  h3 {
+    font-family: var(--display); font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; font-size: 1rem; margin: 2rem 0 .5rem; color: var(--ink);
+  }
+  p { margin: 0 0 1rem; max-width: var(--measure); }
+  .lede { font-size: 1.08rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.1rem; margin: 0 0 1rem; }
+  li { margin: .3rem 0; }
+  strong { font-weight: 600; }
+  em.q { font-style: italic; color: var(--ink-soft); }
+  a { color: var(--accent); }
+
+  .pull {
+    font-family: var(--display); font-weight: 600; text-transform: uppercase;
+    font-size: clamp(1.25rem, 3.4vw, 1.75rem); line-height: 1.12; letter-spacing: .01em;
+    border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.8rem 0;
+    max-width: 30rem; color: var(--ink);
+  }
+
+  /* ---------- tables ---------- */
+  .scroller { overflow-x: auto; margin: 1.2rem 0 1.6rem; border: 1px solid var(--line); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .93rem; min-width: 40rem; }
+  th {
+    font-family: var(--display); font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; font-size: .78rem; text-align: left;
+    background: var(--ink); color: var(--bg); padding: .55rem .8rem; white-space: nowrap;
+  }
+  td { padding: .6rem .8rem; border-top: 1px solid var(--line); vertical-align: top; }
+  tbody tr:nth-child(even) td { background: var(--surface-2); }
+  td.n, th.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.ep { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; font-size: 1rem; }
+
+  /* ---------- console ---------- */
+  .console { display: grid; gap: .8rem; margin: 1.4rem 0 1.8rem; }
+  @media (min-width: 42rem) { .console { grid-template-columns: repeat(5, 1fr); } }
+  .lampcard {
+    border: 1px solid var(--line-hard); background: var(--surface);
+    padding: .9rem .9rem 1rem; display: flex; flex-direction: column; gap: .45rem;
+  }
+  .lampcard .dot {
+    width: .7rem; height: .7rem; border-radius: 50%;
+    border: 2px solid var(--accent); background: transparent;
+  }
+  .lampcard .name {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    letter-spacing: .09em; font-size: .95rem;
+  }
+  .lampcard .cond { font-size: .86rem; line-height: 1.45; color: var(--ink-soft); }
+
+  /* ---------- green / red ---------- */
+  .rules { display: grid; gap: 1rem; margin: 1.2rem 0 1.6rem; }
+  @media (min-width: 44rem) { .rules { grid-template-columns: 1fr 1fr; } }
+  .rulebox { border: 1px solid var(--line-hard); padding: 1rem 1.1rem 1.2rem; }
+  .rulebox.go { background: var(--go-bg); border-color: var(--go); }
+  .rulebox.stop { background: var(--stop-bg); border-color: var(--accent); }
+  .rulebox h4 {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; font-size: .9rem; margin: 0 0 .6rem;
+  }
+  .rulebox.go h4 { color: var(--go); }
+  .rulebox.stop h4 { color: var(--accent); }
+  .rulebox ul { margin: 0; padding-left: 1.05rem; font-size: .92rem; }
+
+  /* ---------- callout ---------- */
+  .note {
+    border: 1px solid var(--gold); background: var(--gold-bg); color: var(--ink);
+    padding: 1rem 1.15rem; margin: 1.4rem 0; max-width: 36rem;
+  }
+  .note .tag {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    letter-spacing: .14em; font-size: .75rem; color: var(--gold); display: block; margin-bottom: .35rem;
+  }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------- run of show ---------- */
+  .week { border: 1px solid var(--line); background: var(--surface); margin: 0 0 .9rem; }
+  .week > summary {
+    cursor: pointer; list-style: none; padding: .8rem 1rem;
+    display: grid; grid-template-columns: 3.6rem 1fr; gap: 1rem; align-items: baseline;
+  }
+  .week > summary::-webkit-details-marker { display: none; }
+  .week[open] > summary { border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  .week .wk { font-family: var(--mono); font-size: .78rem; color: var(--ink-faint); letter-spacing: .05em; }
+  .week .wt { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; font-size: 1.15rem; }
+  .week .wd { display: block; font-family: var(--body); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: .9rem; color: var(--ink-soft); }
+  .week .body { padding: 1rem 1rem 1.2rem 5.6rem; }
+  @media (max-width: 34rem) { .week .body { padding-left: 1rem; } }
+  .cue { display: grid; grid-template-columns: 4.2rem 1fr; gap: .8rem; padding: .45rem 0; border-top: 1px dotted var(--line-hard); font-size: .93rem; }
+  .cue:first-of-type { border-top: none; }
+  .cue .t { font-family: var(--mono); font-size: .8rem; color: var(--accent); padding-top: .12rem; }
+  .cue .l { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .82rem; color: var(--ink-faint); display: block; }
+  .assign { margin-top: .9rem; font-size: .9rem; font-family: var(--mono); color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: .6rem; }
+
+  /* ---------- scorecard ---------- */
+  .card { border: 2px solid var(--ink); background: var(--surface); padding: 1.4rem 1.4rem 1.6rem; margin: 1.4rem 0; }
+  .card .ch { display: grid; grid-template-columns: 1.4rem 1fr; gap: .7rem; align-items: start; padding: .6rem 0; border-top: 1px solid var(--line); }
+  .card .ch:first-of-type { border-top: none; }
+  .box { width: 1.1rem; height: 1.1rem; border: 2px solid var(--ink); margin-top: .28rem; }
+  .card .ch b { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .95rem; }
+  .card .ch span { display: block; font-size: .88rem; color: var(--ink-soft); }
+  .sig { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.6rem; }
+  .sig div { border-top: 1px solid var(--ink); padding-top: .35rem; font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-faint); }
+
+  footer { border-top: 3px solid var(--ink); margin-top: 3.5rem; padding-top: 1.2rem; font-family: var(--mono); font-size: .76rem; color: var(--ink-faint); letter-spacing: .04em; }
+
+  @media (max-width: 40rem) {
+    .track { grid-template-columns: 1fr; gap: .5rem; }
+    .tnum { border-right: none; border-bottom: 1px solid var(--line); padding: 0 0 .4rem; min-height: 0; }
+    :root { --rail: 0; }
+  }
+  @media print {
+    body { background: #fff; color: #000; font-size: 10.5pt; }
+    .wrap { max-width: none; padding: 0; }
+    #wave, .onair { display: none; }
+    section { page-break-inside: auto; }
+    .card, .lampcard, .week { page-break-inside: avoid; }
+    .week[open] > summary, .week > summary { background: none; }
+  }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <span class="onair"><span class="lamp"></span> On Air</span>
+  <h1>Misunderstood<span class="sub">Studio</span></h1>
+  <p class="deck">Allen Iverson wrote four hundred pages arguing that everybody got him wrong. Your job is to do that work yourself: take a story people think they know, and tell it so well that a stranger changes their mind. Then go do it for someone real.</p>
+  <p class="stamp">Science on the Court &middot; Reading Program &middot; 8-week workshop &middot; Grades 6&ndash;11 &middot; Companion to <em>Misunderstood: A Memoir</em> (Iverson, 2025)</p>
+  <canvas id="wave" aria-hidden="true"></canvas>
+</header>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 01<br>THE JOB</div>
+  <div>
+    <h2>What you are making</h2>
+    <p class="h2note">Read this part twice. Everything else is detail.</p>
+    <p class="lede">A <strong>five-episode podcast season plus a trailer</strong>, published on a public feed, under your name, with your cover art on it. Not a class recording. Not a project that gets turned in. A show that strangers can find and press play on.</p>
+    <p>Four episodes are about the book. The fifth is not &mdash; the fifth is you interviewing a real person in your life who has been misjudged, and telling their story the way Iverson told his. That episode is the whole point. The first four are how you get good enough to make it.</p>
+    <div class="pull">You do not pass by turning something in. You pass when twenty-five strangers understand you.</div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 02<br>SEASON</div>
+  <div>
+    <h2>The season map</h2>
+    <p class="h2note">Six drops over eight weeks. The book is split by its own six parts.</p>
+    <div class="scroller">
+    <table>
+      <thead><tr><th class="n">Ep</th><th>Title</th><th class="n">Book</th><th>The one job</th><th class="n">Run</th><th>Skill it builds</th></tr></thead>
+      <tbody>
+        <tr><td class="n">00</td><td class="ep">Cold Open</td><td class="n">Prologue &ldquo;Practice&rdquo;</td><td>Make a stranger want episode 1</td><td class="n">0:60</td><td>The hook</td></tr>
+        <tr><td class="n">01</td><td class="ep">Hampton</td><td class="n">Part I &middot; ch 1&ndash;5</td><td>Tell where he came from without reading a script</td><td class="n">8&ndash;10 min</td><td>Narration from a beat sheet</td></tr>
+        <tr><td class="n">02</td><td class="ep">The Bowling Alley</td><td class="n">Part II &middot; ch 6&ndash;15</td><td>Argue both sides of the trial, fairly, and let the listener decide</td><td class="n">10&ndash;12 min</td><td>Evidence and steelmanning</td></tr>
+        <tr><td class="n">03</td><td class="ep">The Man Who Saved Him</td><td class="n">Parts III&ndash;IV &middot; ch 16&ndash;31</td><td>One relationship, told in exactly three scenes</td><td class="n">10&ndash;12 min</td><td>Scene over summary</td></tr>
+        <tr><td class="n">04</td><td class="ep">The Answer</td><td class="n">Parts V&ndash;VI &middot; ch 32&ndash;44</td><td>Explain why a six-foot guard became an icon</td><td class="n">10&ndash;12 min</td><td>Analysis and sound design</td></tr>
+        <tr><td class="n">05</td><td class="ep">Misunderstood: [their name]</td><td class="n">&mdash;</td><td>Interview a real person the world got wrong</td><td class="n">12&ndash;15 min</td><td>Interviewing a human being</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">
+      <span class="tag">The gate</span>
+      <p>You cannot record an episode until <strong>every chapter it covers is passed at 90%</strong> in the reading exam app. The app is the gate, not the coach. No pass, no mic. That is the only prerequisite in this workshop, and there is no way around it.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 03<br>TEST2PASS</div>
+  <div>
+    <h2>The pass bar</h2>
+    <p class="h2note">Five lamps. All five go green or you did not pass. There is no B.</p>
+    <div class="console">
+      <div class="lampcard"><span class="dot"></span><span class="name">Knowledge</span><span class="cond">All 45 chapter exams passed at 90%+. Screenshot of your scoreboard.</span></div>
+      <div class="lampcard"><span class="dot"></span><span class="name">Shipped</span><span class="cond">Trailer + 5 episodes live on a public feed, with cover art and written descriptions, on the posted dates. Late is not shipped.</span></div>
+      <div class="lampcard"><span class="dot"></span><span class="name">Clarity</span><span class="cond">25 verified listeners outside SOTC. At least 20 of them can correctly answer &ldquo;what was this episode about?&rdquo;</span></div>
+      <div class="lampcard"><span class="dot"></span><span class="name">Hot Seat</span><span class="cond">8 live minutes in front of the room and an outside judge. No notes. Three binary calls.</span></div>
+      <div class="lampcard"><span class="dot"></span><span class="name">The Real One</span><span class="cond">Episode 5 carries 6+ minutes of original interview tape with a real person who is not in this workshop.</span></div>
+    </div>
+    <h3>What the Hot Seat actually is</h3>
+    <p>Eight minutes, live, at the launch party. The room is there. A working journalist, radio host, or podcaster is there, and they are the one who marks the card &mdash; not your coach. You bring nothing to the mic. They ask you about your own show. Three calls, each a yes or a no:</p>
+    <ol>
+      <li><strong>Did you hold the room?</strong> Eight minutes, no collapse, no mumbling into your chest.</li>
+      <li><strong>Did you cite the book from memory?</strong> Two specifics you can pin to a chapter, out loud, unprompted.</li>
+      <li><strong>Did you take a hostile question?</strong> The judge will push on something you got wrong or soft. Answer it. Changing your mind out loud counts as passing; falling apart does not.</li>
+    </ol>
+    <h3>Clarity: how the listener check works</h3>
+    <p>You hand out a card with a QR code. It opens a three-question form: <em class="q">What was this episode about?</em> &middot; <em class="q">Name one thing that happened in it.</em> &middot; <em class="q">Would you play another one? Yes / no.</em> The third question is not scored. You are not being graded on being liked. You are being graded on being <strong>understood</strong> &mdash; the most common way to fail this lamp is a beautiful episode nobody could follow.</p>
+    <h3>If a lamp stays red</h3>
+    <p>You do not get a lower grade, because there are no grades. You write a <strong>one-page root cause</strong>: which lamp, why it failed, and the one thing you are changing. Then you retest in the next window. Iverson retook his whole life at City Farm. You can retake a lamp.</p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 04<br>AI RULES</div>
+  <div>
+    <h2>AI is your producer, not your voice</h2>
+    <p class="h2note">Producers do prep, feedback, and cleanup. They never take the mic.</p>
+    <div class="rules">
+      <div class="rulebox go">
+        <h4>Green light</h4>
+        <ul>
+          <li>Drill me: &ldquo;Ask me 20 questions on chapter 14 until I get all 20.&rdquo;</li>
+          <li>Roleplay a hostile interviewer before the Hot Seat.</li>
+          <li>Read my draft back and tell me the exact sentence where a listener gets lost.</li>
+          <li>Transcribe my interview tape so I can find the good quote.</li>
+          <li>Clean noise and levels on audio I recorded.</li>
+          <li>Critique my cover art. Not make it.</li>
+        </ul>
+      </div>
+      <div class="rulebox stop">
+        <h4>Red light</h4>
+        <ul>
+          <li>AI writes a line you say out loud. Any line.</li>
+          <li>AI voices anything &mdash; a fake host, a fake Iverson, a fake you.</li>
+          <li>AI tells you what happened in the book. Every fact comes off a page you read.</li>
+          <li>AI writes your episode description or show notes.</li>
+          <li>AI writes interview questions you did not think of first.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">
+      <span class="tag">How we catch it</span>
+      <p>The Hot Seat. If you cannot defend a sentence in your own episode, standing up, with no notes, then you did not write it. That is the entire detector, and it does not miss.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 05<br>ECONOMY</div>
+  <div>
+    <h2>Points, tiers, and time back</h2>
+    <p class="h2note">Effort buys freedom. That is the whole feedback loop.</p>
+    <div class="scroller">
+    <table>
+      <thead><tr><th>Action</th><th class="n">XP</th><th>Why it is worth that</th></tr></thead>
+      <tbody>
+        <tr><td>Chapter exam passed at 90%</td><td class="n">10</td><td>45 chapters = 450 XP. Reading is the largest single source of points, on purpose.</td></tr>
+        <tr><td>Episode shipped on the date</td><td class="n">100</td><td>Shipping is the skill.</td></tr>
+        <tr><td>Episode shipped late</td><td class="n">40</td><td>Still counts. Costs you.</td></tr>
+        <tr><td>Verified listener</td><td class="n">5</td><td>You had to go ask a human.</td></tr>
+        <tr><td>Listener who answers all three right</td><td class="n">10</td><td>They actually understood you.</td></tr>
+        <tr><td>Quote cited with its chapter, on tape</td><td class="n">5</td><td>Proof you read it, audible to the listener.</td></tr>
+        <tr><td>Hot Seat passed</td><td class="n">250</td><td>The finale.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="scroller">
+    <table>
+      <thead><tr><th class="n">XP</th><th>Tier</th><th>What it unlocks</th></tr></thead>
+      <tbody>
+        <tr><td class="n">0</td><td class="ep">Rookie</td><td>Record in the room. Coach edits alongside you.</td></tr>
+        <tr><td class="n">300</td><td class="ep">Starter</td><td>Pick your own cover art. Take the mic kit home overnight.</td></tr>
+        <tr><td class="n">700</td><td class="ep">All-Star</td><td>Record unsupervised. Choose your own episode 5 guest. Skip the weekly sound check.</td></tr>
+        <tr><td class="n">1200</td><td class="ep">The Answer</td><td>45 minutes of studio time to make whatever you want, program the launch party, and your show plays first.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <h3>Time back</h3>
+    <p>Finish your build block early with a take that is genuinely clean &mdash; coach listens, no re-record needed &mdash; and the rest of the session is yours. Not busywork, not a worksheet. Yours.</p>
+    <h3>The wall</h3>
+    <p>One board in the room, updated every session: episodes shipped, listeners logged, chapters passed. Public and current. It is the only leaderboard, and it tracks work, not talent.</p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 06<br>RUN OF SHOW</div>
+  <div>
+    <h2>Eight weeks, session by session</h2>
+    <p class="h2note">55 minutes, four blocks, same shape every week. A coach who has never made a podcast can run this off the page.</p>
+
+    <details class="week" open>
+      <summary><span class="wk">WK 01</span><span class="wt">Cold Open<span class="wd">Something of yours is public by the end of today.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Say your name and one true sentence about yourself in ten seconds. Everyone. Twice.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>The first fifteen seconds. Play three real podcast openings; the room votes on which one they would keep listening to and says why.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Write and record a 60-second trailer: who you are, what this show is, why this book. Set up the feed and upload.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Trailer live before anyone leaves the room. Log 100 XP.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 1&ndash;5 (Part I) + pass all five exams</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 02</span><span class="wt">Tell It, Don&rsquo;t Read It<span class="wd">Scripts sound like scripts. Beat sheets sound like people.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Retell chapter 2 in 60 seconds using five written words and nothing else.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>The seven-beat sheet. Demonstrate the same story read from a script, then told from beats. The room hears the difference immediately.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Beat sheet for Episode 1, then record it. Gate check first: all five exams green.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Raw take saved and named. Listener cards printed and handed out.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 6&ndash;10 &middot; START THE LISTENER DRIVE</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 03</span><span class="wt">Tape and Tone<span class="wd">Episode 1 goes out. Editing is deciding what to cut.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Mic distance drill: same sentence at one inch, four inches, one foot. Listen back.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>Cut your three worst seconds. Room noise, levels, and why silence is not dead air.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Edit and publish Episode 1. Cover art. Written description.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Live link on the wall. Log XP and first listeners.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 11&ndash;15 (finish Part II)</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 04</span><span class="wt">Both Sides<span class="wd">The bowling alley episode. The hardest one to do honestly.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>60 seconds arguing the prosecution&rsquo;s case as well as you possibly can.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>Steelmanning: state the side you disagree with first, and better than they would. Then answer it.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Episode 2. Every claim gets a chapter number attached before it goes in.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Publish. Log listeners. Check the clarity count &mdash; who is behind?</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 16&ndash;22</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 05</span><span class="wt">Scene, Not Summary<span class="wd">Three moments beat thirty facts.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Describe one room from the book in 30 seconds. Only things you could see, hear, or smell.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>Pick three scenes and let the rest go. How a quote lands when you say the chapter out loud.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Episode 3 &mdash; John Thompson, three scenes, no more.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Publish. Guest shortlist due for Episode 5: three names, three reasons.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 23&ndash;31 (finish Part IV)</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 06</span><span class="wt">Interview Lab<span class="wd">Learn to ask, then go book a real human.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Three-minute partner interview where the only questions allowed are &ldquo;why&rdquo; and &ldquo;what happened next.&rdquo;</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>Open questions, the follow-up, and the silence. Count to three after they stop talking &mdash; the real answer lives there.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Book the guest. Twelve written questions, coach-approved. Practice the ask, out loud, on the phone.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Guest confirmed and on the board, with a date.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 32&ndash;38 &middot; RECORD THE INTERVIEW THIS WEEK</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 07</span><span class="wt">Get the Tape<span class="wd">Episode 4 ships. Episode 5 gets built out of real audio.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Sound check</span>Play the best ten seconds of your interview tape. No setup, no excuses.</span></div>
+        <div class="cue"><span class="t">0:05</span><span><span class="l">Skill block</span>One piece of tape can carry an entire episode. Find yours and build around it.</span></div>
+        <div class="cue"><span class="t">0:15</span><span><span class="l">Build</span>Publish Episode 4. Start cutting Episode 5.</span></div>
+        <div class="cue"><span class="t">0:45</span><span><span class="l">Ship &amp; score</span>Listener audit. Anyone under 20 gets a plan to close the gap this week.</span></div>
+        <p class="assign">READ BY NEXT SESSION &rarr; ch 39&ndash;44 &middot; FINISH THE BOOK</p>
+      </div>
+    </details>
+
+    <details class="week">
+      <summary><span class="wk">WK 08</span><span class="wt">Launch Night<span class="wd">Episode 5 drops. The judge marks the card. Passes are announced in the room.</span></span></summary>
+      <div class="body">
+        <div class="cue"><span class="t">0:00</span><span><span class="l">Doors</span>Families, guests from Episode 5, and the outside judge. Snacks. Speakers up.</span></div>
+        <div class="cue"><span class="t">0:10</span><span><span class="l">Listening party</span>Two minutes from every show, played loud. The Answer tier goes first.</span></div>
+        <div class="cue"><span class="t">0:30</span><span><span class="l">Hot Seat</span>Eight minutes each, live, no notes. Judge marks the card as it happens.</span></div>
+        <div class="cue"><span class="t">0:50</span><span><span class="l">The call</span>Lamps read out one by one. Passes announced. Root-cause pages assigned to anyone retesting.</span></div>
+        <p class="assign">RETEST WINDOW &rarr; two weeks out</p>
+      </div>
+    </details>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 07<br>BUILD SHEET</div>
+  <div>
+    <h2>Episode build sheet</h2>
+    <p class="h2note">Same seven boxes every episode. Fill them before you touch a microphone.</p>
+    <ol>
+      <li><strong>Gate check.</strong> Every chapter in this episode passed at 90%. Screenshot attached.</li>
+      <li><strong>The one question.</strong> Write the single question this episode answers, in one sentence. If it takes two, you have two episodes.</li>
+      <li><strong>Cold open.</strong> Fifteen seconds that make a stranger stay. Usually a moment, never a summary.</li>
+      <li><strong>Seven beats.</strong> Seven lines, five words each, in order. This is your whole script. There is no other script.</li>
+      <li><strong>Three quotes.</strong> Pulled from the book with chapter numbers. You say the chapter out loud when you use one.</li>
+      <li><strong>The turn.</strong> The place where the listener's first opinion stops being the obvious one. Every episode needs one.</li>
+      <li><strong>The ask.</strong> How you close, and what you ask the listener to do &mdash; scan the card, send it to one person.</li>
+    </ol>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 08<br>KIT</div>
+  <div>
+    <h2>What a coach needs</h2>
+    <p class="h2note">Total cash outlay: a mic, if you want one. Everything else is free.</p>
+    <ul>
+      <li><strong>Recording.</strong> A phone in a quiet room beats a bad mic in a loud one. A closet full of coats is a professional-sounding booth &mdash; this is not a joke, it is what the soft clothes do to reflections.</li>
+      <li><strong>Optional.</strong> One clip-on lav mic (~$25) shared across the cohort. Nice, not required.</li>
+      <li><strong>Hosting.</strong> Spotify for Creators &mdash; free, records and publishes from a phone, generates a real public feed.</li>
+      <li><strong>Editing.</strong> Audacity (desktop, free) or CapCut (phone, free).</li>
+      <li><strong>Cover art.</strong> Canva, 3000&times;3000 px.</li>
+      <li><strong>Listener check.</strong> One Google Form, three questions, one QR code, printed on cards.</li>
+      <li><strong>The gate.</strong> The reading exam app the students are already using &mdash; the pass scoreboard on their own device is the record.</li>
+      <li><strong>The judge.</strong> One outside adult who works with audio or words. Book them in week 1, not week 7.</li>
+    </ul>
+
+    <h3>Publishing rules, non-negotiable</h3>
+    <ul>
+      <li>First name and last initial only for anyone under 18. No schools named on tape, no schedules, no addresses.</li>
+      <li>Guest consent recorded on tape at the top of every interview: <em class="q">&ldquo;Is it okay if I record this and put it in a podcast?&rdquo;</em> Their yes stays in the file.</li>
+      <li>Parent permission on file before any student&rsquo;s voice goes on a public feed.</li>
+      <li>Coach listens end to end before anything publishes. No exceptions, including for The Answer tier.</li>
+      <li><strong>The book has profanity. The show does not.</strong> Same rule the exams run on. You can quote a hard scene without quoting a hard word &mdash; doing that well is a skill, and it is part of the assignment.</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 09<br>SCORECARD</div>
+  <div>
+    <h2>Hot Seat scorecard</h2>
+    <p class="h2note">Print one per student. The outside judge marks it, live, in the room.</p>
+    <div class="card">
+      <p style="font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1rem;">Host ______________________ &nbsp; Show ______________________ &nbsp; Date __________</p>
+      <div class="ch"><span class="box"></span><span><b>1 &middot; Knowledge</b><span>All 45 chapter exams passed at 90%. Scoreboard shown.</span></span></div>
+      <div class="ch"><span class="box"></span><span><b>2 &middot; Shipped</b><span>Trailer + 5 episodes live, with art and descriptions, on the dates.</span></span></div>
+      <div class="ch"><span class="box"></span><span><b>3 &middot; Clarity</b><span>25 verified listeners logged; 20+ correctly said what an episode was about. Count: ______ / ______</span></span></div>
+      <div class="ch"><span class="box"></span><span><b>4 &middot; Hot Seat</b><span>Held the room &nbsp;&#9633;&nbsp; &middot; &nbsp;Cited the book from memory &nbsp;&#9633;&nbsp; &middot; &nbsp;Took the hostile question &nbsp;&#9633;&nbsp; &mdash; all three required.</span></span></div>
+      <div class="ch"><span class="box"></span><span><b>5 &middot; The Real One</b><span>6+ minutes of original interview tape with someone outside the workshop.</span></span></div>
+      <p style="font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin:1.4rem 0 0;">Result &nbsp; &#9633; Pass &nbsp;&nbsp; &#9633; Retest &mdash; root-cause page due in 7 days</p>
+      <div class="sig"><div>Judge signature</div><div>Coach signature</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="track">
+  <div class="tnum">TRACK 10<br>THE POINT</div>
+  <div>
+    <h2>Why this assignment exists</h2>
+    <p>A book report proves you read something to one adult who has to read it. A published episode proves you understood something to twenty-five people who owe you nothing. Those are not the same skill, and only one of them is worth eight weeks.</p>
+    <p>Iverson&rsquo;s entire argument is that people decided who he was before they listened. Every student in this room has felt some version of that. The last episode is where that stops being a book about somebody famous and becomes a microphone pointed at somebody real &mdash; and the student holding it is the one who gets to decide the story is worth telling.</p>
+    <div class="pull">Anybody can be misunderstood. Not everybody can go make it stop.</div>
+  </div>
+</div>
+</section>
+
+<footer>Science on the Court &middot; Misunderstood Studio &middot; Companion workshop to the Misunderstood reading exams (HS + MS)</footer>
+
+</div>
+
+<script>
+(function () {
+  var c = document.getElementById('wave');
+  if (!c) return;
+  function draw() {
+    var css = getComputedStyle(document.documentElement);
+    var ink = css.getPropertyValue('--line-hard').trim();
+    var accent = css.getPropertyValue('--accent').trim();
+    var dpr = window.devicePixelRatio || 1;
+    var w = c.clientWidth, h = c.clientHeight;
+    if (!w) return;
+    c.width = w * dpr; c.height = h * dpr;
+    var ctx = c.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w, h);
+    var bw = 3, gap = 2, n = Math.floor(w / (bw + gap)), mid = h / 2;
+    for (var i = 0; i < n; i++) {
+      var t = i / n;
+      // deterministic pseudo-noise, shaped like a spoken-word waveform
+      var e = Math.abs(Math.sin(i * 0.7) * 0.5 + Math.sin(i * 0.23) * 0.35 + Math.sin(i * 1.9) * 0.15);
+      var env = 0.35 + 0.65 * Math.abs(Math.sin(t * Math.PI * 2.3));
+      var a = Math.max(2, e * env * (h * 0.46));
+      ctx.fillStyle = t < 0.18 ? accent : ink;
+      ctx.globalAlpha = t < 0.18 ? 0.9 : 0.45;
+      ctx.fillRect(i * (bw + gap), mid - a, bw, a * 2);
+    }
+    ctx.globalAlpha = 1;
+  }
+  draw();
+  window.addEventListener('resize', draw);
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', draw);
+  }
+})();
+</script>
