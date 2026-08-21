@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Among Giants</title>
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:    #EDEBE3;
+    --card:     #FBFAF6;
+    --card-2:   #E2E0D6;
+    --ink:      #12161F;
+    --ink-soft: #4A5060;
+    --ink-dim:  #858A97;
+    --line:     #CECCC1;
+    --line-hard:#ACA99B;
+    --deep:     #12161F;
+    --deep-ink: #EDEBE3;
+    --accent:   #C8102E;
+    --gold:     #8A6721;
+    --gold-bg:  #F2E7CB;
+    --go:       #1F7A4D;
+    --go-bg:    #E4EFE8;
+    --stop-bg:  #F7E4E2;
+
+    --display: 'Barlow Condensed', 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+    --body: 'Source Serif 4', Charter, Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:    #0E121A;
+      --card:     #181D28;
+      --card-2:   #222836;
+      --ink:      #E9E7DE;
+      --ink-soft: #A6AAB6;
+      --ink-dim:  #737884;
+      --line:     #29303E;
+      --line-hard:#3B4353;
+      --deep:     #05070B;
+      --deep-ink: #E9E7DE;
+      --accent:   #EC4054;
+      --gold:     #D9A94E;
+      --gold-bg:  #322810;
+      --go:       #4CB782;
+      --go-bg:    #133021;
+      --stop-bg:  #3A1B1C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:    #0E121A;
+    --card:     #181D28;
+    --card-2:   #222836;
+    --ink:      #E9E7DE;
+    --ink-soft: #A6AAB6;
+    --ink-dim:  #737884;
+    --line:     #29303E;
+    --line-hard:#3B4353;
+    --deep:     #05070B;
+    --deep-ink: #E9E7DE;
+    --accent:   #EC4054;
+    --gold:     #D9A94E;
+    --gold-bg:  #322810;
+    --go:       #4CB782;
+    --go-bg:    #133021;
+    --stop-bg:  #3A1B1C;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 54rem; margin: 0 auto; padding: 1.5rem 1.25rem 5rem; }
+
+  /* ---------- hero ---------- */
+  .hero { background: var(--deep); color: var(--deep-ink); padding: 1.6rem 1.5rem 1.7rem; margin-top: 1rem; }
+  .hero .eyebrow {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 1rem;
+  }
+  .hero h1 {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    font-size: clamp(2.4rem, 9vw, 4rem); line-height: .95; letter-spacing: .01em;
+    margin: 0 0 .9rem; text-wrap: balance;
+  }
+  .hero p { margin: 0 0 .8rem; color: #B4B9C5; max-width: 34rem; font-size: 1.04rem; }
+  .hero p:last-child { margin-bottom: 0; }
+  .hero strong { color: var(--deep-ink); font-weight: 600; }
+  .flow {
+    display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+    margin: 1.3rem 0 0; font-family: var(--display); font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; font-size: .95rem;
+  }
+  .flow span.step { border: 1px solid #3A4152; padding: .3rem .7rem .25rem; color: var(--deep-ink); }
+  .flow span.step.b { border-color: var(--accent); color: var(--accent); }
+  .flow span.arw { color: #4A5162; font-family: var(--mono); }
+
+  /* ---------- generic ---------- */
+  h2 {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    font-size: 1.6rem; letter-spacing: .04em; line-height: 1.05;
+    margin: 2.8rem 0 .3rem; padding-top: 1.3rem; border-top: 2px solid var(--ink);
+  }
+  .sub { color: var(--ink-dim); font-size: .95rem; margin: 0 0 1.2rem; max-width: 36rem; }
+  h3 {
+    font-family: var(--display); font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; font-size: .95rem; margin: 1.7rem 0 .5rem;
+  }
+  p { margin: 0 0 .9rem; max-width: 36rem; }
+  ul, ol { max-width: 36rem; padding-left: 1.15rem; margin: 0 0 .9rem; }
+  li { margin: .28rem 0; }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  code { font-family: var(--mono); font-size: .85em; background: var(--card-2); padding: .1em .35em; border-radius: 2px; }
+
+  /* ---------- pass bar ---------- */
+  .lamps { display: grid; gap: .7rem; margin: 1.1rem 0 1.4rem; }
+  @media (min-width: 40rem) { .lamps { grid-template-columns: repeat(3, 1fr); } }
+  .lamp { background: var(--card); border: 1px solid var(--line-hard); padding: .85rem .9rem 1rem; display: flex; flex-direction: column; gap: .4rem; }
+  .lamp .dot { width: .65rem; height: .65rem; border-radius: 50%; border: 2px solid var(--accent); }
+  .lamp b { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .95rem; }
+  .lamp span { font-size: .87rem; line-height: 1.45; color: var(--ink-soft); }
+
+  /* ---------- the six ---------- */
+  .part { border: 1px solid var(--line-hard); background: var(--card); margin: 0 0 .9rem; }
+  .part > .head {
+    display: grid; grid-template-columns: 3.2rem 1fr; gap: 1rem; align-items: baseline;
+    padding: .75rem 1rem .8rem; background: var(--card-2); border-bottom: 1px solid var(--line-hard);
+  }
+  .part .rn {
+    font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: .9;
+    color: var(--accent); letter-spacing: .02em;
+  }
+  .part .pt { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 1.15rem; line-height: 1.1; }
+  .part .ch { display: block; font-family: var(--mono); font-size: .72rem; letter-spacing: .07em; color: var(--ink-dim); text-transform: uppercase; margin-top: .15rem; }
+  .cols { display: grid; }
+  @media (min-width: 44rem) { .cols { grid-template-columns: 1.35fr 1fr 1fr; } }
+  .col { padding: .85rem 1rem 1rem; border-top: 1px solid var(--line); }
+  @media (min-width: 44rem) { .col { border-top: none; border-left: 1px solid var(--line); } .col:first-child { border-left: none; } }
+  .col .k {
+    font-family: var(--display); font-weight: 700; text-transform: uppercase;
+    letter-spacing: .14em; font-size: .7rem; display: block; margin-bottom: .35rem;
+  }
+  .col.x .k { color: var(--accent); }
+  .col.t .k { color: var(--ink-dim); }
+  .col.a .k { color: var(--gold); }
+  .col p { font-size: .9rem; margin: 0; max-width: none; line-height: 1.5; }
+  .col.t p, .col.a p { color: var(--ink-soft); }
+  .rule { border-bottom: 1px solid var(--line-hard); height: 1.15rem; margin-top: .5rem; }
+  .rule + .rule { margin-top: .55rem; }
+
+  /* ---------- days ---------- */
+  .days { display: grid; gap: 1.2rem; margin: 1.2rem 0 0; }
+  @media (min-width: 46rem) { .days { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .day { border: 1px solid var(--line-hard); background: var(--card); }
+  .day > header { background: var(--ink); color: var(--paper); padding: .7rem .95rem .75rem; display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
+  .day > header .d { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 1.15rem; }
+  .day > header .hrs { font-family: var(--mono); font-size: .74rem; color: var(--accent); letter-spacing: .06em; }
+  .day .inner { padding: .3rem .95rem 1rem; }
+  .blk { display: grid; grid-template-columns: 1.1rem 1fr; gap: .65rem; padding: .8rem 0; border-top: 1px solid var(--line); }
+  .day .blk:first-child { border-top: none; }
+  .tick { width: 1.05rem; height: 1.05rem; border: 2px solid var(--ink); margin-top: .3rem; flex: none; }
+  .blk .t { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .1rem; }
+  .blk b { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 1.05rem; display: block; line-height: 1.1; }
+  .blk p { font-size: .9rem; margin: .25rem 0 0; max-width: none; color: var(--ink-soft); }
+  .blk p.hard { color: var(--ink); font-weight: 600; }
+
+  /* ---------- boxes ---------- */
+  .note { border-left: 3px solid var(--accent); background: var(--card); padding: .85rem 1rem; margin: 1.2rem 0; max-width: 38rem; }
+  .note.gold { border-left-color: var(--gold); background: var(--gold-bg); }
+  .note b { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; color: var(--accent); display: block; margin-bottom: .25rem; }
+  .note.gold b { color: var(--gold); }
+  .note p:last-child { margin-bottom: 0; }
+
+  .rules { display: grid; gap: .9rem; margin: 1rem 0 1.2rem; }
+  @media (min-width: 40rem) { .rules { grid-template-columns: 1fr 1fr; } }
+  .rulebox { border: 1px solid var(--line-hard); padding: .9rem 1rem 1rem; }
+  .rulebox.go { background: var(--go-bg); border-color: var(--go); }
+  .rulebox.stop { background: var(--stop-bg); border-color: var(--accent); }
+  .rulebox h4 { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .85rem; margin: 0 0 .5rem; }
+  .rulebox.go h4 { color: var(--go); }
+  .rulebox.stop h4 { color: var(--accent); }
+  .rulebox ul { margin: 0; padding-left: 1rem; font-size: .9rem; max-width: none; }
+
+  .compare { display: grid; gap: .7rem; margin: 1rem 0 1.3rem; }
+  @media (min-width: 40rem) { .compare { grid-template-columns: 1fr 1fr; } }
+  .cbox { border: 1px solid var(--line-hard); background: var(--card); padding: .8rem .95rem .9rem; }
+  .cbox .tagw { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; display: block; margin-bottom: .3rem; }
+  .cbox.weak .tagw { color: var(--ink-dim); }
+  .cbox.strong { border-color: var(--gold); }
+  .cbox.strong .tagw { color: var(--gold); }
+  .cbox p { margin: 0; font-size: .95rem; max-width: none; }
+
+  .parent { border: 2px solid var(--ink); padding: 1.2rem 1.3rem 1.4rem; margin-top: 1.2rem; background: var(--card); }
+  .parent h3:first-child { margin-top: 0; }
+  .fill { display: inline-block; min-width: 12rem; border-bottom: 1px solid var(--line-hard); }
+
+  footer { margin-top: 3rem; border-top: 2px solid var(--ink); padding-top: .9rem; font-family: var(--mono); font-size: .74rem; color: var(--ink-dim); letter-spacing: .04em; }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 10.5pt; }
+    .wrap { max-width: none; padding: 0; }
+    .hero { background: #fff; color: #000; border: 2px solid #000; }
+    .hero p { color: #333; }
+    .flow span.step { border-color: #000; color: #000; }
+    .part, .day, .lamp, .parent, .cbox { page-break-inside: avoid; }
+    .day > header { background: #fff; color: #000; border-bottom: 2px solid #000; }
+    .day > header .hrs, .hero .eyebrow { color: #000; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <p class="eyebrow">Misunderstood: A Memoir &middot; Allen Iverson &middot; Two days</p>
+  <h1>Among Giants</h1>
+  <p>The last part of this book is called &ldquo;Among Giants.&rdquo; Allen Iverson was six feet tall and about 165 pounds in a league full of men seven feet tall, and he went to the Finals anyway. <strong>That is why I gave you this book</strong>, and it is the reason this assignment exists.</p>
+  <p>You are going to go back through the six parts of the memoir and pull out the <strong>one most valuable thing</strong> in each &mdash; not what happened, but what a player can actually use. Then you're going to teach all six to people who never read it. Then you're going to do one of them, this week, for real.</p>
+  <div class="flow">
+    <span class="step b">Extract</span><span class="arw">&rarr;</span>
+    <span class="step b">Teach</span><span class="arw">&rarr;</span>
+    <span class="step b">Apply</span>
+  </div>
+</div>
+
+<h2>What you're making</h2>
+<p class="sub">One podcast episode, 10 to 12 minutes, published for real.</p>
+<p>Six lessons, one from each part of the book, in order. Each one gets about ninety seconds: <strong>the moment it came from, what it means, and what you're doing about it.</strong> That last part is what makes it your show instead of a book report &mdash; nobody has ever heard the version where a 12U point guard explains what he's changing on Friday because of chapter 24.</p>
+
+<h2>How you pass</h2>
+<p class="sub">Three things. All three, or it doesn't count.</p>
+<div class="lamps">
+  <div class="lamp"><span class="dot"></span><b>1 &middot; Extract</b><span>Six lessons, one per part, each pinned to a real scene and a chapter number. A lesson someone could use &mdash; not a summary of what happened.</span></div>
+  <div class="lamp"><span class="dot"></span><b>2 &middot; Teach</b><span>Episode published. Three people who never read the book listen, and afterward each can name three of your six lessons without help.</span></div>
+  <div class="lamp"><span class="dot"></span><b>3 &middot; Apply</b><span>Six &ldquo;I will&rdquo; lines, and <em>one of them is already done before you record.</em> You tell the listener what happened when you did it.</span></div>
+</div>
+<div class="note">
+  <b>The one that matters</b>
+  <p>Lamp 3. Anybody can read a book and say it was inspiring. The test is whether a single thing you do in the gym is different on Friday than it was on Monday, and whether you can say out loud what it was. Pick the lesson that makes you a little uncomfortable and do that one.</p>
+</div>
+
+<h2>The six</h2>
+<p class="sub">One row per part of the book. Fill all three columns before you record &mdash; the middle and right columns are yours to write, not mine.</p>
+
+<div class="part">
+  <div class="head"><span class="rn">I</span><span><span class="pt">Growing Up and Surviving</span><span class="ch">Chapters 1&ndash;5</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>Before anyone knew his name, who kept him going, and what did they actually <em>do</em>? And: he played another sport first. What did that sport give him that basketball didn't?</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<div class="part">
+  <div class="head"><span class="rn">II</span><span><span class="pt">My Trials On and Off the Court</span><span class="ch">Chapters 6&ndash;15</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>One night changed everything. Split it: which part was inside his control, and which part wasn't? What does he do with the part that wasn't &mdash; and what would you do?</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<div class="part">
+  <div class="head"><span class="rn">III</span><span><span class="pt">From the Jungle to Georgetown</span><span class="ch">Chapters 16&ndash;20</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>He lost real time away from the game. What is the actual work of coming back &mdash; not the feeling, the work? And who opened the door for him, and why did they bother?</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<div class="part">
+  <div class="head"><span class="rn">IV</span><span><span class="pt">He Saved My Life: Coach John Thompson</span><span class="ch">Chapters 21&ndash;31</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>What did Thompson make him do that he did not want to do? Find the <strong>why</strong> behind it &mdash; not just the rule, the reason. This is the part of the book closest to your own situation, so slow down here.</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<div class="part">
+  <div class="head"><span class="rn">V</span><span><span class="pt">From the Draft to Rookie of the Year</span><span class="ch">Chapters 32&ndash;39</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>He was the smallest man on the floor almost every night. What did he actually <em>do</em> about that &mdash; the habits, the preparation, the way he played &mdash; instead of talking about it?</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<div class="part">
+  <div class="head"><span class="rn">VI</span><span><span class="pt">The 75th Anniversary Team and a Run to the Finals</span><span class="ch">Chapters 40&ndash;44</span></span></div>
+  <div class="cols">
+    <div class="col x"><span class="k">Extract &mdash; ask the book</span><p>He and his coach did not agree, and they went to the Finals together anyway. What does that take from a player? What did he give up, and what did he refuse to give up?</p></div>
+    <div class="col t"><span class="k">Teach &mdash; the lesson</span><p style="color:var(--ink-dim);font-size:.82rem">Scene + chapter #, then the lesson in one sentence.</p><div class="rule"></div><div class="rule"></div></div>
+    <div class="col a"><span class="k">Apply &mdash; I will</span><div class="rule"></div><div class="rule"></div></div>
+  </div>
+</div>
+
+<h2>What a real apply line looks like</h2>
+<p class="sub">This is where most people get vague and it's the whole point of the assignment. Yours have to be countable.</p>
+<div class="compare">
+  <div class="cbox weak"><span class="tagw">Doesn't count</span><p>&ldquo;I'm going to work harder and be more aggressive on defense.&rdquo;</p></div>
+  <div class="cbox strong"><span class="tagw">Counts</span><p>&ldquo;Friday at NBN, before practice: 150 catch-and-shoot threes, makes written down. And the first three possessions of every scrimmage, I pick up their guard at full court &mdash; even if I'm tired, especially if I'm tired.&rdquo;</p></div>
+</div>
+<p>The test for an apply line: <strong>could somebody else watch you and tell whether you did it?</strong> If not, rewrite it until they could.</p>
+
+<h2>The two days</h2>
+<p class="sub">About two and a half hours each. Check the boxes.</p>
+<div class="days">
+
+  <div class="day">
+    <header><span class="d">Day 1 &middot; Extract</span><span class="hrs">~2h 30m</span></header>
+    <div class="inner">
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">0:00 &middot; 60 min</span><b>Mine the six parts</b>
+        <p>Go part by part. For each one, answer the question in the left column and write the scene it came from with its chapter number. Skim what you need to &mdash; you already read it.</p>
+        <p class="hard">Rule: it has to be a lesson somebody could use, not a thing that happened.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">1:00 &middot; 30 min</span><b>Write the six apply lines</b>
+        <p>One per lesson. Countable. Tied to a real day on your actual schedule &mdash; Monday, Friday, Saturday with your brother, wrestling.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">1:30 &middot; 30 min</span><b>Do one. Today.</b>
+        <p>Pick the one that makes you least comfortable and go do it before you record anything. Write down what actually happened, including if it went badly. That goes in the episode.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">2:00 &middot; 15 min</span><b>The cold open</b>
+        <p>Fifteen seconds that make a stranger stay. Start with a moment from the book or a moment from your own gym. Never start with &ldquo;in this episode I'm going to&hellip;&rdquo;</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">2:15 &middot; 15 min</span><b>Name it, make the art</b>
+        <p>Show name, episode title, cover art in Canva at 3000&times;3000. Get it done today so tomorrow is only the microphone.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="day">
+    <header><span class="d">Day 2 &middot; Teach</span><span class="hrs">~2h 30m</span></header>
+    <div class="inner">
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">0:00 &middot; 15 min</span><b>Sound check</b>
+        <p>Record in a closet with clothes in it &mdash; not a joke, the clothes kill the echo. Test the phone at one inch, four inches, a foot, and pick one. Say your cold open five times until it stops sounding read.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">0:15 &middot; 50 min</span><b>Record the six</b>
+        <p>Ninety seconds each, from your notes, talking &mdash; not reading. Same shape every time: the moment, the lesson, what you're doing about it.</p>
+        <p class="hard">Say the chapter number out loud each time. That's how a listener knows you actually read it.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">1:05 &middot; 25 min</span><b>Cut your three worst moments</b>
+        <p>Find the three worst seconds, delete them, and stop. Editing forever is how a podcast never comes out.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">1:30 &middot; 20 min</span><b>Publish</b>
+        <p>Spotify for Creators. Title, description, cover art. Hit publish. It's live and it stays live.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">1:50 &middot; 30 min</span><b>The proof</b>
+        <p>Three people who never read the book listen all the way through. Then, no help: each names three of your six lessons. Write down what they got.</p>
+      </div></div>
+      <div class="blk"><span class="tick"></span><div>
+        <span class="t">Dinner &middot; 10 min</span><b>The hot seat</b>
+        <p>Three questions from Dad at the table. No notes, no phone, no going back to look.</p>
+      </div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="note gold">
+  <b>Where the lessons go after this</b>
+  <p>Six apply lines, one done. The other five have dates on them. That page goes on the wall and gets checked off &mdash; the episode is the promise, the wall is whether you kept it. If four of six are done by the end of the week, that's a season-changing week, and it started with a book.</p>
+</div>
+
+<h2>AI rules</h2>
+<p class="sub">AI is your producer. Producers do prep and cleanup. They never touch the microphone.</p>
+<div class="rules">
+  <div class="rulebox go">
+    <h4>Green light</h4>
+    <ul>
+      <li>&ldquo;Quiz me on Part IV until I can explain it without looking.&rdquo;</li>
+      <li>&ldquo;Read my six lessons back &mdash; which one is vague?&rdquo;</li>
+      <li>&ldquo;Ask me hard questions about this episode like you're trying to catch me.&rdquo;</li>
+      <li>Cleaning up noise or volume on audio you recorded.</li>
+    </ul>
+  </div>
+  <div class="rulebox stop">
+    <h4>Red light</h4>
+    <ul>
+      <li>AI writes a single line you say out loud.</li>
+      <li>AI tells you what happened in the book, or picks your six lessons.</li>
+      <li>AI writes your apply lines. Those are about your life; it doesn't have one.</li>
+      <li>Any AI voice, anywhere in the episode.</li>
+    </ul>
+  </div>
+</div>
+<div class="note">
+  <b>How I'll know</b>
+  <p>The hot seat. If you can't explain one of your own six lessons at the dinner table with no notes, you didn't come up with it. That's the whole detector and it doesn't miss.</p>
+</div>
+
+<h2>What you need</h2>
+<ul>
+  <li><strong>A phone and a closet.</strong> That's the studio. A phone in a quiet closet beats a real microphone in a loud room, every time.</li>
+  <li><strong>Spotify for Creators</strong> &mdash; free, records and publishes from the phone, gives you a real feed.</li>
+  <li><strong>Canva</strong> &mdash; cover art, 3000&times;3000 pixels.</li>
+  <li><strong>The book.</strong> Every lesson needs a scene and a chapter number, so it stays open next to you.</li>
+  <li><strong>The chapter quizzes</strong>, if you want to re-check a part before you record:<br><a href="https://dobohler1.github.io/sotc-curriculum/reading/misunderstood/ms/">dobohler1.github.io/sotc-curriculum/reading/misunderstood/ms/</a></li>
+</ul>
+<p><strong>One more rule:</strong> the book has language in it. Your episode doesn't. You can tell a hard scene without saying a hard word &mdash; doing that well is a skill, and it's part of the job.</p>
+
+<footer>Misunderstood: A Memoir &middot; Allen Iverson &middot; Companion to the SOTC reading program</footer>
+
+</div>
+</body>
+</html>
