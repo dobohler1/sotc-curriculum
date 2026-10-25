@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParentStream Sign-Up</title>
+<meta name="description" content="Opt in to ParentStream text updates about your child's school work from Science on the Court.">
+<style>
+  :root { --bg:#faf8ff; --fg:#1d1a2b; --muted:#5d5873; --card:#ffffff; --line:#e3dff0; --accent:#6a4bbf; --accent-fg:#ffffff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16131f; --fg:#f1eefa; --muted:#b4adcc; --card:#201c2d; --line:#352f48; --accent:#9b84e6; --accent-fg:#16131f; } }
+  :root[data-theme="dark"] { --bg:#16131f; --fg:#f1eefa; --muted:#b4adcc; --card:#201c2d; --line:#352f48; --accent:#9b84e6; --accent-fg:#16131f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 32px 16px 64px; }
+  .brand { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 8px; }
+  .lede { color: var(--muted); margin: 0 0 24px; }
+  form { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  label { display:block; font-weight:600; margin: 14px 0 6px; }
+  label:first-child { margin-top: 0; }
+  input[type=text], input[type=tel] { width:100%; padding: 11px 12px; font-size:16px; border:1px solid var(--line); border-radius:9px; background:var(--bg); color:var(--fg); }
+  .consent { display:flex; gap:10px; align-items:flex-start; margin: 18px 0 6px; font-weight:400; font-size:14px; color: var(--fg); }
+  .consent input { margin-top: 4px; width:18px; height:18px; flex: 0 0 auto; }
+  .fine { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .fine a { color: var(--accent); }
+  button { width:100%; margin-top: 16px; padding: 13px; font-size: 16px; font-weight: 700; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-fg); cursor: pointer; }
+  button[disabled] { opacity: .5; cursor: default; }
+  .what { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .what strong { color: var(--fg); }
+  footer { margin-top: 28px; font-size: 13px; color: var(--muted); }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <p class="brand">Science on the Court</p>
+  <h1>ParentStream text updates</h1>
+  <p class="lede">Two short texts a day at most, about your own child's school work, with one concrete thing you can do that evening. Reply any time with a question.</p>
+
+  <form id="f" autocomplete="on">
+    <label for="name">Your name</label>
+    <input type="text" id="name" name="name" required placeholder="First and last name">
+
+    <label for="phone">Your mobile number</label>
+    <input type="tel" id="phone" name="phone" required placeholder="(510) 555-0123" inputmode="tel">
+
+    <label for="kid">Your child's first name and school</label>
+    <input type="text" id="kid" name="kid" required placeholder="e.g. Maya, Ile Omode">
+
+    <label class="consent"><input type="checkbox" id="consent" name="consent" required>
+      <span>I agree to receive recurring automated text messages from Science on the Court (ParentStream) at the mobile number above about my child's school assignments, grades, and parenting tips, up to 2 messages per day. Consent is not a condition of any purchase. Message and data rates may apply. Reply <strong>STOP</strong> to cancel at any time and <strong>HELP</strong> for help.</span>
+    </label>
+    <p class="fine">We only text the number you enter here, only about the children you enroll, and never sell or share your number. Questions: <a href="mailto:info@scienceonthecourt.com">info@scienceonthecourt.com</a>.</p>
+
+    <button type="submit" id="go" disabled>Sign me up</button>
+  </form>
+
+  <div class="what">
+    <p><strong>What you'll get.</strong> A morning text before school and an early-evening text, only on days when there is something worth acting on: a missing assignment, a new grade, a test coming up. Each one ends with a single thing to ask or do, drawn from research on how parents help most. Once a week, a short tip.</p>
+    <p><strong>What you won't get.</strong> Texts at odd hours, marketing, or messages about anyone else's child.</p>
+  </div>
+
+  <footer>Science on the Court · Oakland, CA · <a href="https://scienceonthecourt.com">scienceonthecourt.com</a></footer>
+</main>
+<script>
+  const f = document.getElementById('f'), go = document.getElementById('go'), c = document.getElementById('consent');
+  const check = () => { go.disabled = !(c.checked && f.name.value.trim() && f.phone.value.trim() && f.kid.value.trim()); };
+  f.addEventListener('input', check); c.addEventListener('change', check);
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    const body = encodeURIComponent(`START ParentStream. ${f.name.value.trim()} for ${f.kid.value.trim()}.`);
+    // Finishing the sign-up sends a text from the parent's own phone: that text is the opt-in record.
+    window.location.href = `sms:${window.PARENTSTREAM_NUMBER || '+18339068053'}?&body=${body}`;
+    go.textContent = 'Opening your messages app…';
+  });
+</script>
+</body>
+</html>
