@@ -25,6 +25,8 @@
   .fine a { color: var(--accent); }
   button { width:100%; margin-top: 16px; padding: 13px; font-size: 16px; font-weight: 700; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-fg); cursor: pointer; }
   button[disabled] { opacity: .5; cursor: default; }
+  #done { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); font-size: 15px; }
+  #done p { margin: 0 0 8px; }
   .what { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
   .what strong { color: var(--fg); }
   footer { margin-top: 28px; font-size: 13px; color: var(--muted); }
@@ -53,7 +55,15 @@
     <p class="fine">We only text the number you enter here, only about the children you enroll, and never sell or share your number. Questions: <a href="mailto:info@scienceonthecourt.com">info@scienceonthecourt.com</a>.</p>
 
     <button type="submit" id="go" disabled>Sign me up</button>
+    <div id="done" hidden>
+      <p><strong>One more step, from your phone.</strong> Text <strong>START</strong> to <strong>(833) 906-8053</strong>. That text is your opt-in record. You'll get a confirmation reply within a minute, and your first update at the next morning or evening window.</p>
+      <p class="fine">On a phone, the button above opens your messages app with the text ready to send. On a computer, send it from your phone by hand.</p>
+    </div>
   </form>
+
+  <div class="what">
+    <p><strong>How it works.</strong> 1. Fill in this form and check the consent box. 2. Text START to (833) 906-8053 from the number you entered. 3. We reply with a confirmation, then send updates at the morning and evening windows. Reply STOP any time to end them, HELP for help.</p>
+  </div>
 
   <div class="what">
     <p><strong>What you'll get.</strong> A morning text before school and an early-evening text, only on days when there is something worth acting on: a missing assignment, a new grade, a test coming up. Each one ends with a single thing to ask or do, drawn from research on how parents help most. Once a week, a short tip.</p>
@@ -70,8 +80,12 @@
     e.preventDefault();
     const body = encodeURIComponent(`START ParentStream. ${f.name.value.trim()} for ${f.kid.value.trim()}.`);
     // Finishing the sign-up sends a text from the parent's own phone: that text is the opt-in record.
-    window.location.href = `sms:${window.PARENTSTREAM_NUMBER || '+18339068053'}?&body=${body}`;
-    go.textContent = 'Opening your messages app…';
+    document.getElementById('done').hidden = false;
+    go.textContent = 'Now text START from your phone';
+    go.disabled = true;
+    if (/iPhone|iPad|Android/i.test(navigator.userAgent)) {
+      window.location.href = `sms:+18339068053?&body=${body}`;
+    }
   });
 </script>
 </body>
