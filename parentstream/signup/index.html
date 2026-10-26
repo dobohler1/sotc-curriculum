@@ -29,6 +29,7 @@
   #done p { margin: 0 0 8px; }
   .what { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
   .what strong { color: var(--fg); }
+  .what a { color: var(--accent); }
   footer { margin-top: 28px; font-size: 13px; color: var(--muted); }
   footer a { color: var(--accent); }
 </style>
@@ -52,7 +53,7 @@
     <label class="consent"><input type="checkbox" id="consent" name="consent" required>
       <span>I agree to receive recurring automated text messages from Science on the Court (ParentStream) at the mobile number above about my child's school assignments, grades, and parenting tips, up to 2 messages per day. Consent is not a condition of any purchase. Message and data rates may apply. Reply <strong>STOP</strong> to cancel at any time and <strong>HELP</strong> for help.</span>
     </label>
-    <p class="fine">We only text the number you enter here, only about the children you enroll, and never sell or share your number. See our <a href="privacy.html">privacy policy</a>. Questions: <a href="mailto:info@scienceonthecourt.com">info@scienceonthecourt.com</a>.</p>
+    <p class="fine">We only text the number you enter here, only about the children you enroll, and never sell or share your number. By signing up you agree to our <a href="terms.html">terms of service</a> and <a href="privacy.html">privacy policy</a>. Questions: <a href="mailto:info@scienceonthecourt.com">info@scienceonthecourt.com</a>.</p>
 
     <button type="submit" id="go" disabled>Sign me up</button>
     <div id="done" hidden>
@@ -62,7 +63,7 @@
   </form>
 
   <div class="what">
-    <p><strong>How it works.</strong> 1. Fill in this form and check the consent box. 2. Text START to (833) 906-8053 from the number you entered. 3. We reply with a confirmation, then send updates at the morning and evening windows. Reply STOP any time to end them, HELP for help.</p>
+    <p><strong>How it works.</strong> 1. Fill in this form and check the consent box (you agree to the <a href="terms.html">terms of service</a>). 2. Text START to (833) 906-8053 from the number you entered. 3. We reply with a confirmation, then send updates at the morning and evening windows. Reply STOP any time to end them, HELP for help.</p>
   </div>
 
   <div class="what">
@@ -70,7 +71,7 @@
     <p><strong>What you won't get.</strong> Texts at odd hours, marketing, or messages about anyone else's child.</p>
   </div>
 
-  <footer>Science on the Court · Oakland, CA · <a href="https://scienceonthecourt.com">scienceonthecourt.com</a> · <a href="privacy.html">Privacy policy</a></footer>
+  <footer>Science on the Court · Oakland, CA · <a href="https://scienceonthecourt.com">scienceonthecourt.com</a> · <a href="terms.html">Terms of service</a> · <a href="privacy.html">Privacy policy</a></footer>
 </main>
 <script>
   const f = document.getElementById('f'), go = document.getElementById('go'), c = document.getElementById('consent');
