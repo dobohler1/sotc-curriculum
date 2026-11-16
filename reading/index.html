@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book Exams — SOTC Reading</title>
+<meta name="description" content="Choose a book final. Science on the Court reading program.">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--navy:#131C2E;--red:#C8102E;--gold:#B8892B;--ink:#12151c;--muted:#5b6472;--rule:#d3d7df;--paper:#fff;--page:#eef0f4;
+  --tint:#f5f6f9;--ok:#1d7a46;--okbg:#e6f4ec;--btn:#131C2E;--btnink:#fff}
+@media (prefers-color-scheme:dark){:root{--ink:#e8eaf0;--muted:#9aa3b2;--rule:#353d4b;--paper:#161b25;--page:#0d1017;--tint:#1d232f;
+  --ok:#6fd39b;--okbg:#14301f;--gold:#e0b84f;--btn:#e8eaf0;--btnink:#131C2E;--red:#ff5a6e}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}[hidden]{display:none!important}
+body{margin:0;background:var(--page);color:var(--ink);font:17px/1.5 Georgia,"Iowan Old Style","Times New Roman",serif}
+h1,h2,a.btn,.eyebrow,.chip,.facts,.more{font-family:"Avenir Next","Helvetica Neue",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.08;margin:.2em 0 .25em;letter-spacing:-.01em}
+.lede{max-width:40em;margin:0 0 22px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:22px 24px;margin:0 0 16px}
+h2{font-size:26px;line-height:1.15;margin:0 0 2px}
+.by{color:var(--muted);font-style:italic;margin:0 0 8px}
+.facts{font-size:13.5px;color:var(--muted);margin:10px 0 14px;display:flex;gap:6px 14px;flex-wrap:wrap}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a.btn{display:inline-block;font-size:15px;font-weight:600;border-radius:8px;border:1.5px solid var(--rule);color:var(--ink);
+  background:var(--paper);padding:10px 16px;text-decoration:none}
+a.btn:hover{border-color:var(--muted)}
+a.btn.primary{background:var(--btn);color:var(--btnink);border-color:var(--btn);font-size:16px;padding:12px 20px}
+a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.chip{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;
+  padding:4px 10px;background:var(--tint);color:var(--muted)}
+.chip.ok{background:var(--okbg);color:var(--ok)}
+.more{font-size:14px;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rule);color:var(--muted)}
+.more a{color:var(--ink)}
+.how{font-size:15px;color:var(--muted)}.how li{margin:0 0 4px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="eyebrow">Science on the Court · Reading Program</div>
+  <h1>Book exams</h1>
+  <p class="lede">Finish the book, then pick its final. Every final is built like the reading section of the ISEE: a passage with numbered lines beside one question at a time.</p>
+
+  <section class="card">
+    <h2>Misunderstood</h2>
+    <p class="by">A memoir by Allen Iverson</p>
+    <p style="margin:0">From Hampton, Virginia, to Georgetown, the 76ers, and the Hall of Fame.</p>
+    <p class="facts"><span>Book final</span><span>40 questions</span><span>about 40 minutes</span><span>Passages at about grade 6–8</span></p>
+    <div class="row">
+      <a class="btn primary" href="misunderstood/final/">Take the final</a>
+      <a class="btn" href="misunderstood/final/?full=1">Full ISEE length · 56 questions</a>
+      <span class="chip" data-ls="sotc-final-misunderstood-v1" hidden></span>
+    </div><p class="more">Still reading? Take it a chapter at a time: <a href="misunderstood/ms/">Middle school chapter exams</a> · <a href="misunderstood/hs/">High school chapter exams</a></p>
+  </section>
+  <section class="card">
+    <h2>In the Blink of an Eye</h2>
+    <p class="by">An autobiography by Mahmoud Abdul-Rauf with Nick Chiles</p>
+    <p style="margin:0">From Gulfport, Mississippi, to LSU, the NBA, and a stand that changed his career.</p>
+    <p class="facts"><span>Book final</span><span>40 questions</span><span>about 40 minutes</span><span>Passages at about grade 7</span></p>
+    <div class="row">
+      <a class="btn primary" href="blink/final/">Take the final</a>
+      <a class="btn" href="blink/final/?full=1">Full ISEE length · 56 questions</a>
+      <span class="chip" data-ls="sotc-final-blink-v1" hidden></span>
+    </div>
+  </section>
+  <section class="card">
+    <h2 style="font-size:19px">How every final works</h2>
+    <ul class="how">
+      <li><strong>Open book.</strong> Keep your copy next to you.</li>
+      <li><strong>90% to pass.</strong> No penalty for a wrong answer, so answer every question.</li>
+      <li><strong>A retake is a different test.</strong> Each attempt draws new passages and new questions.</li>
+    </ul>
+  </section>
+</main>
+<script>
+document.querySelectorAll("[data-ls]").forEach(function (el) {
+  try {
+    var r = JSON.parse(localStorage.getItem(el.dataset.ls)) || {}, a = r.attempts || [];
+    if (!a.length) return;
+    var best = a.reduce(function (m, x) { return Math.max(m, x.pct); }, 0), passed = a.some(function (x) { return x.passed; });
+    el.textContent = (passed ? "Passed \u2713 \u00b7 " : "") + "Best " + best + "% \u00b7 " + a.length + " attempt" + (a.length === 1 ? "" : "s") + " on this device";
+    if (passed) el.classList.add("ok");
+    el.hidden = false;
+  } catch (e) {}
+});
+</script>
+</body>
+</html>
