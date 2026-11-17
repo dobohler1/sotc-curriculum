@@ -86,7 +86,7 @@ const DATA = {"passPct": 90, "title": "In the Blink of an Eye", "byline": "An au
 const LS_KEY = "sotc-final-blink-v1";
 const EXAM_ID = "blink-final";
 const LET = "ABCD";
-const RESULT_ENDPOINT = "";   // empty = do not send results anywhere
+const RESULT_ENDPOINT = "https://flmtmihxpkcxvrasyyxt.supabase.co/functions/v1/book-final-result";   // empty = do not send results anywhere
 const FULL = new URLSearchParams(location.search).has("full");
 const PLAN = FULL ? { passages: 6, recall: 12, apply: 8, minutes: 50 } : { passages: 4, recall: 12, apply: 4, minutes: 40 };
 const TYPE_LABEL = { "main-idea": "Main idea", detail: "Supporting detail", vocab: "Vocabulary in context", inference: "Inference",
