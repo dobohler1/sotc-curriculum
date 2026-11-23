@@ -49,6 +49,10 @@ input[type=text]{font:inherit;padding:9px 11px;border:1.5px solid var(--rule);bo
 .cite input{width:6em;margin-right:8px}
 .choice.out{cursor:default;opacity:.6;border-style:dashed}.choice.out:hover{border-color:var(--rule)}
 button:disabled{opacity:.45;cursor:not-allowed}
+.btnlink{display:inline-block;font:600 15px/1.2 "Avenir Next","Helvetica Neue",system-ui,sans-serif;border-radius:8px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink);padding:11px 16px;text-decoration:none}
+.btnlink.primary{background:var(--btn);color:var(--btnink);border-color:var(--btn)}
+.ch{display:inline-flex;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;font:700 14px/1 "Avenir Next",system-ui,sans-serif}
+.ch.ok{background:var(--okbg);color:var(--ok)}.ch.no{background:var(--badbg);color:var(--bad)}.ch.fix{background:var(--goldbg);color:var(--gold)}
 .num.flag::after{content:"";position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--paper)}
 .qcount{font-size:13px;color:var(--muted);margin:0 0 6px}
 .stem{font-size:18px;margin:0 0 14px}
@@ -93,23 +97,49 @@ const LS_KEY = "sotc-final-blink-v1";
 const EXAM_ID = "blink-final";
 const LET = "ABCD";
 const RESULT_ENDPOINT = "https://flmtmihxpkcxvrasyyxt.supabase.co/functions/v1/book-final-result";   // empty = do not send results anywhere
-const FULL = new URLSearchParams(location.search).has("full");
-const PLAN = FULL ? { passages: 6, recall: 12, apply: 8, minutes: 65 } : { passages: 4, recall: 12, apply: 4, minutes: 50 };
+const QS = new URLSearchParams(location.search);
+// Two separate measurements, two separate parts:
+//   read    did you read the book? closed book, one question per chapter, first try is the evidence
+//   skills  ISEE reading skills: passages only, a line number for every answer, scored by question type
+const PART = ["read", "skills"].includes(QS.get("part")) ? QS.get("part") : null;
+const FULL = PART === "skills" && QS.has("full");
+const CHAPTERS = [...new Set(DATA.recall.map(q => q.ch))].sort((a, b) => a - b);
+const READ_PCT = DATA.readPct || 80;
+const N_APPLY = Math.min(4, DATA.apply.length);
+const PLAN = PART === "read" ? { passages: 0, minutes: Math.max(15, Math.round((CHAPTERS.length + N_APPLY) * 0.7 / 5) * 5) }
+  : { passages: FULL ? DATA.passages.length : 4, minutes: FULL ? 50 : 35 };
 const TYPE_LABEL = { "main-idea": "Main idea", detail: "Supporting detail", vocab: "Vocabulary in context", inference: "Inference",
   purpose: "Purpose and organization", tone: "Tone and figurative language", recall: "The whole book", apply: "Your game" };
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function load() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
-function save(r) { try { localStorage.setItem(LS_KEY, JSON.stringify(r)); } catch (e) {} }
+function load(part) { try { return JSON.parse(localStorage.getItem(LS_KEY + "-" + part)) || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
+function save(r) { try { localStorage.setItem(LS_KEY + "-" + PART, JSON.stringify(r)); } catch (e) {} }
 function mmss(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
 function uuid() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
   : "xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx".replace(/x/g, () => (Math.random() * 16 | 0).toString(16)); }
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 
-let rec = load(), T = null, view = "home", tick = null;
-let GV = null;                     // the close-the-gap question on screen: { q, pick, cite, at, fb }
+let rec = PART ? load(PART) : null, T = null, view = PART ? "home" : "choose", tick = null;
+let GV = null;                     // the gap-round question on screen: { q, pick, cite, at, fb }
 const SENT = { state: "", last: null };
+
+// ---- every time the test window loses focus is recorded: when, on which question, for how long
+const AWAY = { at: null };
+function awayLog() { return view === "gap" ? (rec.gap ? (rec.gap.away = rec.gap.away || []) : null) : (view === "test" || view === "review") && T ? T.away : null; }
+function awayStart() { if (AWAY.at === null && awayLog() && !(view === "gap" && GV && GV.fb)) AWAY.at = Date.now(); }
+function awayEnd() {
+  if (AWAY.at === null) return;
+  const s = Math.round((Date.now() - AWAY.at) / 1000), log = awayLog(); AWAY.at = null;
+  if (s < 2 || !log || log.length >= 200) return;
+  log.push({ q: view === "gap" ? (GV ? GV.q.qid : "") : view === "test" ? T.qs[T.cur].qid : "review", s });
+  if (view === "gap") save(rec);
+}
+document.addEventListener("visibilitychange", () => document.hidden ? awayStart() : awayEnd());
+window.addEventListener("blur", awayStart); window.addEventListener("focus", awayEnd);
+function ask(msg) { const r = confirm(msg); AWAY.at = null; return r; }      // the page's own dialog is not "leaving"
 
 // ---- questions are addressed by id so a half-finished gap round survives a reload:  p<passage>.<n>  r<n>  a<n>
 function srcOf(qid) {
@@ -125,27 +155,24 @@ function build(qid, order, extra) {   // shuffle the four choices; remember wher
 }
 function draw() {
   const lastIds = (rec.attempts.slice(-1)[0] || {}).recall || [];
-  const qs = [];
-  // Section 1: passages in book order so the story still runs forward
-  const ps = shuffle(DATA.passages.map((_, i) => i)).slice(0, PLAN.passages).sort((a, b) => a - b);
-  ps.forEach((pi, k) => DATA.passages[pi].qs.forEach((_, n) => qs.push(build(`p${pi}.${n}`, null, { pk: k }))));
-  // Section 2a: whole-book questions, spread evenly over the three thirds of the book, avoiding last attempt's draw
-  const per = PLAN.recall / 3, picked = [];
-  ["A", "B", "C"].forEach(g => {
-    const pool = DATA.recall.map((q, i) => i).filter(i => DATA.recall[i].g === g);
-    const fresh = pool.filter(i => !lastIds.includes(i));
-    const byCh = {}; shuffle(fresh.length >= per ? fresh : pool).forEach(i => (byCh[DATA.recall[i].ch] = byCh[DATA.recall[i].ch] || []).push(i));
-    const chs = shuffle(Object.keys(byCh)); let n = 0;                 // one per chapter before any chapter repeats
-    for (let round = 0; n < per; round++) for (const c of chs) { if (n < per && byCh[c][round] !== undefined) { picked.push(byCh[c][round]); n++; } }
-  });
-  picked.sort((a, b) => DATA.recall[a].ch - DATA.recall[b].ch).forEach(i => qs.push(build("r" + i)));
-  shuffle(DATA.apply.map((_, i) => i)).slice(0, PLAN.apply).forEach(i => qs.push(build("a" + i)));
+  const qs = [], picked = [];
+  if (PART === "skills") {         // passages in book order so the story still runs forward
+    const ps = shuffle(DATA.passages.map((_, i) => i)).slice(0, PLAN.passages).sort((a, b) => a - b);
+    ps.forEach((pi, k) => DATA.passages[pi].qs.forEach((_, n) => qs.push(build(`p${pi}.${n}`, null, { pk: k }))));
+  } else {                         // one question from every chapter, not the one drawn last time
+    CHAPTERS.forEach(ch => {
+      const pool = DATA.recall.map((q, i) => i).filter(i => DATA.recall[i].ch === ch), fresh = pool.filter(i => !lastIds.includes(i));
+      picked.push(shuffle(fresh.length ? fresh : pool)[0]);
+    });
+    picked.forEach(i => qs.push(build("r" + i)));
+    shuffle(DATA.apply.map((_, i) => i)).slice(0, N_APPLY).forEach(i => qs.push(build("a" + i)));
+  }
   return { qs, picked: qs.map(() => null), flag: qs.map(() => false), cite: qs.map(() => ""), ms: qs.map(() => 0), on: null, stamp: Date.now(),
-    cur: 0, started: Date.now(), recall: picked, key: uuid() };
+    cur: 0, started: Date.now(), recall: picked, key: uuid(), away: [] };
 }
 
-// ---- "show where you found it": a line number for a passage question, a page number for a whole-book question
-function needsCite(q) { return q.sec === 1 || q.sec === 2; }
+// ---- "show where you found it": a line number for a passage question; a page number when a chapter is repaired open-book
+function needsCite(q) { return q.sec === 1 || (q.sec === 2 && view === "gap"); }
 function citeMax(q) { return q.sec === 1 ? DATA.passages[q.p].rows.length : 2000; }
 function citeOk(q, v) { if (!needsCite(q)) return true; const n = Number(v); return /^\d{1,4}$/.test(String(v)) && n >= 1 && n <= citeMax(q); }
 function citeHtml(q, v) {
@@ -155,7 +182,7 @@ function citeHtml(q, v) {
     <span class="small">${q.sec === 1 ? `Use the line numbers beside the passage (1–${citeMax(q)}).` : "Open the book, find it, and type the page number."}</span></p>`;
 }
 
-function sectionOf(q) { return q.sec === 1 ? "Section 1 · Reading" : q.sec === 2 ? "Section 2 · The whole book" : "Section 2 · Your game"; }
+function sectionOf(q) { return q.sec === 1 ? "ISEE skills · Reading" : q.sec === 2 ? "Reading check · The whole book" : "Reading check · Your game"; }
 function groupIdx(i) {           // questions that share the number strip with question i
   const q = T.qs[i]; return T.qs.map((x, j) => j).filter(j => q.sec === 1 ? (T.qs[j].sec === 1 && T.qs[j].pk === q.pk) : T.qs[j].sec === q.sec);
 }
@@ -165,41 +192,71 @@ function passageHtml(pi) {
 function numClass(j) { return T.picked[j] === null ? "" : citeOk(T.qs[j], T.cite[j]) ? "done" : "half"; }
 function lap() { const now = Date.now(); if (T.on !== null) T.ms[T.on] += now - T.stamp; T.stamp = now; }   // seconds spent on each question
 
-function gapOpen() { return rec.gap && !rec.gap.done ? rec.gap : null; }
-function toGo(g) { return Math.max(0, g.need - g.base - g.got); }
+function gapOpen() { return rec && rec.gap && !rec.gap.done ? rec.gap : null; }
+function toGo(g) { return g.mode === "read" ? g.missed.length - g.repaired.length - g.unresolved.length : Math.max(0, g.need - g.base - g.got); }
+function gapLabel(g) { return g.mode === "read" ? `Repair ${plural(toGo(g), "chapter")}` : `Close the gap · ${toGo(g)} to go`; }
+function statusChip(part) {
+  const r = load(part), a = r.attempts; if (!a.length) return "";
+  const last = a[a.length - 1];
+  if (part === "read") { const ok = a.some(x => x.passed), fixed = a.some(x => x.closed);
+    return `<span class="chip ${ok || fixed ? "ok" : "no"}">${ok ? "Confirmed ✓" : fixed ? "Repaired ✓" : "Not confirmed yet"} · last ${last.correct} of ${last.total} chapters</span>`; }
+  return `<span class="chip ${a.some(x => x.passed) ? "ok" : ""}">First-try scores: ${a.slice(-5).map(x => x.first + "%").join(" → ")}</span>`;
+}
 
-function renderHome() {
-  const best = rec.attempts.reduce((m, a) => Math.max(m, a.pct), 0), passed = rec.attempts.some(a => a.passed);
-  const n = PLAN.passages * 6 + PLAN.recall + PLAN.apply, need = Math.ceil(n * DATA.passPct / 100), g = gapOpen();
+function renderChoose() {
+  const here = location.pathname;
   $("#app").innerHTML = `
   <div class="card">
     <div class="eyebrow"><a href="../../" style="color:inherit;text-decoration:none">← All book exams</a> · Book Final</div>
     <h1>${esc(DATA.title)}</h1>
     <p class="sub">${esc(DATA.byline)}</p>
-    ${g ? `<div class="essay" style="margin:14px 0"><strong>You have a gap to close${rec.name ? ", " + esc(rec.name) : ""}.</strong> You scored ${g.base} of ${g.total} and need ${g.need}.
-      You do not start over. You earn the missing points one question at a time: <strong>${toGo(g)} more correct answer${toGo(g) === 1 ? "" : "s"}</strong>, each with the line or page where you found it.</div>
-      <div class="actions"><button class="primary big" id="gap">Close the gap · ${toGo(g)} to go</button></div>
-      <p class="small" style="margin:14px 0 0">Someone else on this device? <a href="#" id="fresh">Start a new test</a> (this erases the open gap).</p>` : `
-    <p>This final is built like the reading section of the ISEE: a passage with numbered lines on one side, one question at a time on the other. Finish the book before you start.</p>
-    <ul class="rules">
-      <li><strong>${n} questions.</strong> ${PLAN.passages} passages with six questions each, then ${PLAN.recall} questions about the whole book and ${PLAN.apply} about using its ideas in your own game.</li>
-      <li><strong>Open book.</strong> Keep your copy next to you. In Section 1 every answer is in the passage on the screen. In Section 2 the answers are in the book.</li>
-      <li><strong>Show where you found it.</strong> Every passage answer needs the line number that proves it. Every whole-book answer needs the page number from your book. You cannot submit without them.</li>
-      <li><strong>${need} of ${n} (${DATA.passPct}%) to pass.</strong> No penalty for a wrong answer, so answer everything.</li>
-      <li><strong>Miss the mark and you close the gap.</strong> You do not retake the whole test. You earn back each missing point: one try at a question you missed, and a brand-new question every time you miss again.</li>
-      <li><strong>About ${PLAN.minutes} minutes.</strong> The clock shows your pace. It does not stop you.</li>
+    <p>The final has two parts. They measure two different things, so they are taken and scored separately. Finish the book before you start either one.</p>
+  </div>
+  <div class="card"><div class="eyebrow">Part 1</div><h2 style="font-size:24px;margin-top:4px">Reading check</h2>
+    <p><strong>Did you read the book?</strong> One question from every chapter, ${CHAPTERS.length} in all, plus ${N_APPLY} about your own game. <strong>Closed book.</strong> Your first try is the score that counts.</p>
+    <div class="actions"><a class="btnlink primary" href="${here}?part=read">Open the reading check</a>${statusChip("read")}</div></div>
+  <div class="card"><div class="eyebrow">Part 2</div><h2 style="font-size:24px;margin-top:4px">ISEE reading skills</h2>
+    <p><strong>Can you read like the test asks?</strong> Four passages with numbered lines, six questions each, built like the ISEE reading section. Every answer needs the line number that proves it.</p>
+    <div class="actions"><a class="btnlink primary" href="${here}?part=skills">Open the skills test</a><a class="btnlink" href="${here}?part=skills&full=1">Full ISEE length · ${DATA.passages.length} passages</a>${statusChip("skills")}</div></div>`;
+}
+
+function renderHome() {
+  const n = PART === "read" ? CHAPTERS.length + N_APPLY : PLAN.passages * 6, g = gapOpen();
+  const need = PART === "read" ? Math.ceil(CHAPTERS.length * READ_PCT / 100) : Math.ceil(n * DATA.passPct / 100);
+  const rules = PART === "read" ? `
+      <li><strong>${n} questions.</strong> One from each of the ${CHAPTERS.length} chapters, in order, then ${N_APPLY} about using the book’s ideas in your own game.</li>
+      <li><strong>Closed book.</strong> Put the book away. Nothing else open on this computer and no phone. This part asks one thing: did you read it?</li>
+      <li><strong>Your first try is the score.</strong> ${need} of ${CHAPTERS.length} chapters right confirms the book was read. There is no retake to raise it.</li>
+      <li><strong>Miss too many and you repair them.</strong> You go back and reread each chapter you missed, then answer a new question from it with the book open and give the page number.</li>
+      <li><strong>About ${PLAN.minutes} minutes.</strong> The clock shows your pace. It does not stop you.</li>` : `
+      <li><strong>${n} questions.</strong> ${PLAN.passages} passages with six questions each. Every answer is in the passage on the screen. You do not need the book.</li>
+      <li><strong>Show where you found it.</strong> Every answer needs the line number that proves it. You cannot submit without them.</li>
+      <li><strong>The target is ${need} of ${n} (${DATA.passPct}%).</strong> Your first-try score is what gets tracked from one test to the next. No penalty for a wrong answer, so answer everything.</li>
+      <li><strong>Below the target, you close the gap.</strong> Each question you missed comes back once. Get it right and you earn the point. Miss it again and you get a new question from a new passage.</li>
+      <li><strong>About ${PLAN.minutes} minutes.</strong> The real ISEE gives 35 minutes for six passages. The clock shows your pace. It does not stop you.</li>`;
+  $("#app").innerHTML = `
+  <div class="card">
+    <div class="eyebrow"><a href="${location.pathname}" style="color:inherit;text-decoration:none">← Both parts</a> · ${PART === "read" ? "Part 1 · Reading check" : "Part 2 · ISEE reading skills"}</div>
+    <h1>${esc(DATA.title)}</h1>
+    <p class="sub">${esc(DATA.byline)}</p>
+    ${g ? `<div class="essay" style="margin:14px 0">${g.mode === "read"
+        ? `<strong>You have chapters to repair${rec.name ? ", " + esc(rec.name) : ""}.</strong> You got ${g.base} of ${g.total} chapters on your first try and needed ${g.need}. Reread ${plural(toGo(g), "chapter")}: <strong>${list(g.missed.filter(c => !g.repaired.includes(c) && !g.unresolved.includes(c)))}</strong>. Then answer a new question from each one, book open, with the page number.`
+        : `<strong>You have a gap to close${rec.name ? ", " + esc(rec.name) : ""}.</strong> You scored ${g.base} of ${g.total} and the target is ${g.need}. You earn the missing points one question at a time: <strong>${toGo(g)} more correct answer${toGo(g) === 1 ? "" : "s"}</strong>, each with the line that proves it.`}</div>
+      <div class="actions"><button class="primary big" id="gap">${gapLabel(g)}</button></div>
+      <p class="small" style="margin:14px 0 0">Someone else on this device? <a href="#" id="fresh">Start a new test</a> (this erases the open round).</p>` : `
+    <ul class="rules">${rules}
       <li>You can mark a question <em>Come back later</em> and jump between questions. Nothing is graded until you submit.</li>
-      ${RESULT_ENDPOINT ? "<li>Your name, answers, and the lines and pages you give are sent to your coach.</li>" : ""}
+      <li><strong>Stay on this page.</strong> Every time you switch to another window, tab, or app, it is recorded with how long you were gone.</li>
+      ${RESULT_ENDPOINT ? "<li>Your name, every answer, and the time you spent on each question are sent to your coach.</li>" : ""}
     </ul>
     <p style="margin:18px 0 6px"><label class="sans" style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)" for="nm">Your name (shown on your result)</label><br>
     <input type="text" id="nm" maxlength="40" autocomplete="off" value="${esc(rec.name || "")}">
     <span class="small" id="nmErr" hidden style="color:var(--bad);display:block;margin-top:4px">Type your first and last name to begin.</span></p>
-    <div class="actions"><button class="primary big" id="go">Begin the final</button>
-      ${rec.attempts.length ? `<span class="chip ${passed ? "ok" : ""}">${passed ? "Passed ✓ · " : ""}Best ${best}% · ${rec.attempts.length} attempt${rec.attempts.length === 1 ? "" : "s"}</span>` : ""}</div>`}
+    <div class="actions"><button class="primary big" id="go">${PART === "read" ? "Begin the reading check" : "Begin the skills test"}</button>${statusChip(PART)}</div>`}
   </div>`;
   if (g) {
     $("#gap").onclick = startGap;
-    $("#fresh").onclick = e => { e.preventDefault(); if (!confirm("Erase the open gap and start a brand-new test?")) return; rec.gap = null; rec.name = ""; save(rec); render(); };
+    $("#fresh").onclick = e => { e.preventDefault(); if (!ask("Erase the open round and start a brand-new test?")) return; rec.gap = null; rec.name = ""; save(rec); render(); };
     return;
   }
   $("#go").onclick = () => {
@@ -218,7 +275,7 @@ function renderTest() {
   const nums = grp.map(j => `<button class="num ${j === i ? "cur" : numClass(j)} ${T.flag[j] ? "flag" : ""}" data-j="${j}" aria-label="Question ${j + 1}">${j + 1}</button>`).join("");
   const qHtml = `
     <div class="nums">${nums}</div>
-    <p class="qcount sans">Question ${i + 1} of ${total}${q.sec === 1 ? ` · Passage ${q.pk + 1} of ${PLAN.passages}` : ""}</p>
+    <p class="qcount sans">Question ${i + 1} of ${total}${q.sec === 1 ? ` · Passage ${q.pk + 1} of ${PLAN.passages}` : q.sec === 2 ? ` · Chapter ${q.ch} · closed book` : ""}</p>
     <p class="stem">${esc(q.prompt)}</p>
     <div role="radiogroup" aria-label="Answer choices">${q.choices.map((c, k) => `
       <label class="choice ${T.picked[i] === k ? "sel" : ""}"><input type="radio" name="c" value="${k}" ${T.picked[i] === k ? "checked" : ""}>
@@ -258,32 +315,41 @@ function renderReview() {
     <div class="card"><h2>Before you submit</h2>
       <p>${blank ? `<strong>${blank} question${blank === 1 ? " is" : "s are"} blank.</strong> There is no penalty for a wrong answer, so answer ${blank === 1 ? "it" : "them"}.` : "Every question is answered."}
       ${flagged ? ` You marked ${flagged} to come back to.` : ""} Tap a number to go to that question.</p>
-      ${nocite ? `<p style="color:var(--bad)"><strong>${nocite} answer${nocite === 1 ? " is" : "s are"} missing a line or page number</strong> (dashed circles). You cannot submit until each one has it.</p>` : ""}
+      ${nocite ? `<p style="color:var(--bad)"><strong>${nocite} answer${nocite === 1 ? " is" : "s are"} missing a line number</strong> (dashed circles). You cannot submit until each one has it.</p>` : ""}
       <div class="grid">${T.qs.map((q, j) => `<button class="num ${numClass(j)} ${T.flag[j] ? "flag" : ""}" data-j="${j}">${j + 1}</button>`).join("")}</div>
-      <p class="legend">Shaded = answered · dashed = needs its line or page number · gold dot = marked to come back · white = blank</p>
+      <p class="legend">Shaded = answered${PART === "skills" ? " · dashed = needs its line number" : ""} · gold dot = marked to come back · white = blank</p>
       <div class="actions"><button id="back">← Back to the test</button><span class="sp"></span><button class="primary big" id="submit" ${nocite ? "disabled" : ""}>Submit for grading</button></div>
     </div>`;
   document.querySelectorAll(".num").forEach(b => b.onclick = () => { T.cur = +b.dataset.j; view = "test"; render(); window.scrollTo(0, 0); });
   $("#back").onclick = () => { view = "test"; render(); };
-  $("#submit").onclick = () => { if (nocite) return; if (blank && !confirm(`${blank} blank. Submit anyway?`)) return; grade(); };
+  $("#submit").onclick = () => { if (nocite) return; if (blank && !ask(`${blank} blank. Submit anyway?`)) return; grade(); };
 }
 
+// The score that counts: chapters right (reading check) or questions right (skills). "Your game" is reported on its own.
+function scored(q) { return PART === "read" ? q.sec === 2 : true; }
 function grade() {
   clearInterval(tick); lap(); T.on = null;
-  const total = T.qs.length, correct = T.qs.filter((q, j) => T.picked[j] === q.answer).length;
-  const pct = Math.round(correct / total * 100), need = Math.ceil(total * DATA.passPct / 100), passed = correct >= need;
-  T.result = { total, correct, pct, need, passed, secs: Math.round((Date.now() - T.started) / 1000), when: new Date().toLocaleString() };
-  rec.attempts.push({ pct, passed, correct, total, at: Date.now(), recall: T.recall, key: T.key });
-  rec.gap = passed ? null : {
-    key: T.key, total, need, base: correct, got: 0, pos: 0, log: [], started: Date.now(),
-    used: T.qs.map(q => q.qid), usedP: [...new Set(T.qs.filter(q => q.sec === 1).map(q => q.p))],
-    queue: T.qs.map((q, j) => ({ q, j })).filter(x => T.picked[x.j] !== x.q.answer)
-      .map(x => ({ qid: x.q.qid, kind: "fix", first: T.picked[x.j] === null ? null : x.q.order[T.picked[x.j]] })) };
+  const okAt = j => T.picked[j] === T.qs[j].answer, idx = T.qs.map((_, j) => j), main = idx.filter(j => scored(T.qs[j]));
+  const total = main.length, correct = main.filter(okAt).length, pct = Math.round(correct / total * 100);
+  const need = Math.ceil(total * (PART === "read" ? READ_PCT : DATA.passPct) / 100), passed = correct >= need;
+  const ap = idx.filter(j => T.qs[j].sec === 3), apply = [ap.filter(okAt).length, ap.length];
+  T.result = { total, correct, pct, need, passed, apply, secs: Math.round((Date.now() - T.started) / 1000), when: new Date().toLocaleString() };
+  rec.attempts.push({ first: pct, passed, closed: false, correct, total, at: Date.now(), recall: T.recall, key: T.key });
+  const base = { key: T.key, total, need, base: correct, got: 0, pos: 0, log: [], away: [], started: Date.now(), used: T.qs.map(q => q.qid) };
+  if (passed) rec.gap = null;
+  else if (PART === "read") {
+    const missed = main.filter(j => !okAt(j)).map(j => T.qs[j].ch);
+    rec.gap = Object.assign(base, { mode: "read", missed, repaired: [], unresolved: [], queue: [] });
+    missed.forEach(ch => { const id = chapterQuestion(ch); if (id) rec.gap.queue.push({ qid: id, kind: "new" }); else rec.gap.unresolved.push(ch); });
+  } else {
+    rec.gap = Object.assign(base, { mode: "skills", usedP: [...new Set(T.qs.map(q => q.p))],
+      queue: main.filter(j => !okAt(j)).map(j => ({ qid: T.qs[j].qid, kind: "fix", first: T.picked[j] === null ? null : T.qs[j].order[T.picked[j]] })) });
+  }
   const t = tallies();
-  T.payload = { kind: "first", key: T.key, exam: EXAM_ID, ver: DATA.ver || "", full: FULL, name: rec.name, correct, total, secs: T.result.secs,
-    attempt: rec.attempts.length, sections: t.sec, types: t.by,
+  T.payload = { kind: "first", part: PART, key: T.key, exam: EXAM_ID, ver: DATA.ver || "", full: FULL, name: rec.name, correct, total, secs: T.result.secs,
+    attempt: rec.attempts.length, sections: t.sec, types: t.by, apply, away: T.away,
     answers: T.qs.map((q, j) => ({ q: q.qid, t: q.type, ch: q.ch, pick: T.picked[j] === null ? null : q.order[T.picked[j]],
-      ok: T.picked[j] === q.answer, cite: T.cite[j] || null, s: Math.round(T.ms[j] / 1000), pr: q.prompt.slice(0, 90) })) };
+      ok: okAt(j), cite: T.cite[j] || null, s: Math.round(T.ms[j] / 1000), pr: q.prompt.slice(0, 90) })) };
   save(rec); view = "results"; render(); window.scrollTo(0, 0);
   send(T.payload, true);
 }
@@ -292,11 +358,11 @@ function tallies() {
   const by = {}, sec = {};
   T.qs.forEach((q, j) => { const ok = T.picked[j] === q.answer;
     const t = TYPE_LABEL[q.type] || q.type; (by[t] = by[t] || [0, 0])[1]++; if (ok) by[t][0]++;
-    const s = q.sec === 1 ? "Section 1 · Reading comprehension" : q.sec === 2 ? "Section 2 · The whole book" : "Section 2 · Your game";
+    const s = q.sec === 1 ? "Reading comprehension" : q.sec === 2 ? "The whole book (one per chapter)" : "Your game";
     (sec[s] = sec[s] || [0, 0])[1]++; if (ok) sec[s][0]++; });
   return { by, sec };
 }
-// show = paint the "sent to your coach" chip (a finished test or a closed gap); progress saves stay quiet
+// show = paint the "sent to your coach" chip (a finished test or a finished round); progress saves stay quiet
 function send(payload, show) {
   if (!RESULT_ENDPOINT) return;
   if (show) { if (SENT.state === "sending") return; SENT.last = payload; SENT.state = "sending"; paintSent(); }
@@ -312,94 +378,94 @@ function paintSent() {
 }
 
 function essayCard() {
-  return `<div class="card"><h2>Section 3 · Essay <span class="small">— on paper, 30 minutes, two pages at most</span></h2>
+  return `<div class="card"><h2>Essay <span class="small">— on paper, 30 minutes, two pages at most</span></h2>
       <div class="essay">${DATA.essay}</div>
       <p class="small" style="margin-bottom:0">On the real ISEE the essay is not scored, but a copy goes to every school you apply to. Plan for a few minutes, then write in pen.</p></div>`;
 }
+function chapterMap(okSet, fixedSet) {
+  return `<div class="grid">${CHAPTERS.map(c => `<span class="ch ${okSet.has(c) ? "ok" : fixedSet && fixedSet.has(c) ? "fix" : "no"}">${c}</span>`).join("")}</div>
+    <p class="legend">Green = right on the first try${fixedSet ? " · gold = repaired with the book open" : ""} · red = missed</p>`;
+}
 
 function renderResults() {
-  const R = T.result, { by, sec } = tallies(), g = gapOpen();
+  const R = T.result, { by } = tallies(), g = gapOpen();
   const rows = o => Object.keys(o).map(k => `<tr><td>${esc(k)}</td><td class="r">${o[k][0]} / ${o[k][1]}</td></tr>`).join("");
-  // A missed question keeps its answer hidden: it comes back in the gap round.
-  const review = T.qs.map((q, j) => { const ok = T.picked[j] === q.answer;
+  // A missed question keeps its answer hidden: it (or its chapter) comes back in the next round.
+  const review = T.qs.map((q, j) => { const ok = T.picked[j] === q.answer, again = !R.passed && scored(q);
     return `<div class="rev"><span class="chip ${ok ? "ok" : "no"}">${j + 1} · ${ok ? "correct" : T.picked[j] === null ? "blank" : "missed"}</span>
-      <span class="chip">${esc(TYPE_LABEL[q.type] || q.type)}</span>
+      <span class="chip">${esc(q.sec === 2 ? "Chapter " + q.ch : TYPE_LABEL[q.type] || q.type)}</span>
       <p class="stem">${esc(q.prompt)}</p>
-      ${ok ? `<p class="a right">${LET[q.answer]}. ${esc(q.choices[q.answer])}</p><p class="why">${esc(q.explain)}</p>`
-           : `<p class="why">You will see this one again when you close the gap.</p>`}</div>`; }).join("");
+      ${ok || !again ? `${ok || T.picked[j] === null ? "" : `<p class="a wrong">${LET[T.picked[j]]}. ${esc(q.choices[T.picked[j]])}</p>`}<p class="a right">${LET[q.answer]}. ${esc(q.choices[q.answer])}</p><p class="why">${esc(q.explain)}</p>`
+           : `<p class="why">${PART === "read" ? `Reread Chapter ${q.ch}. You will get a new question from it.` : "You will see this one again when you close the gap."}</p>`}</div>`; }).join("");
+  const okCh = new Set(T.qs.filter((q, j) => q.sec === 2 && T.picked[j] === q.answer).map(q => q.ch));
+  const head = PART === "read" ? `
+      <div><span class="stamp ${R.passed ? "pass" : "fail"}">${R.passed ? "Confirmed" : "Not confirmed"}</span></div>
+      <h2>${R.correct} of ${R.total} chapters on the first try · ${R.pct}%</h2>
+      <p>${R.passed ? `That confirms the book was read. ${R.correct < R.total ? `You missed Chapter${R.total - R.correct === 1 ? "" : "s"} ${list(CHAPTERS.filter(c => !okCh.has(c)))}.` : "Every chapter."}`
+        : `${R.need} of ${R.total} confirms the book was read, so this score does not. It stays on your record as your first try. Now repair it: reread Chapter${g && g.missed.length === 1 ? "" : "s"} <strong>${list(g ? g.missed : [])}</strong>, then answer a new question from each one with the book open and give the page number.`}</p>
+      <p>Your game: ${R.apply[0]} of ${R.apply[1]}.</p>` : `
+      <div><span class="stamp ${R.passed ? "pass" : "fail"}">${R.passed ? "On target" : "Not yet"}</span></div>
+      <h2>${R.correct} of ${R.total} · ${R.pct}% on the first try</h2>
+      <p>${R.passed ? `That meets the ${DATA.passPct}% target.` : `The target is ${R.need} of ${R.total} (${DATA.passPct}%), so you are <strong>${R.need - R.correct} short</strong>. Close the gap: each question you missed comes back once, and you earn its point by answering it correctly and showing the line. Miss it again and you get a new question from a new passage.`}</p>`;
   $("#app").innerHTML = `
     <div class="card">
-      <div class="eyebrow">${esc(DATA.title)} · Book Final${rec.name ? " · " + esc(rec.name) : ""}</div>
-      <div><span class="stamp ${R.passed ? "pass" : "fail"}">${R.passed ? "Passed" : "Not yet"}</span></div>
-      <h2>${R.correct} of ${R.total} · ${R.pct}%</h2>
-      <p>${R.passed ? "That is a passing score. The book is in the books." : `You need ${R.need} of ${R.total} (${DATA.passPct}%) to pass, so you are <strong>${R.need - R.correct} short</strong>. You do not retake the test. You close the gap: each question you missed comes back once, and you earn its point by answering it correctly and showing the line or page. Miss it again and you get a new question instead.`}</p>
+      <div class="eyebrow">${esc(DATA.title)} · ${PART === "read" ? "Reading check" : "ISEE reading skills"}${rec.name ? " · " + esc(rec.name) : ""}</div>
+      ${head}
       <p class="small">${esc(R.when)} · time ${mmss(R.secs)} · attempt ${rec.attempts.length}</p>
       <p id="sent" style="margin:8px 0 0"></p>
-      <div class="actions">${R.passed ? `<button class="primary" id="again">Take another version</button>` : `<button class="primary big" id="gap">Close the gap · ${g ? toGo(g) : 0} to go</button>`}<button id="print">Print this result</button><button id="home">Home</button></div>
+      <div class="actions">${g ? `<button class="primary big" id="gap">${gapLabel(g)}</button>` : ""}<button id="print">Print this result</button><button id="home">Home</button></div>
     </div>
-    <div class="card"><h2>Where the points went</h2>
-      <table><tr><th>Section</th><th class="r">Score</th></tr>${rows(sec)}</table>
-      <table style="margin-top:14px"><tr><th>Question type</th><th class="r">Score</th></tr>${rows(by)}</table></div>
-    ${R.passed ? essayCard() : ""}
+    ${PART === "read" ? `<div class="card"><h2>Chapter by chapter</h2>${chapterMap(okCh)}</div>`
+      : `<div class="card"><h2>Where the points went</h2><table><tr><th>Question type</th><th class="r">Score</th></tr>${rows(by)}</table></div>`}
+    ${PART === "read" && R.passed ? essayCard() : ""}
     <div class="card"><h2>Every question</h2>${review}</div>`;
-  if ($("#again")) $("#again").onclick = () => { T = draw(); view = "test"; startClock(); render(); window.scrollTo(0, 0); };
   if ($("#gap")) $("#gap").onclick = startGap;
   $("#home").onclick = () => { T = null; view = "home"; render(); window.scrollTo(0, 0); };
   $("#print").onclick = () => window.print();
   paintSent();
 }
 
-// ---------------------------------------------------------------- close the gap
-// A test finished before this round existed kept only its score, so its gap is closed with new questions.
-function legacyGap() {
-  const a = rec.attempts[rec.attempts.length - 1];
-  if (!a || rec.gap || rec.attempts.some(x => x.passed) || !a.total) return;
-  const need = Math.ceil(a.total * DATA.passPct / 100), gap = need - a.correct;
-  if (gap <= 0) return;
-  const g = { key: uuid(), legacy: true, total: a.total, need, base: a.correct, got: 0, pos: 0, log: [], started: Date.now(),
-    used: (a.recall || []).map(i => "r" + i), usedP: [], queue: [] };
-  shuffle(DATA.passages.map((_, i) => i)).slice(0, 2).sort((x, y) => x - y).forEach(pi =>
-    DATA.passages[pi].qs.forEach((_, k) => { if (g.queue.length < gap) g.queue.push({ qid: `p${pi}.${k}`, kind: "new" }); }));
-  const pool = shuffle(DATA.recall.map((_, i) => "r" + i).filter(id => !g.used.includes(id)));
-  while (g.queue.length < gap && pool.length) g.queue.push({ qid: pool.pop(), kind: "new" });
-  rec.gap = g; save(rec);
-}
-// The replacement for a question missed in the gap round: never one already seen, and as close in kind as the pool allows.
-function makeup(src) {
-  const g = rec.gap, used = new Set(g.used.concat(g.queue.map(x => x.qid)));
-  const free = ids => shuffle(ids.filter(id => !used.has(id)));
-  const recall = f => free(DATA.recall.map((q, i) => i).filter(i => f(DATA.recall[i])).map(i => "r" + i));
-  let c = [];
-  if (src.sec === 1) {             // stay on a new passage already opened in this round, then open another unseen one
-    const opened = g.queue.filter(x => x.kind !== "fix" && x.qid[0] === "p").map(x => +x.qid.slice(1).split(".")[0]).reverse();
-    const order = [...new Set(opened.concat(shuffle(DATA.passages.map((_, i) => i).filter(i => !g.usedP.includes(i)))))];
-    for (const pi of order) { c = free(DATA.passages[pi].qs.map((_, k) => `p${pi}.${k}`)); if (c.length) break; }
-    c.sort((a, b) => (srcOf(b).q.type === src.type) - (srcOf(a).q.type === src.type));
-  } else if (src.sec === 3) c = free(DATA.apply.map((_, i) => "a" + i));
-  else { c = recall(q => q.ch === src.ch); if (!c.length) c = recall(q => q.g === DATA.recall[src.id].g); }
-  if (!c.length) c = recall(() => true);
-  return c[0] || null;
+// ---------------------------------------------------------------- the second round: repair chapters / close the gap
+function unusedIds(ids) { const g = rec.gap, used = new Set(g.used.concat(g.queue.map(x => x.qid))); return shuffle(ids.filter(id => !used.has(id))); }
+function chapterQuestion(ch) { return unusedIds(DATA.recall.map((q, i) => i).filter(i => DATA.recall[i].ch === ch).map(i => "r" + i))[0] || null; }
+// Skills: the replacement for a question missed twice comes from a passage not yet seen, same question type when possible.
+function passageQuestion(src) {
+  const g = rec.gap;
+  const opened = g.queue.filter(x => x.kind !== "fix").map(x => +x.qid.slice(1).split(".")[0]).reverse();
+  const order = [...new Set(opened.concat(shuffle(DATA.passages.map((_, i) => i).filter(i => !g.usedP.includes(i)))))];
+  for (const pi of order) {
+    const c = unusedIds(DATA.passages[pi].qs.map((_, k) => `p${pi}.${k}`));
+    if (c.length) { c.sort((a, b) => (srcOf(b).q.type === src.type) - (srcOf(a).q.type === src.type)); return c[0]; }
+  }
+  return null;
 }
 function startGap() { T = null; clearInterval(tick); GV = null; view = "gap"; render(); window.scrollTo(0, 0); }
+function gapClosed(g) { return g.mode === "read" ? g.done && !g.unresolved.length : g.base + g.got >= g.need; }
 function gapPayload(g) {
-  return { kind: "gap", key: g.key, exam: EXAM_ID, ver: DATA.ver || "", full: g.total === 56, name: rec.name, total: g.total, need: g.need, base: g.base,
-    got: g.got, done: !!g.done, closed: g.base + g.got >= g.need, legacy: !!g.legacy, secs: g.log.reduce((s, x) => s + x.s, 0),
-    attempt: rec.attempts.length, answers: g.log };
+  return { kind: "gap", part: g.mode, key: g.key, exam: EXAM_ID, ver: DATA.ver || "", full: FULL, name: rec.name, total: g.total, need: g.need, base: g.base,
+    got: g.got, done: !!g.done, closed: gapClosed(g), missed: g.missed || null, repaired: g.repaired || null, unresolved: g.unresolved || null,
+    secs: g.log.reduce((s, x) => s + x.s, 0), attempt: rec.attempts.length, away: g.away || [], answers: g.log };
 }
 function lockIn() {
   const g = rec.gap, it = g.queue[g.pos], q = GV.q, ok = GV.pick === q.answer;
   g.log.push({ q: q.qid, kind: it.kind, t: q.type, ch: q.ch, pick: q.order[GV.pick], ok, cite: GV.cite || null,
     s: Math.round((Date.now() - GV.at) / 1000), pr: q.prompt.slice(0, 90) });
   let added = false;
-  if (ok) g.got++; else { const id = makeup(q); if (id) { g.queue.push({ qid: id, kind: "new" }); added = true; } }
+  if (ok) { g.got++; if (g.mode === "read") g.repaired.push(q.ch); }
+  else { const id = g.mode === "read" ? chapterQuestion(q.ch) : passageQuestion(q);
+    if (id) { g.queue.push({ qid: id, kind: "new" }); added = true; } else if (g.mode === "read") g.unresolved.push(q.ch); }
   g.pos++;
-  const closed = g.base + g.got >= g.need, out = !closed && g.pos >= g.queue.length;
-  if (closed || out) g.done = true;
-  if (closed) { const a = rec.attempts[rec.attempts.length - 1]; if (a) { a.first = a.pct; a.pct = Math.round((g.base + g.got) / g.total * 100); a.passed = true; a.viaGap = true; } }
+  if (g.pos >= g.queue.length || (g.mode === "skills" && g.base + g.got >= g.need)) g.done = true;
+  const closed = gapClosed(g), a = rec.attempts[rec.attempts.length - 1];
+  if (g.done && a) { a.closed = closed; if (g.mode === "read") a.unresolved = g.unresolved; else a.final = Math.round((g.base + g.got) / g.total * 100); }
   save(rec);
-  GV.fb = { ok, added, closed, out };
-  send(gapPayload(g), closed || out);
+  GV.fb = { ok, added, done: g.done };
+  send(gapPayload(g), g.done);
   render(); window.scrollTo(0, 0);
+}
+function gapHud(g) {
+  return `<div class="hud"><span class="where sans">${g.mode === "read" ? "Repair your chapters · open book" : "Close the gap"}</span>
+      <span class="clock">${g.mode === "read" ? `<b>${toGo(g)}</b> chapter${toGo(g) === 1 ? "" : "s"} left · ${g.repaired.length} repaired` : `<b>${g.base + g.got}</b> of ${g.need} needed · <b>${toGo(g)}</b> to go`}</span></div>`;
 }
 function renderGap() {
   const g = rec.gap;
@@ -411,18 +477,16 @@ function renderGap() {
   const q = GV.q, firstAt = it.kind === "fix" && it.first !== null && it.first !== undefined ? q.order.indexOf(it.first) : -1;
   const ready = GV.pick !== null && citeOk(q, GV.cite);
   const qHtml = `
-    <p class="qcount sans">${it.kind === "fix" ? "A question you missed · one try" : "New question · one try"} · ${esc(TYPE_LABEL[q.type] || q.type)}</p>
+    <p class="qcount sans">${g.mode === "read" ? `Chapter ${q.ch} · new question · book open · one try` : `${it.kind === "fix" ? "A question you missed · one try" : "New question · one try"} · ${esc(TYPE_LABEL[q.type] || q.type)}`}</p>
     <p class="stem">${esc(q.prompt)}</p>
     <div role="radiogroup" aria-label="Answer choices">${q.choices.map((c, k) => k === firstAt
       ? `<div class="choice out"><span class="let">${LET[k]}</span><span>${esc(c)} <em class="small">— your first answer. Not this one.</em></span></div>`
       : `<label class="choice ${GV.pick === k ? "sel" : ""}"><input type="radio" name="c" value="${k}" ${GV.pick === k ? "checked" : ""}>
       <span class="let">${LET[k]}</span><span>${esc(c)}</span></label>`).join("")}</div>
     ${citeHtml(q, GV.cite)}
-    <div class="actions"><span class="small">Find it first. You get one try, and a miss costs you a new question.</span><span class="sp"></span>
+    <div class="actions"><span class="small">${g.mode === "read" ? "Find it in the chapter first. You get one try, and a miss means another question from this chapter." : "Find it first. You get one try, and a miss costs you a new question."}</span><span class="sp"></span>
       <button class="primary" id="lock" ${ready ? "" : "disabled"}>Lock in my answer</button></div>`;
-  $("#app").innerHTML = `
-    <div class="hud"><span class="where sans">Close the gap</span>
-      <span class="clock"><b>${g.base + g.got}</b> of ${g.need} needed · <b>${toGo(g)}</b> to go</span></div>
+  $("#app").innerHTML = `${gapHud(g)}
     ${q.sec === 1
       ? `<div class="split"><div class="card passage" id="psg">${passageHtml(q.p)}</div><div class="card">${qHtml}</div></div>`
       : `<div class="card" style="max-width:760px;margin:0 auto">${qHtml}</div>`}`;
@@ -435,39 +499,46 @@ function renderGap() {
 }
 function renderGapFeedback(g) {
   const q = GV.q, f = GV.fb;
-  $("#app").innerHTML = `
-    <div class="hud"><span class="where sans">Close the gap</span>
-      <span class="clock"><b>${g.base + g.got}</b> of ${g.need} needed · <b>${toGo(g)}</b> to go</span></div>
+  $("#app").innerHTML = `${gapHud(g)}
     <div class="card" style="max-width:760px;margin:0 auto">
-      <span class="chip ${f.ok ? "ok" : "no"}">${f.ok ? "Correct · point earned" : "Not it · no point"}</span>
+      <span class="chip ${f.ok ? "ok" : "no"}">${f.ok ? (g.mode === "read" ? `Correct · Chapter ${q.ch} repaired` : "Correct · point earned") : (g.mode === "read" ? `Not it · Chapter ${q.ch} still open` : "Not it · no point")}</span>
       <p class="stem" style="margin-top:8px">${esc(q.prompt)}</p>
       ${f.ok ? "" : `<p class="rev a wrong" style="border:0;padding:0">${LET[GV.pick]}. ${esc(q.choices[GV.pick])}</p>`}
       <p class="rev a right" style="border:0;padding:0;color:var(--ok);font-weight:700">${LET[q.answer]}. ${esc(q.choices[q.answer])}</p>
       <p class="small" style="font-style:italic">${esc(q.explain)}</p>
-      ${f.ok ? "" : f.added ? `<p>A new question has been added to the end of your list.</p>` : ""}
-      <div class="actions"><span class="sp"></span><button class="primary" id="nx">${f.closed ? "See my result" : f.out ? "Continue" : "Next question →"}</button></div>
+      ${f.ok ? "" : f.added ? `<p>${g.mode === "read" ? `Another question from Chapter ${q.ch} has been added to the end of your list. Reread the chapter before you get there.` : "A new question has been added to the end of your list."}</p>`
+        : g.mode === "read" ? `<p>There are no more questions for Chapter ${q.ch}. Your coach will go over it with you.</p>` : ""}
+      <div class="actions"><span class="sp"></span><button class="primary" id="nx">${f.done ? "See my result" : "Next question →"}</button></div>
     </div>`;
   $("#nx").onclick = () => { GV = null; render(); window.scrollTo(0, 0); };
 }
 function renderGapDone(g) {
-  const closed = g.base + g.got >= g.need, asked = g.log.length;
+  const closed = gapClosed(g), asked = g.log.length, a = rec.attempts[rec.attempts.length - 1] || {};
+  const okCh = g.mode === "read" ? new Set(CHAPTERS.filter(c => !g.missed.includes(c))) : null;
+  const body = g.mode === "read" ? `
+      <div><span class="stamp ${closed ? "pass" : "fail"}">${closed ? "Repaired" : "See your coach"}</span></div>
+      <h2>First try: ${g.base} of ${g.total} chapters · ${plural(g.repaired.length, "chapter")} repaired</h2>
+      <p>${closed ? `You went back to every chapter you missed and answered a new question from each one. It took ${plural(asked, "question")}. Your first-try score stays on your record.`
+        : `Chapter${g.unresolved.length === 1 ? "" : "s"} ${list(g.unresolved)} still ${g.unresolved.length === 1 ? "needs" : "need"} work. Show this page to your coach.`}</p>
+      ${chapterMap(okCh, new Set(g.repaired))}` : `
+      <div><span class="stamp ${closed ? "pass" : "fail"}">${closed ? "Gap closed" : "See your coach"}</span></div>
+      <h2>First try: ${g.base} of ${g.total} (${a.first}%) · now ${g.base + g.got} of ${g.total}</h2>
+      <p>${closed ? `You earned ${g.got} more, one question at a time. It took ${plural(asked, "question")}. Your first-try score is the one that gets tracked, so the goal next time is to need a smaller gap.`
+        : `You have used every passage this test has and the gap is still open. Show this page to your coach.`}</p>`;
   $("#app").innerHTML = `
     <div class="card">
-      <div class="eyebrow">${esc(DATA.title)} · Book Final${rec.name ? " · " + esc(rec.name) : ""}</div>
-      <div><span class="stamp ${closed ? "pass" : "fail"}">${closed ? "Passed" : "See your coach"}</span></div>
-      <h2>${g.base + g.got} of ${g.total} · gap ${closed ? "closed" : "still open"}</h2>
-      <p>${closed ? `You scored ${g.base} on the test and earned ${g.got} more, one question at a time. It took ${asked} question${asked === 1 ? "" : "s"} to earn them. The book is in the books.`
-        : `You have used every question this test has. Show this page to your coach.`}</p>
+      <div class="eyebrow">${esc(DATA.title)} · ${g.mode === "read" ? "Reading check" : "ISEE reading skills"}${rec.name ? " · " + esc(rec.name) : ""}</div>
+      ${body}
       <p id="sent" style="margin:8px 0 0"></p>
       <div class="actions"><button id="print">Print this result</button><button id="home">Home</button></div>
     </div>
-    ${closed ? essayCard() : ""}`;
+    ${g.mode === "read" && closed ? essayCard() : ""}`;
   $("#home").onclick = () => { view = "home"; render(); window.scrollTo(0, 0); };
   $("#print").onclick = () => window.print();
   paintSent();
 }
 
-function render() { ({ home: renderHome, test: renderTest, review: renderReview, results: renderResults, gap: renderGap })[view](); }
+function render() { ({ choose: renderChoose, home: renderHome, test: renderTest, review: renderReview, results: renderResults, gap: renderGap })[view](); }
 window.addEventListener("beforeunload", e => { if (T && (view === "test" || view === "review")) { e.preventDefault(); e.returnValue = ""; } });
 document.addEventListener("keydown", e => {
   if (view !== "test" || e.target.tagName === "INPUT" && e.target.type === "text") return;
@@ -476,7 +547,6 @@ document.addEventListener("keydown", e => {
   else if (e.key === "ArrowRight" && i < T.qs.length - 1) { T.cur++; render(); }
   else if (e.key === "ArrowLeft" && i > 0) { T.cur--; render(); }
 });
-legacyGap();
 render();
 </script>
 </body>

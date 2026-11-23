@@ -40,36 +40,44 @@ a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <main class="wrap">
   <div class="eyebrow">Science on the Court · Reading Program</div>
   <h1>Book exams</h1>
-  <p class="lede">Finish the book, then pick its final. Every final is built like the reading section of the ISEE: a passage with numbered lines beside one question at a time.</p>
+  <p class="lede">Finish the book, then take its final. Every final has two parts, scored separately: a closed-book reading check, and a skills test built like the reading section of the ISEE.</p>
 
   <section class="card">
     <h2>Misunderstood</h2>
     <p class="by">A memoir by Allen Iverson</p>
     <p style="margin:0">From Hampton, Virginia, to Georgetown, the 76ers, and the Hall of Fame.</p>
-    <p class="facts"><span>Book final</span><span>40 questions</span><span>about 40 minutes</span><span>Passages at about grade 6–8</span></p>
+    <p class="facts"><span>Book final in two parts</span><span>Passages at about grade 6–8</span></p>
     <div class="row">
-      <a class="btn primary" href="misunderstood/final/">Take the final</a>
-      <a class="btn" href="misunderstood/final/?full=1">Full ISEE length · 56 questions</a>
-      <span class="chip" data-ls="sotc-final-misunderstood-v1" hidden></span>
+      <a class="btn primary" href="misunderstood/final/?part=read">Part 1 · Reading check</a>
+      <span class="chip" data-ls="sotc-final-misunderstood-v1-read" data-part="read" hidden></span>
+    </div>
+    <div class="row">
+      <a class="btn primary" href="misunderstood/final/?part=skills">Part 2 · ISEE reading skills</a>
+      <a class="btn" href="misunderstood/final/?part=skills&amp;full=1">Full ISEE length · 6 passages</a>
+      <span class="chip" data-ls="sotc-final-misunderstood-v1-skills" data-part="skills" hidden></span>
     </div><p class="more">Still reading? Take it a chapter at a time: <a href="misunderstood/ms/">Middle school chapter exams</a> · <a href="misunderstood/hs/">High school chapter exams</a></p>
   </section>
   <section class="card">
     <h2>In the Blink of an Eye</h2>
     <p class="by">An autobiography by Mahmoud Abdul-Rauf with Nick Chiles</p>
     <p style="margin:0">From Gulfport, Mississippi, to LSU, the NBA, and a stand that changed his career.</p>
-    <p class="facts"><span>Book final</span><span>40 questions</span><span>about 40 minutes</span><span>Passages at about grade 7</span></p>
+    <p class="facts"><span>Book final in two parts</span><span>Passages at about grade 7</span></p>
     <div class="row">
-      <a class="btn primary" href="blink/final/">Take the final</a>
-      <a class="btn" href="blink/final/?full=1">Full ISEE length · 56 questions</a>
-      <span class="chip" data-ls="sotc-final-blink-v1" hidden></span>
+      <a class="btn primary" href="blink/final/?part=read">Part 1 · Reading check</a>
+      <span class="chip" data-ls="sotc-final-blink-v1-read" data-part="read" hidden></span>
+    </div>
+    <div class="row">
+      <a class="btn primary" href="blink/final/?part=skills">Part 2 · ISEE reading skills</a>
+      <a class="btn" href="blink/final/?part=skills&amp;full=1">Full ISEE length · 6 passages</a>
+      <span class="chip" data-ls="sotc-final-blink-v1-skills" data-part="skills" hidden></span>
     </div>
   </section>
   <section class="card">
     <h2 style="font-size:19px">How every final works</h2>
     <ul class="how">
-      <li><strong>Open book.</strong> Keep your copy next to you.</li>
-      <li><strong>90% to pass.</strong> No penalty for a wrong answer, so answer every question.</li>
-      <li><strong>A retake is a different test.</strong> Each attempt draws new passages and new questions.</li>
+      <li><strong>Part 1 · Reading check.</strong> Closed book. One question from every chapter. Your first try is the score. Miss too many and you reread those chapters and answer a new question from each, book open, with the page number.</li>
+      <li><strong>Part 2 · ISEE reading skills.</strong> Passages with numbered lines. Every answer needs the line number that proves it. The target is 90% on the first try; below that, you earn back each missing point one question at a time.</li>
+      <li><strong>Stay on the test.</strong> Switching to another window, tab, or app is recorded.</li>
     </ul>
   </section>
 </main>
@@ -78,9 +86,15 @@ document.querySelectorAll("[data-ls]").forEach(function (el) {
   try {
     var r = JSON.parse(localStorage.getItem(el.dataset.ls)) || {}, a = r.attempts || [];
     if (!a.length) return;
-    var best = a.reduce(function (m, x) { return Math.max(m, x.pct); }, 0), passed = a.some(function (x) { return x.passed; });
-    el.textContent = (passed ? "Passed \u2713 \u00b7 " : "") + "Best " + best + "% \u00b7 " + a.length + " attempt" + (a.length === 1 ? "" : "s") + " on this device";
-    if (passed) el.classList.add("ok");
+    var last = a[a.length - 1];
+    if (el.dataset.part === "read") {
+      var ok = a.some(function (x) { return x.passed; }), fixed = a.some(function (x) { return x.closed; });
+      el.textContent = (ok ? "Confirmed \u2713" : fixed ? "Repaired \u2713" : "Not confirmed yet") + " \u00b7 last " + last.correct + " of " + last.total + " chapters";
+      if (ok || fixed) el.classList.add("ok");
+    } else {
+      el.textContent = "First try: " + a.slice(-5).map(function (x) { return x.first + "%"; }).join(" \u2192 ");
+      if (a.some(function (x) { return x.passed; })) el.classList.add("ok");
+    }
     el.hidden = false;
   } catch (e) {}
 });
