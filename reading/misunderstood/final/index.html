@@ -144,20 +144,22 @@ function awayEnd() {
   if (view === "gap") save(rec); else leftPage();
 }
 // A first try allows AWAY_MAX leaves. One more cancels the attempt: nothing is scored and the next try draws new questions.
-const AWAY_MAX = 2;
+const AWAY_MAX = 2, AWAY_SECS = 15;
+const awaySecs = () => T.away.reduce((s, a) => s + a.s, 0);
+const overLimit = () => T.away.length > AWAY_MAX || awaySecs() > AWAY_SECS;
 function leftPage() {
-  if (T.away.length > AWAY_MAX) return voidAttempt();
+  if (overLimit()) return voidAttempt();
   if (view === "test") { const c = $("#cite"); if (c) T.cite[T.cur] = c.value; }
   render();
 }
 function leaveChip() {
   const n = T.away.length; if (!n) return "";
-  return `<span class="chip no">Left this page ${n} of ${AWAY_MAX} allowed · ${n >= AWAY_MAX ? "the next time cancels this attempt" : "a third time cancels this attempt"}</span>`;
+  return `<span class="chip no">Left this page ${n} of ${AWAY_MAX} allowed · ${awaySecs()} of ${AWAY_SECS} seconds used · ${n >= AWAY_MAX ? "the next time cancels this attempt" : "going over either one cancels this attempt"}</span>`;
 }
 function voidAttempt() {
   clearInterval(tick); lap(); T.on = null;
   const okAt = j => T.picked[j] === T.qs[j].answer, main = T.qs.map((_, j) => j).filter(j => scored(T.qs[j]));
-  rec.attempts.push({ rule: 1, void: true, leaves: T.away.length, first: null, passed: false, closed: false, correct: null, total: main.length, at: Date.now(), recall: T.recall, key: T.key });
+  rec.attempts.push({ rule: 1, void: true, leaves: T.away.length, gone: awaySecs(), first: null, passed: false, closed: false, correct: null, total: main.length, at: Date.now(), recall: T.recall, key: T.key });
   rec.gap = null; rec.live = null; save(rec);
   const t = tallies();
   send({ kind: "first", void: true, part: PART, key: T.key, exam: EXAM_ID, ver: DATA.ver || "", full: FULL, name: rec.name, correct: main.filter(okAt).length, total: main.length,
@@ -172,7 +174,7 @@ function resume() {
   if (!rec || !rec.live) return;
   T = rec.live; const gone = Math.round((Date.now() - (T.seen || Date.now())) / 1000);
   T.on = null; T.stamp = Date.now(); view = "test"; startClock();
-  if (gone >= 6) { T.away.push({ q: T.qs[T.cur].qid, s: Math.min(gone, 86400), closed: true }); if (T.away.length > AWAY_MAX) voidAttempt(); }
+  if (gone >= 6) { T.away.push({ q: T.qs[T.cur].qid, s: Math.min(gone, 86400), closed: true }); if (overLimit()) voidAttempt(); }
 }
 document.addEventListener("visibilitychange", () => document.hidden ? awayStart() : awayEnd());
 window.addEventListener("blur", awayStart); window.addEventListener("focus", awayEnd);
@@ -283,10 +285,10 @@ function renderHome() {
         : `<strong>You have a gap to close${rec.name ? ", " + esc(rec.name) : ""}.</strong> You scored ${g.base} of ${g.total} and the target is ${g.need}. You earn the missing points one question at a time: <strong>${toGo(g)} more correct answer${toGo(g) === 1 ? "" : "s"}</strong>, each with the line that proves it.`}</div>
       <div class="actions"><button class="primary big" id="gap">${gapLabel(g)}</button></div>
       <p class="small" style="margin:14px 0 0">Someone else on this device? <a href="#" id="fresh">Start a new test</a> (this erases the open round).</p>` : `
-    ${lastVoid ? `<div class="essay" style="margin:14px 0"><strong>Your last attempt did not count.</strong> ${lastVoid.old ? "It was taken before the stay-on-this-page rule." : `You left the test page ${lastVoid.leaves} times and the limit is ${AWAY_MAX}.`} Your coach has the record. This attempt has new questions.</div>` : ""}
+    ${lastVoid ? `<div class="essay" style="margin:14px 0"><strong>Your last attempt did not count.</strong> ${lastVoid.old ? "It was taken before the stay-on-this-page rule." : `You were away from the test page ${plural(lastVoid.leaves, "time")} for ${lastVoid.gone || 0} seconds. The limit is ${AWAY_MAX} times and ${AWAY_SECS} seconds in total.`} Your coach has the record. This attempt has new questions.</div>` : ""}
     <ul class="rules">${rules}
       <li>You can mark a question <em>Come back later</em> and jump between questions. Nothing is graded until you submit.</li>
-      <li><strong>Stay on this page.</strong> Every time you switch to another window, tab, or app, or close this page, it is recorded with how long you were gone. You are allowed ${AWAY_MAX}. The third time cancels the attempt: nothing is scored, your coach is told, and you start over with new questions.</li>
+      <li><strong>Stay on this page.</strong> Every time you switch to another window, tab, or app, or close this page, it is recorded with how long you were gone. You are allowed ${AWAY_MAX} short ones, ${AWAY_SECS} seconds in total. A third time, or more than ${AWAY_SECS} seconds away, cancels the attempt: nothing is scored, your coach is told, and you start over with new questions.</li>
       ${RESULT_ENDPOINT ? "<li>Your name, every answer, and the time you spent on each question are sent to your coach.</li>" : ""}
     </ul>
     <p style="margin:18px 0 6px"><label class="sans" style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)" for="nm">Your name (shown on your result)</label><br>
@@ -581,6 +583,8 @@ function renderGapDone(g) {
 
 function render() { ({ choose: renderChoose, home: renderHome, test: renderTest, review: renderReview, results: renderResults, gap: renderGap })[view](); keep(); }
 window.addEventListener("pagehide", keep);
+const testing = () => view === "test" || view === "review" || (view === "gap" && !(GV && GV.fb));
+["copy", "cut", "contextmenu", "selectstart", "dragstart"].forEach(ev => document.addEventListener(ev, e => { if (testing() && !(e.target.tagName === "INPUT")) e.preventDefault(); }));
 document.addEventListener("keydown", e => {
   if (view !== "test" || e.target.tagName === "INPUT" && e.target.type === "text") return;
   const k = e.key.toLowerCase(), i = T.cur;
