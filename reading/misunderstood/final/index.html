@@ -114,7 +114,13 @@ const TYPE_LABEL = { "main-idea": "Main idea", detail: "Supporting detail", voca
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function load(part) { try { return JSON.parse(localStorage.getItem(LS_KEY + "-" + part)) || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
+function load(part) {
+  let r; try { r = JSON.parse(localStorage.getItem(LS_KEY + "-" + part)) || { attempts: [] }; } catch (e) { r = { attempts: [] }; }
+  r.attempts.forEach(a => { if (!a.rule) { a.void = true; a.old = true; a.passed = false; a.closed = false; } });   // taken before the stay-on-page rule
+  if (r.gap && r.attempts.length && r.attempts[r.attempts.length - 1].old) r.gap = null;
+  return r;
+}
+const counted = a => a.filter(x => !x.void);
 function save(r) { try { localStorage.setItem(LS_KEY + "-" + PART, JSON.stringify(r)); } catch (e) {} }
 function mmss(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
 function uuid() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
@@ -135,7 +141,38 @@ function awayEnd() {
   const s = Math.round((Date.now() - AWAY.at) / 1000), log = awayLog(); AWAY.at = null;
   if (s < 2 || !log || log.length >= 200) return;
   log.push({ q: view === "gap" ? (GV ? GV.q.qid : "") : view === "test" ? T.qs[T.cur].qid : "review", s });
-  if (view === "gap") save(rec);
+  if (view === "gap") save(rec); else leftPage();
+}
+// A first try allows AWAY_MAX leaves. One more cancels the attempt: nothing is scored and the next try draws new questions.
+const AWAY_MAX = 2;
+function leftPage() {
+  if (T.away.length > AWAY_MAX) return voidAttempt();
+  if (view === "test") { const c = $("#cite"); if (c) T.cite[T.cur] = c.value; }
+  render();
+}
+function leaveChip() {
+  const n = T.away.length; if (!n) return "";
+  return `<span class="chip no">Left this page ${n} of ${AWAY_MAX} allowed · ${n >= AWAY_MAX ? "the next time cancels this attempt" : "a third time cancels this attempt"}</span>`;
+}
+function voidAttempt() {
+  clearInterval(tick); lap(); T.on = null;
+  const okAt = j => T.picked[j] === T.qs[j].answer, main = T.qs.map((_, j) => j).filter(j => scored(T.qs[j]));
+  rec.attempts.push({ rule: 1, void: true, leaves: T.away.length, first: null, passed: false, closed: false, correct: null, total: main.length, at: Date.now(), recall: T.recall, key: T.key });
+  rec.gap = null; rec.live = null; save(rec);
+  const t = tallies();
+  send({ kind: "first", void: true, part: PART, key: T.key, exam: EXAM_ID, ver: DATA.ver || "", full: FULL, name: rec.name, correct: main.filter(okAt).length, total: main.length,
+    secs: Math.round((Date.now() - T.started) / 1000), attempt: rec.attempts.length, sections: t.sec, types: t.by, apply: [0, 0], away: T.away,
+    answers: T.qs.map((q, j) => ({ q: q.qid, t: q.type, ch: q.ch, pick: T.picked[j] === null ? null : q.order[T.picked[j]],
+      ok: okAt(j), cite: T.cite[j] || null, s: Math.round(T.ms[j] / 1000), pr: q.prompt.slice(0, 90) })) }, false);
+  T = null; view = "home"; render(); window.scrollTo(0, 0);
+}
+// An unfinished test is kept, so closing or reloading the page brings back the same questions and the same leave count.
+function keep() { if (T && (view === "test" || view === "review")) { T.seen = Date.now(); rec.live = T; save(rec); } }
+function resume() {
+  if (!rec || !rec.live) return;
+  T = rec.live; const gone = Math.round((Date.now() - (T.seen || Date.now())) / 1000);
+  T.on = null; T.stamp = Date.now(); view = "test"; startClock();
+  if (gone >= 6) { T.away.push({ q: T.qs[T.cur].qid, s: Math.min(gone, 86400), closed: true }); if (T.away.length > AWAY_MAX) voidAttempt(); }
 }
 document.addEventListener("visibilitychange", () => document.hidden ? awayStart() : awayEnd());
 window.addEventListener("blur", awayStart); window.addEventListener("focus", awayEnd);
@@ -168,7 +205,7 @@ function draw() {
     shuffle(DATA.apply.map((_, i) => i)).slice(0, N_APPLY).forEach(i => qs.push(build("a" + i)));
   }
   return { qs, picked: qs.map(() => null), flag: qs.map(() => false), cite: qs.map(() => ""), ms: qs.map(() => 0), on: null, stamp: Date.now(),
-    cur: 0, started: Date.now(), recall: picked, key: uuid(), away: [] };
+    cur: 0, started: Date.now(), seen: Date.now(), recall: picked, key: uuid(), away: [] };
 }
 
 // ---- "show where you found it": a line number for a passage question; a page number when a chapter is repaired open-book
@@ -196,7 +233,8 @@ function gapOpen() { return rec && rec.gap && !rec.gap.done ? rec.gap : null; }
 function toGo(g) { return g.mode === "read" ? g.missed.length - g.repaired.length - g.unresolved.length : Math.max(0, g.need - g.base - g.got); }
 function gapLabel(g) { return g.mode === "read" ? `Repair ${plural(toGo(g), "chapter")}` : `Close the gap · ${toGo(g)} to go`; }
 function statusChip(part) {
-  const r = load(part), a = r.attempts; if (!a.length) return "";
+  const r = load(part), a = counted(r.attempts);
+  if (!a.length) return r.attempts.length ? `<span class="chip no">Last attempt did not count</span>` : "";
   const last = a[a.length - 1];
   if (part === "read") { const ok = a.some(x => x.passed), fixed = a.some(x => x.closed);
     return `<span class="chip ${ok || fixed ? "ok" : "no"}">${ok ? "Confirmed ✓" : fixed ? "Repaired ✓" : "Not confirmed yet"} · last ${last.correct} of ${last.total} chapters</span>`; }
@@ -222,6 +260,7 @@ function renderChoose() {
 
 function renderHome() {
   const n = PART === "read" ? CHAPTERS.length + N_APPLY : PLAN.passages * 6, g = gapOpen();
+  const la = rec.attempts[rec.attempts.length - 1], lastVoid = la && la.void ? la : null;
   const need = PART === "read" ? Math.ceil(CHAPTERS.length * READ_PCT / 100) : Math.ceil(n * DATA.passPct / 100);
   const rules = PART === "read" ? `
       <li><strong>${n} questions.</strong> One from each of the ${CHAPTERS.length} chapters, in order, then ${N_APPLY} about using the book’s ideas in your own game.</li>
@@ -244,9 +283,10 @@ function renderHome() {
         : `<strong>You have a gap to close${rec.name ? ", " + esc(rec.name) : ""}.</strong> You scored ${g.base} of ${g.total} and the target is ${g.need}. You earn the missing points one question at a time: <strong>${toGo(g)} more correct answer${toGo(g) === 1 ? "" : "s"}</strong>, each with the line that proves it.`}</div>
       <div class="actions"><button class="primary big" id="gap">${gapLabel(g)}</button></div>
       <p class="small" style="margin:14px 0 0">Someone else on this device? <a href="#" id="fresh">Start a new test</a> (this erases the open round).</p>` : `
+    ${lastVoid ? `<div class="essay" style="margin:14px 0"><strong>Your last attempt did not count.</strong> ${lastVoid.old ? "It was taken before the stay-on-this-page rule." : `You left the test page ${lastVoid.leaves} times and the limit is ${AWAY_MAX}.`} Your coach has the record. This attempt has new questions.</div>` : ""}
     <ul class="rules">${rules}
       <li>You can mark a question <em>Come back later</em> and jump between questions. Nothing is graded until you submit.</li>
-      <li><strong>Stay on this page.</strong> Every time you switch to another window, tab, or app, it is recorded with how long you were gone.</li>
+      <li><strong>Stay on this page.</strong> Every time you switch to another window, tab, or app, or close this page, it is recorded with how long you were gone. You are allowed ${AWAY_MAX}. The third time cancels the attempt: nothing is scored, your coach is told, and you start over with new questions.</li>
       ${RESULT_ENDPOINT ? "<li>Your name, every answer, and the time you spent on each question are sent to your coach.</li>" : ""}
     </ul>
     <p style="margin:18px 0 6px"><label class="sans" style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)" for="nm">Your name (shown on your result)</label><br>
@@ -266,7 +306,7 @@ function renderHome() {
   };
 }
 
-function startClock() { clearInterval(tick); tick = setInterval(() => { const c = $("#clk"); if (c && T && view !== "gap") c.innerHTML = clockText(); }, 1000); }
+function startClock() { clearInterval(tick); tick = setInterval(() => { const c = $("#clk"); if (c && T && view !== "gap") c.innerHTML = clockText(); if (T && Date.now() - (T.seen || 0) > 3000) keep(); }, 1000); }
 function clockText() { const s = (Date.now() - T.started) / 1000; return `<b>${mmss(s)}</b> of about ${PLAN.minutes}:00`; }
 
 function renderTest() {
@@ -288,7 +328,7 @@ function renderTest() {
       ${i === total - 1 ? `<button class="primary" id="review">Review and submit</button>` : `<button class="primary" id="next">Next →</button>`}
     </div>`;
   $("#app").innerHTML = `
-    <div class="hud"><span class="where sans">${sectionOf(q)}</span><button id="toReview" style="padding:6px 12px;font-size:13px">Review all</button>
+    <div class="hud"><span class="where sans">${sectionOf(q)}</span><button id="toReview" style="padding:6px 12px;font-size:13px">Review all</button>${leaveChip()}
       <span class="clock" id="clk">${clockText()}</span></div>
     ${q.sec === 1
       ? `<div class="split"><div class="card passage" id="psg">${passageHtml(q.p)}</div><div class="card">${qHtml}</div></div>`
@@ -311,7 +351,7 @@ function renderReview() {
   const blank = T.picked.filter(x => x === null).length, flagged = T.flag.filter(Boolean).length;
   const nocite = T.qs.filter((q, j) => T.picked[j] !== null && !citeOk(q, T.cite[j])).length;
   $("#app").innerHTML = `
-    <div class="hud"><span class="where sans">Review</span><span class="clock" id="clk">${clockText()}</span></div>
+    <div class="hud"><span class="where sans">Review</span>${leaveChip()}<span class="clock" id="clk">${clockText()}</span></div>
     <div class="card"><h2>Before you submit</h2>
       <p>${blank ? `<strong>${blank} question${blank === 1 ? " is" : "s are"} blank.</strong> There is no penalty for a wrong answer, so answer ${blank === 1 ? "it" : "them"}.` : "Every question is answered."}
       ${flagged ? ` You marked ${flagged} to come back to.` : ""} Tap a number to go to that question.</p>
@@ -334,7 +374,8 @@ function grade() {
   const need = Math.ceil(total * (PART === "read" ? READ_PCT : DATA.passPct) / 100), passed = correct >= need;
   const ap = idx.filter(j => T.qs[j].sec === 3), apply = [ap.filter(okAt).length, ap.length];
   T.result = { total, correct, pct, need, passed, apply, secs: Math.round((Date.now() - T.started) / 1000), when: new Date().toLocaleString() };
-  rec.attempts.push({ first: pct, passed, closed: false, correct, total, at: Date.now(), recall: T.recall, key: T.key });
+  rec.attempts.push({ rule: 1, leaves: T.away.length, first: pct, passed, closed: false, correct, total, at: Date.now(), recall: T.recall, key: T.key });
+  rec.live = null;
   const base = { key: T.key, total, need, base: correct, got: 0, pos: 0, log: [], away: [], started: Date.now(), used: T.qs.map(q => q.qid) };
   if (passed) rec.gap = null;
   else if (PART === "read") {
@@ -538,8 +579,8 @@ function renderGapDone(g) {
   paintSent();
 }
 
-function render() { ({ choose: renderChoose, home: renderHome, test: renderTest, review: renderReview, results: renderResults, gap: renderGap })[view](); }
-window.addEventListener("beforeunload", e => { if (T && (view === "test" || view === "review")) { e.preventDefault(); e.returnValue = ""; } });
+function render() { ({ choose: renderChoose, home: renderHome, test: renderTest, review: renderReview, results: renderResults, gap: renderGap })[view](); keep(); }
+window.addEventListener("pagehide", keep);
 document.addEventListener("keydown", e => {
   if (view !== "test" || e.target.tagName === "INPUT" && e.target.type === "text") return;
   const k = e.key.toLowerCase(), i = T.cur;
@@ -547,6 +588,7 @@ document.addEventListener("keydown", e => {
   else if (e.key === "ArrowRight" && i < T.qs.length - 1) { T.cur++; render(); }
   else if (e.key === "ArrowLeft" && i > 0) { T.cur--; render(); }
 });
+resume();
 render();
 </script>
 </body>
